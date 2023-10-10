@@ -1,11 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>admin</title>
-</head>
-<body>
-    <h1>login page for admin</h1>
-</body>
-</html>
+<%- include('../layouts/header.ejs') %>
+<div class="background">
+    <div class="shape"></div>
+    <div class="shape"></div>
+</div>
+
+<% if (typeof message !== 'undefined') { %>
+    <h3 class="text-danger"><%= message %></h3>
+  <% } %>
+
+<form action="/admin" method="post">
+    <h3>Admin Login</h3>
+
+    <label for="email">Email</label>
+    <input type="email" placeholder="Enter Email" id="email" name="email">
+
+    <label for="password">Password</label>
+    <input type="password" placeholder="Enter Password" id="password" name="password">
+
+    <button>Log In</button>
+</form>
+<%- include('../layouts/footer.ejs') %>
