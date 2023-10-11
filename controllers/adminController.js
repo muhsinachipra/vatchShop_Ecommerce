@@ -9,14 +9,7 @@ const loadLogin = async (req,res)=>{
     }
 }
 
-// const securePassword = async (password) =>{
-//     try {
-//         const passwordHash = await bcrypt.hash(password, 10);
-//         return passwordHash;
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// }
+
 
 const verifyLogin = async (req,res)=>{
     try {
@@ -26,7 +19,6 @@ const verifyLogin = async (req,res)=>{
 
         const adminData = await Admin.findOne({ email:email })
         if(adminData){
-
             const passwordMatch = await bcrypt.compare(password,adminData.password)
 
             if (passwordMatch) {
