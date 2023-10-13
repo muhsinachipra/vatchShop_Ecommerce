@@ -22,6 +22,17 @@ const loginLoad = async(req,res)=>{
 }
 
 
+const loadRegister = async(req,res)=>{
+    try {
+
+        res.render('registration.ejs'); 
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
 const verifyLogin = async(req,res)=>{
     try {
         const email=req.body.email
@@ -47,6 +58,9 @@ const verifyLogin = async(req,res)=>{
 }
 
 
+
+
+
 const insertUser = async (req,res) =>{
 
     try {
@@ -61,19 +75,38 @@ const insertUser = async (req,res) =>{
     const userData = await user.save();
 
         if(userData) {
-            res.render('/#up', {message: "Your registration has been successfully."});
+            res.render('registration', {message: "Your registration has been successfully."});
         }
         else{
-            res.render('/#up', {message: "Your registration has been failed."});
+            res.render('registration', {message: "Your registration has been failed."});
         }
     } catch (error) {
         console.log(error.message);
     }
 }
 
+const loadHome = async(req,res)=>{
+    try {
+        res.render('home')
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const userLogout = async(req,res)=>{
+    try {
+        req.session.destroy()
+        res.redirect('/')
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 module.exports = {
     loginLoad,
     verifyLogin,
-    insertUser
+    insertUser,
+    loadRegister,
+    loadHome,
+    userLogout
 }

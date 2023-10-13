@@ -1,0 +1,38 @@
+<%- include('../layouts/header.ejs') %>
+
+
+<body class="register">
+    <div class="wrapper">
+      <h2>Registration</h2>
+      <form action="register" method="post" onsubmit="return validateForm()">
+        <div class="input-box">
+          <input type="text" placeholder="Enter your first name" id="firstName" name="firstName" required>
+        </div>
+        <div class="input-box">
+          <input type="text" placeholder="Enter your last name" id="lastName" name="lastName" required>
+        </div>
+        <div class="input-box">
+          <input type="email" placeholder="Enter your email" id="email" name="email" required>
+        </div>
+        <div class="input-box">
+          <input type="password" placeholder="Create password" id="password" name="password" required>
+        </div>
+        <div class="input-box">
+          <input type="password" placeholder="Confirm password" id="passwordConfirm" name="passwordConfirm" required>
+        </div>
+        <div class="input-box button">
+          <input type="submit" value="Register Now">
+        </div>
+        <div class="text">
+          <h3>Already have an account? <a href="/">Login now</a></h3>
+        </div>
+      </form>
+
+      
+      <% if (typeof message !== 'undefined') { %>
+        <p class="successfully"><%= message %></p>
+      <% } %>
+    </div>
+    
+
+<%- include('../layouts/footer.ejs') %>
