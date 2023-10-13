@@ -22,6 +22,7 @@ const userController = require("../controllers/userController");
 user_route.get('/',auth.isLogout,userController.loginLoad)
 user_route.post('/',userController.verifyLogin)
 user_route.get('/register',auth.isLogout,userController.loadRegister);
+user_route.get('/otp',auth.isLogout,userController.loadOtp);
 user_route.post('/register',userController.insertUser);
 user_route.get('/home',auth.isLogin,userController.loadHome)
 user_route.get('/logout',auth.isLogin,userController.userLogout)

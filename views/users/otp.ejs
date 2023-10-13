@@ -1,0 +1,16 @@
+<%- include('../layouts/header.ejs') %>
+
+
+<body class="register">
+    <div class="wrapper">
+      <h2>OTP Verification</h2>
+      <form action="otp" method="post">
+        <div class="input-box">
+          <input type="text" placeholder="Enter the OTP sent to your mail" id="otp" name="otp" required>
+        </div>
+        <div class="input-box button">
+          <input type="submit" value="Verify">
+        </div>
+    
+
+<%- include('../layouts/footer.ejs') %>
