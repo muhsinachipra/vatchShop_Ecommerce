@@ -1,4 +1,4 @@
-const isLogin = async (req, res, next) => {
+const isUserLogin = async (req, res, next) => {
     try {
       if (req.session.user_id) {
         next(); // User is logged in, proceed to the next middleware or route
@@ -10,7 +10,7 @@ const isLogin = async (req, res, next) => {
     }
   }
   
-  const isLogout = async (req, res, next) => {
+  const isUserLogout = async (req, res, next) => {
     try {
       if (req.session.user_id) {
         res.redirect('/home'); // User is logged in, redirect to home
@@ -23,7 +23,7 @@ const isLogin = async (req, res, next) => {
   }
   
   module.exports = {
-    isLogout,
-    isLogin
+    isUserLogout,
+    isUserLogin
   }
   

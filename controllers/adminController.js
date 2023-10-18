@@ -20,7 +20,6 @@ const verifyLogin = async (req,res)=>{
         const adminData = await Admin.findOne({ email:email })
         if(adminData){
             const passwordMatch = await bcrypt.compare(password,adminData.password)
-
             if (passwordMatch) {
                 if (adminData.isAdmin === 0) {
                     res.render('login',{message:"email or password is incorrect"})
@@ -40,7 +39,17 @@ const verifyLogin = async (req,res)=>{
     }
 }
 
+
+const loadDashboard = async(req,res)=>{
+    try {
+        res.render("dashboard")
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 module.exports={
     loadLogin,
-    verifyLogin
+    verifyLogin,
+    loadDashboard
 }

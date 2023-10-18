@@ -14,9 +14,12 @@ admin_route.use(bodyParser.urlencoded({extended:true}))
 admin_route.set('view engine','ejs')
 admin_route.set('views','./views/admin')
 
-
 const adminController= require('../controllers/adminController')
+
 admin_route.get('/',auth.isAdminLogout,adminController.loadLogin)
 admin_route.post('/',adminController.verifyLogin)
+admin_route.get('/dashboard',auth.isAdminLogin,adminController.loadDashboard)
+
+
 
 module.exports =admin_route

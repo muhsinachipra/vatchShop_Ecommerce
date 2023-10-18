@@ -9,7 +9,7 @@ const adminSchema = new mongoose.Schema ({
         type:String,
         required: true
     },
-    is_admin:{
+    isAdmin:{
         type:Number,
         required: true
     },

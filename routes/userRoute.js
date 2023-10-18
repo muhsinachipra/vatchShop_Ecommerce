@@ -15,17 +15,24 @@ user_route.use(bodyParser.urlencoded({extended:true}))
 
 user_route.use(express.static('public'))
 
+
+// user_route.use('/public',express.static(path.join(__dirname,'../public')))
+// user_route.use('/userlogin',express.static(path.join(__dirname,'../public/userlogin')))
+// user_route.use('/assets',express.static(path.join(__dirname,'../public/userlogin/assets')))
+
 const path= require("path")
 
 const userController = require("../controllers/userController");
 
-user_route.get('/',auth.isLogout,userController.loginLoad)
+user_route.get('/',auth.isUserLogout,userController.loginLoad)
 user_route.post('/',userController.verifyLogin)
-user_route.get('/register',auth.isLogout,userController.loadRegister);
-user_route.get('/otp',auth.isLogout,userController.loadOtp);
+user_route.get('/register',auth.isUserLogout,userController.loadRegister);
 user_route.post('/register',userController.insertUser);
-user_route.get('/home',auth.isLogin,userController.loadHome)
-user_route.get('/logout',auth.isLogin,userController.userLogout)
+user_route.get('/otp',auth.isUserLogout,userController.loadOtp);
+user_route.post('/otp', userController.verifyOTP)
+user_route.post('/resendOTP', userController.resendOTP)
+user_route.get('/home',auth.isUserLogin,userController.loadHome)
+user_route.get('/logout',auth.isUserLogin,userController.userLogout)
 
 
 module.exports=user_route
