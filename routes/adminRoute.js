@@ -19,6 +19,14 @@ const adminController= require('../controllers/adminController')
 admin_route.get('/',auth.isAdminLogout,adminController.loadLogin)
 admin_route.post('/',adminController.verifyLogin)
 admin_route.get('/dashboard',auth.isAdminLogin,adminController.loadDashboard)
+admin_route.get('/Users',auth.isAdminLogin,adminController.loadUsers)
+admin_route.get('/block_users',auth.isAdminLogin,adminController.blockUser)
+admin_route.get('/addCategory',auth.isAdminLogin,adminController.loadAddCategory)
+admin_route.post('/addCategory',adminController.addCategory)
+admin_route.get('/viewCategory',auth.isAdminLogin,adminController.loadViewCategory)
+admin_route.get('/edit_category',auth.isAdminLogin,adminController.loadEditCatogory)
+admin_route.post('/edit_category',adminController.editCategory)
+admin_route.get('/unlist_category',auth.isAdminLogin,adminController.unlistCategory)
 
 
 

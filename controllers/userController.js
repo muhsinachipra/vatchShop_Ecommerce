@@ -204,7 +204,7 @@ const verifyOTP = async (req, res) => {
                 email: req.session.email,
                 mobileno: req.session.mobileno,
                 password: req.session.password,
-                is_verified: 1
+                isVerified: 1
             });
 
             const result = await user.save();

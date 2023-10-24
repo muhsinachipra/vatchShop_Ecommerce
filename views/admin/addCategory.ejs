@@ -1,0 +1,41 @@
+<%- include('./layouts/header.ejs') %>
+<%- include('./layouts/sideBar.ejs') %>
+<%- include('./layouts/navBar.ejs') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+
+
+
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add New Category</h4>
+                    <hr class="white-line">
+                    <form class="forms-sample" action="addCategory" method="post">
+          
+                        <div class="form-group  row">
+                            <div class="col-12 col-md-9 mt-2">
+                                <label for="exampleInputName1">Category Name</label>
+                                <input type="text" class="form-control  text-light mb-3 " name="categoryName" id="categoryName" placeholder="name" required>
+                                  <label for="exampleInputName1">Category Description</label>
+                                <input type="text" class="form-control  text-light " name="categoryDescription" id="categoryDescription" placeholder="Description" required style="height: 100px;">
+                                <button type="submit" class="btn btn-lg btn-inverse-primary mr-2 mt-5">Add Category</button>
+                            </div>
+                        </div>
+          
+                        <% if (typeof message !== 'undefined') { %>
+                            <p class="successfully"><%= message %></p>
+                        <% } %>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<%- include('./layouts/footer.ejs') %>

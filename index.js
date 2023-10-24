@@ -19,4 +19,5 @@ app.use('/admin',adminRoute)
 
 app.listen(PORT,()=>{
     console.log("server started at http://localhost:5000");
+    console.log("server started at http://localhost:5000/admin");
 })

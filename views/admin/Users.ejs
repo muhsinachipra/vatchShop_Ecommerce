@@ -1,0 +1,82 @@
+<%- include('./layouts/header.ejs') %>
+<%- include('./layouts/sideBar.ejs') %>
+<%- include('./layouts/navBar.ejs') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+
+        <div class="row ">
+          
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-5 ">
+                            <ul class="navbar-nav w-100">
+                                <li class="nav-item w-100">
+                                    <!-- d-none -->
+                                    <form action="/admin/searchUsers" method="get" class="nav-link mt-2 mt-md-0 col-12 d-lg-flex search">
+                                        <input type="text" name="key" class="form-control mb-1 text-light" placeholder="Search Users">
+                                        <button type="submit" class="btn-inverse-info mb-1">search</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                        <h4 class="card-title">Users</h4>
+                        <div class="table-responsive">
+                            <table class="table" id="user-table">
+                                <thead>
+                                    <tr>
+                                        <th> First Name </th>
+                                        <th> Second Name </th>
+                                        <th> Email </th>
+                                        <th> Mobile No </th>
+                                        <th> Status </th>
+                                        <th> Action </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  <% for (var i = 0; i < users.length; i++) { %>
+                                    <tr>
+                                        <!-- list -->
+                                        <td> <%= users[i].firstName %> </td>
+                                        <td> <%= users[i].lastName %> </td>
+                                        <td> <%= users[i].email %> </td>
+                                        <td> <%= users[i].mobileno %> </td>
+  
+                                       <td>
+                                             <% if(users[i].isVerified==false){ %>
+                                             <span class="pl-2 text-danger">Not verified</span>
+                                             <% } else{ %> 
+                                                <span class="pl-2 text-success">verified</span>
+                                             <% }%>   
+                                        </td>
+                                        
+                                        
+                                        <td>
+                                              <% if (users[i].isBlocked == false) { %>
+                                                  <a href="/admin/block_users?id=<%= users[i]._id %>">
+                                                <button type="button" class="btn btn-inverse-danger">Block</button>
+                                              </a>
+                                              <% } else { %>
+                                                  <a href="/admin/block_users?id=<%= users[i]._id %>">
+                                                <button type="button" class="btn btn-inverse-success">Unblock</button>
+                                              </a>
+                                              <% } %>
+                                        </td>
+                                        
+                                    </tr>
+                                <% } %>
+                                    
+                                </tbody>
+                              </table>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+    </div>
+</div>
+
+<%- include('./layouts/footer.ejs') %>

@@ -22,9 +22,13 @@ const userSchema = new mongoose.Schema ({
         type:String,
         required: true
     },
-    is_verified: {
-        type:Number,
-        default: 0
+    isVerified: {
+        type:Boolean,
+        default: false
+    },
+    isBlocked: {
+        type:Boolean,
+        default: false
     }
 })
 
