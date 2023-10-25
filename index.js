@@ -1,12 +1,15 @@
 const express = require('express')
 const app = express()
 
+const dotenv = require('dotenv')
+dotenv.config()
+
 const mongoose=require("mongoose")
-mongoose.connect("mongodb://127.0.0.1:27017/first_project")
+mongoose.connect(process.env.MONGO_URL)
 
 app.set('view engine','ejs')
 
-PORT = 5000
+
 
 const path= require("path")
 app.use('/car',express.static(path.join(__dirname,'public')));
@@ -17,7 +20,7 @@ app.use('/',userRoute)
 const adminRoute= require("./routes/adminRoute")
 app.use('/admin',adminRoute)
 
-app.listen(PORT,()=>{
+app.listen(process.env.PORT,()=>{
     console.log("server started at http://localhost:5000");
     console.log("server started at http://localhost:5000/admin");
 })

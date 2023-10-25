@@ -1,0 +1,89 @@
+<%- include('./layouts/header.ejs') %>
+    <%- include('./layouts/sideBar.ejs') %>
+        <%- include('./layouts/navBar.ejs') %>
+
+            <div class="main-panel">
+                <div class="content-wrapper">
+
+
+                    <div class="col-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h2 class="card-title">PRODUCTS</h2>
+                                <form class="forms-sample" action="" method="post" enctype="multipart/form-data">
+                                    <div class="form-row">
+                                        <label for="exampleInputName1">Product Name</label>
+                                        <input type="text" class="form-control" id="productName" name="productName"
+                                            placeholder="Product Name">
+                                    </div>
+                                    <br>
+                                    <div class="form-row">
+                                        <label for="exampleInputName1">Brand Name</label>
+                                        <input type="text" class="form-control" id="productBrand" name="productBrand"
+                                            placeholder="Brand Name">
+                                    </div>
+                                    <br>
+                                    <div class="form-row align-items-center">
+                                        <div class="col-sm-4 my-1">
+                                            <label for="exampleInputName1">Category</label>
+                                            <select class="form-control" id="productCategory" name="productCategory"
+                                                required>
+                                                <% category.forEach(category=> { %>
+                                                    <option value="<%= category._id %>">
+                                                        <%= category.categoryName %>
+                                                    </option>
+                                                    <% }); %>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4 my-1">
+                                            <label for="exampleInputName1">Price</label>
+                                            <input type="text" class="form-control" id="productPrice"
+                                                name="productPrice" placeholder="Price">
+                                        </div>
+                                        <div class="col-sm-4 my-1">
+                                            <label for="exampleInputName1">Quantity</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="productQuantity"
+                                                    name="productQuantity" placeholder="Quantity">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-row">
+                                        <label for="exampleInputName1">Description</label>
+                                        <textarea class="form-control" id="productDescription" rows="4"
+                                            name="productDescription"></textarea>
+                                    </div>
+                                    <br>
+                                    <div class="form-row">
+                                        <label for="">File upload (Multiple Images)</label>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-0">
+                                            <div class="dynamic-image-inputs">
+                                                <div class="input-group">
+                                                    <input type="file" name="productImage" class="form-control"
+                                                        required>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary add-image-input"
+                                                            type="button">Add Image</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-row">
+                                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                                        <button class="btn btn-dark">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <%- include('./layouts/footer.ejs') %>
