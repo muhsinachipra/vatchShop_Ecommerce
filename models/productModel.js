@@ -32,7 +32,7 @@ const productSchema = mongoose.Schema({
         type: Array,
         required: true
     },
-    productStatus: {
+    isListed: {
         type: Boolean,
         default: true
     }

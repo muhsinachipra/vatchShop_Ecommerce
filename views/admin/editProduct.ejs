@@ -14,13 +14,13 @@
                                     <div class="form-row">
                                         <label for="exampleInputName1">Product Name</label>
                                         <input type="text" class="form-control" id="productName" name="productName"
-                                            placeholder="Product Name">
+                                            placeholder="Product Name" value="<%= product.productName %>">
                                     </div>
                                     <br>
                                     <div class="form-row">
                                         <label for="exampleInputName1">Brand Name</label>
                                         <input type="text" class="form-control" id="productBrand" name="productBrand"
-                                            placeholder="Brand Name">
+                                            placeholder="Brand Name" value="<%= product.productBrand %>">
                                     </div>
                                     <br>
                                     <div class="form-row align-items-center">
@@ -38,13 +38,15 @@
                                         <div class="col-sm-4 my-1">
                                             <label for="exampleInputName1">Price</label>
                                             <input type="text" class="form-control" id="productPrice"
-                                                name="productPrice" placeholder="Price">
+                                                name="productPrice" placeholder="Price"
+                                                value="<%= product.productPrice %>">
                                         </div>
                                         <div class="col-sm-4 my-1">
                                             <label for="exampleInputName1">Quantity</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="productQuantity"
-                                                    name="productQuantity" placeholder="Quantity">
+                                                    name="productQuantity" placeholder="Quantity"
+                                                    value="<%= product.productQuantity %>">
                                             </div>
                                         </div>
                                     </div>
@@ -52,13 +54,12 @@
                                     <div class="form-row">
                                         <label for="exampleInputName1">Description</label>
                                         <textarea class="form-control" id="productDescription" rows="4"
-                                            name="productDescription"></textarea>
+                                            name="productDescription"><%= product.productDescription %></textarea>
                                     </div>
                                     <br>
                                     <div class="form-row">
                                         <label for="">File upload (Multiple Images)</label>
                                     </div>
-                                    
                                     <div class="form-row">
                                         <div class="col-md-6 mb-0">
                                             <div class="dynamic-image-inputs">
@@ -73,8 +74,10 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <br>
+                                    <div class="input-container">
+                                        <input type="hidden" name="id" value="<%= product._id %>">
+                                    </div>
                                     <div class="form-row">
                                         <button type="submit" class="btn btn-primary mr-2">Submit</button>
                                         <button class="btn btn-dark">Cancel</button>
@@ -87,50 +90,5 @@
 
                 </div>
             </div>
-
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    const addImageButton = document.querySelector(".add-image-input");
-                    const dynamicImageInputs = document.querySelector(".dynamic-image-inputs");
-                    
-                    // Define a variable to keep track of the number of added image fields.
-                    let imageFieldCount = 0;
-            
-                    addImageButton.addEventListener("click", function () {
-                        // Check if the maximum limit of 4 image fields has been reached.
-                        if (imageFieldCount < 4) {
-                            const inputGroup = document.createElement("div");
-                            inputGroup.className = "input-group";
-                            const inputFile = document.createElement("input");
-                            inputFile.type = "file";
-                            inputFile.name = "images";
-                            inputFile.className = "form-control";
-                            inputFile.required = true;
-                            const inputGroupAppend = document.createElement("div");
-                            inputGroupAppend.className = "input-group-append";
-                            const removeButton = document.createElement("button");
-                            removeButton.className = "btn btn-danger remove-image-input";
-                            removeButton.type = "button";
-                            removeButton.textContent = "Remove";
-                            removeButton.addEventListener("click", function () {
-                                inputGroup.remove();
-                                // Decrease the count when an image field is removed.
-                                imageFieldCount--;
-                            });
-                            inputGroupAppend.appendChild(removeButton);
-                            inputGroup.appendChild(inputFile);
-                            inputGroup.appendChild(inputGroupAppend);
-                            dynamicImageInputs.appendChild(inputGroup);
-            
-                            // Increase the count when a new image field is added.
-                            imageFieldCount++;
-                        } else {
-                            // Display an alert or message when the maximum limit is reached.
-                            alert("You can only add up to 4 image fields.");
-                        }
-                    });
-                });
-            </script>
-            
 
             <%- include('./layouts/footer.ejs') %>

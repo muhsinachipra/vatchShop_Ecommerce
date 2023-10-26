@@ -29,46 +29,43 @@
                                         <% for(let i=0;i<data.length;i++){%>
                                             <tr>
                                                 <td>
-                                                    <%= data.productName %>
-                                                        <%= console.log(data.productName) %>
+                                                    <%= data[i].productName %>
                                                 </td>
                                                 <td>
-                                                    <%= data.productCategory %>
+                                                    <%= data[i].productCategory.categoryName %>
                                                 </td>
                                                 <td>
-                                                    <%= data.productPrice %>
+                                                    <%= data[i].productPrice %>
                                                 </td>
                                                 <td>
-                                                    <%= data.productQuantity %>
+                                                    <%= data[i].productQuantity %>
                                                 </td>
                                                 <td>
-                                                    <%= data.productDescription %>
+                                                    <%= data[i].productDescription %>
                                                 </td>
 
 
                                                 <td>
-                                                    <img src="/public/adminAssets/assets/images/products/<%= data[i].productImage %>"
-                                                        alt="<%= data.productName %>">
+                                                    <% data[i].productImage.forEach(image => { %>
+                                                        <img src="/car/adminAssets/assets/images/products/<%= image %>">
+                                                    <% }); %>
                                                 </td>
-                                                <td>
-                                                    <%= data.size %>
-                                                </td>
-                                                <td> <a href="/admin/edit_product?id=<%= data._id%>">
+                                                <td> <a href="/admin/edit_product?id=<%= data[i]._id%>">
                                                         <button type="button"
                                                             class="btn btn-outline-secondary btn-icon-text">
                                                             Edit <i class="mdi mdi-file-check btn-icon-append"></i>
                                                         </button>
                                                     </a></td>
                                                 <td>
-                                                    <% if (data.productStatus===false) { %>
-                                                        <a href="/admin/unlist_product?id=<%= data._id %>">
+                                                    <% if (data[i].isListed===false) { %>
+                                                        <a href="/admin/unlist_product?id=<%= data[i]._id %>">
                                                             <button type="button"
                                                                 class="btn btn-inverse-success btn-fw">
                                                                 List
                                                             </button>
                                                         </a>
                                                         <% } else { %>
-                                                            <a href="/admin/unlist_product?id=<%= data._id %>">
+                                                            <a href="/admin/unlist_product?id=<%= data[i]._id %>">
                                                                 <button type="button"
                                                                     class="btn btn-inverse-danger btn-fw">
                                                                     Unlist

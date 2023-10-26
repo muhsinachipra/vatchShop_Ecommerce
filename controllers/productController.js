@@ -1,6 +1,8 @@
 const Category = require('../models/categoryModel');
 const Product = require('../models/productModel');
-
+const Admin = require('../models/adminModel');
+const User = require('../models/userModel');
+const fs = require("fs")
 
 
 module.exports = {
@@ -20,13 +22,15 @@ module.exports = {
             for (let i = 0; i < req.files.length; i++) {
                 productImage[i] = req.files[i].filename
             }
+            console.log(productImage);
             const newProduct = new Product({
                 productName,
                 productBrand,
                 productDescription,
                 productCategory,
                 productPrice,
-                productQuantity
+                productQuantity,
+                productImage
             })
             const productData = await newProduct.save()
             if (productData) {
@@ -42,11 +46,50 @@ module.exports = {
     loadViewProducts: async (req, res) => {
 
         try {
-            const products = await Product.find()
-            res.render('viewProduct', {data: products});
+            const products = await Product.find().populate('productCategory');
+            res.render('viewProduct', { data: products });
         } catch (error) {
             console.error(error);
             res.status(500).send('Internal Server Error');
         }
+    },
+
+    unlistProduct: async (req, res) => {
+        try {
+            const id = req.query.id;
+            const pro = await Product.findById(id);
+
+            if (pro) {
+                pro.isListed = !pro.isListed;
+                await pro.save();
+            }
+            res.redirect('/admin/viewProduct')
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+
+    loadEditProduct: async (req, res) => {
+        try {
+            const id = req.query.id;
+            const pro = await Product.findById(id);
+            const cat = await Category.find();
+
+            res.render('editProduct', { product: pro, category: cat })
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+
+    editProduct: async (req, res) => {
+        try {
+            const { id, productName, productDescription, productImage, productQuantity, productPrice, productBrand } = req.body;
+            await Product.findByIdAndUpdate(id, { $set: { productName, productDescription, productImage, productQuantity, productPrice, productBrand } });
+            res.redirect('/admin/viewProduct');
+        } catch (error) {
+            console.log(error.message);
+        }
     }
+
+
 }
