@@ -22,7 +22,6 @@ module.exports = {
             for (let i = 0; i < req.files.length; i++) {
                 productImage[i] = req.files[i].filename
             }
-            console.log(productImage);
             const newProduct = new Product({
                 productName,
                 productBrand,
@@ -72,7 +71,7 @@ module.exports = {
     loadEditProduct: async (req, res) => {
         try {
             const id = req.query.id;
-            const pro = await Product.findById(id);
+            const pro = await Product.findById(id).populate('productCategory');
             const cat = await Category.find();
 
             res.render('editProduct', { product: pro, category: cat })
@@ -83,8 +82,14 @@ module.exports = {
 
     editProduct: async (req, res) => {
         try {
-            const { id, productName, productDescription, productImage, productQuantity, productPrice, productBrand } = req.body;
-            await Product.findByIdAndUpdate(id, { $set: { productName, productDescription, productImage, productQuantity, productPrice, productBrand } });
+            const { id, productName, productDescription, productCategory, productQuantity, productPrice, productBrand } = req.body;
+            const productImage = []
+            for (let i = 0; i < req.files.length; i++) {
+                productImage[i] = req.files[i].filename
+            }
+            await Product.findByIdAndUpdate(id, {
+                $set: { productName, productDescription, productCategory, productImage, productQuantity, productPrice, productBrand }
+            });
             res.redirect('/admin/viewProduct');
         } catch (error) {
             console.log(error.message);

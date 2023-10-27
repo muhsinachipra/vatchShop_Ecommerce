@@ -14,13 +14,13 @@
                                     <div class="form-row">
                                         <label for="exampleInputName1">Product Name</label>
                                         <input type="text" class="form-control" id="productName" name="productName"
-                                            placeholder="Product Name">
+                                            placeholder="Product Name" required>
                                     </div>
                                     <br>
                                     <div class="form-row">
                                         <label for="exampleInputName1">Brand Name</label>
                                         <input type="text" class="form-control" id="productBrand" name="productBrand"
-                                            placeholder="Brand Name">
+                                            placeholder="Brand Name" required>
                                     </div>
                                     <br>
                                     <div class="form-row align-items-center">
@@ -38,13 +38,13 @@
                                         <div class="col-sm-4 my-1">
                                             <label for="exampleInputName1">Price</label>
                                             <input type="text" class="form-control" id="productPrice"
-                                                name="productPrice" placeholder="Price">
+                                                name="productPrice" placeholder="Price" required>
                                         </div>
                                         <div class="col-sm-4 my-1">
                                             <label for="exampleInputName1">Quantity</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="productQuantity"
-                                                    name="productQuantity" placeholder="Quantity">
+                                                    name="productQuantity" placeholder="Quantity" required>
                                             </div>
                                         </div>
                                     </div>
@@ -52,7 +52,7 @@
                                     <div class="form-row">
                                         <label for="exampleInputName1">Description</label>
                                         <textarea class="form-control" id="productDescription" rows="4"
-                                            name="productDescription"></textarea>
+                                            name="productDescription" required></textarea>
                                     </div>
                                     <br>
                                     <div class="form-row">
@@ -136,6 +136,53 @@
                             messageContainer.style.display = "block";
                         }
                     });
+
+                    // Validate Product Name (Only alphabets)
+                    const productNameInput = document.getElementById("productName");
+                    productNameInput.addEventListener("input", function () {
+                        const value = productNameInput.value;
+                        if (!/^[a-zA-Z ]*$/.test(value)) {
+                            productNameInput.setCustomValidity("Product Name can only contain alphabets and spaces.");
+                        } else {
+                            productNameInput.setCustomValidity("");
+                        }
+                    });
+
+
+                    // Validate Product Brand (Only alphabets)
+                    const productBrandInput = document.getElementById("productBrand");
+                    productBrandInput.addEventListener("input", function () {
+                        const value = productBrandInput.value;
+                        if (!/^[a-zA-Z ]*$/.test(value)) {
+                            productBrandInput.setCustomValidity("Product Brand can only contain alphabets and spaces.");
+                        } else {
+                            productBrandInput.setCustomValidity("");
+                        }
+                    });
+
+                    // Validate Price (Only numbers)
+                    const productPriceInput = document.getElementById("productPrice");
+                    productPriceInput.addEventListener("input", function () {
+                        const value = productPriceInput.value;
+                        if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+                            productPriceInput.setCustomValidity("Price can only contain numbers, optionally with up to 2 decimal places.");
+                        } else {
+                            productPriceInput.setCustomValidity("");
+                        }
+                    });
+
+                    // Validate Quantity (Only numbers)
+                    const productQuantityInput = document.getElementById("productQuantity");
+                    productQuantityInput.addEventListener("input", function () {
+                        const value = productQuantityInput.value;
+                        if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+                            productQuantityInput.setCustomValidity("Quantity can only contain numbers, optionally with up to 2 decimal places.");
+                        } else {
+                            productQuantityInput.setCustomValidity("");
+                        }
+                    });
+
+
                 });
 
             </script>

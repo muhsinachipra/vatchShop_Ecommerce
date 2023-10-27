@@ -9,7 +9,7 @@
                     <div class="col-12 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
-                                <h2 class="card-title">PRODUCTS</h2>
+                                <h2 class="card-title">EDIT PRODUCT</h2>
                                 <form class="forms-sample" action="" method="post" enctype="multipart/form-data">
                                     <div class="form-row">
                                         <label for="exampleInputName1">Product Name</label>
@@ -57,6 +57,9 @@
                                             name="productDescription"><%= product.productDescription %></textarea>
                                     </div>
                                     <br>
+
+                                    
+                                    
                                     <div class="form-row">
                                         <label for="">File upload (Multiple Images)</label>
                                     </div>
@@ -75,6 +78,32 @@
                                         </div>
                                     </div>
                                     <br>
+                                    <div class="message-container"></div>
+
+
+                                    <br>
+
+                                    <div class="col-md-6 col-xl-4 grid-margin stretch-card">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title">Existing Images</h4>
+                                                <div class="owl-carousel owl-theme full-width owl-carousel-dash portfolio-carousel"
+                                                    id="owl-carousel-basic">
+                                                        <% product.productImage.forEach(image=> { %>
+                                                            <div class="item">
+                                                                <img src="/car/adminAssets/assets/images/products/<%= image %>"
+                                                                    alt="">
+                                                            </div>
+                                                        <% }); %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    
+                                    <br>
                                     <div class="input-container">
                                         <input type="hidden" name="id" value="<%= product._id %>">
                                     </div>
@@ -90,5 +119,103 @@
 
                 </div>
             </div>
+
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const addImageButton = document.querySelector(".add-image-input");
+                    const dynamicImageInputs = document.querySelector(".dynamic-image-inputs");
+                    const messageContainer = document.querySelector(".message-container"); // Add this line
+
+                    // Define a variable to keep track of the number of added image fields.
+                    let imageFieldCount = 0;
+
+                    addImageButton.addEventListener("click", function () {
+                        // Check if the maximum limit of 4 image fields has been reached.
+                        if (imageFieldCount < 2) {
+                            const inputGroup = document.createElement("div");
+                            inputGroup.className = "input-group";
+                            const inputFile = document.createElement("input");
+                            inputFile.type = "file";
+                            inputFile.name = "productImage";
+                            inputFile.className = "form-control";
+                            inputFile.required = true;
+                            const inputGroupAppend = document.createElement("div");
+                            inputGroupAppend.className = "input-group-append";
+                            const removeButton = document.createElement("button");
+                            removeButton.className = "btn btn-danger remove-image-input";
+                            removeButton.type = "button";
+                            removeButton.textContent = "Remove";
+                            removeButton.addEventListener("click", function () {
+                                inputGroup.remove();
+                                // Decrease the count when an image field is removed.
+                                imageFieldCount--;
+                                // Hide the message container if it's currently visible.
+                                messageContainer.style.display = "none";
+                            });
+                            inputGroupAppend.appendChild(removeButton);
+                            inputGroup.appendChild(inputFile);
+                            inputGroup.appendChild(inputGroupAppend);
+                            dynamicImageInputs.appendChild(inputGroup);
+
+                            // Increase the count when a new image field is added.
+                            imageFieldCount++;
+                        } else {
+                            // Update the message in the message container.
+                            messageContainer.textContent = "You can only add up to 3 image fields.";
+                            // Make the message container visible.
+                            messageContainer.style.display = "block";
+                        }
+                    });
+
+                    // Validate Product Name (Only alphabets)
+                    const productNameInput = document.getElementById("productName");
+                    productNameInput.addEventListener("input", function () {
+                        const value = productNameInput.value;
+                        if (!/^[a-zA-Z ]*$/.test(value)) {
+                            productNameInput.setCustomValidity("Product Name can only contain alphabets and spaces.");
+                        } else {
+                            productNameInput.setCustomValidity("");
+                        }
+                    });
+
+
+                    // Validate Product Brand (Only alphabets)
+                    const productBrandInput = document.getElementById("productBrand");
+                    productBrandInput.addEventListener("input", function () {
+                        const value = productBrandInput.value;
+                        if (!/^[a-zA-Z ]*$/.test(value)) {
+                            productBrandInput.setCustomValidity("Product Brand can only contain alphabets and spaces.");
+                        } else {
+                            productBrandInput.setCustomValidity("");
+                        }
+                    });
+
+                    // Validate Price (Only numbers)
+                    const productPriceInput = document.getElementById("productPrice");
+                    productPriceInput.addEventListener("input", function () {
+                        const value = productPriceInput.value;
+                        if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+                            productPriceInput.setCustomValidity("Price can only contain numbers, optionally with up to 2 decimal places.");
+                        } else {
+                            productPriceInput.setCustomValidity("");
+                        }
+                    });
+
+                    // Validate Quantity (Only numbers)
+                    const productQuantityInput = document.getElementById("productQuantity");
+                    productQuantityInput.addEventListener("input", function () {
+                        const value = productQuantityInput.value;
+                        if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+                            productQuantityInput.setCustomValidity("Quantity can only contain numbers, optionally with up to 2 decimal places.");
+                        } else {
+                            productQuantityInput.setCustomValidity("");
+                        }
+                    });
+
+
+                });
+
+            </script>
 
             <%- include('./layouts/footer.ejs') %>
