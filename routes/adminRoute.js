@@ -47,7 +47,7 @@ admin_route.get('/edit_category', auth.isAdminLogin, adminController.loadEditCat
 admin_route.post('/edit_category', adminController.editCategory)
 admin_route.get('/unlist_category', auth.isAdminLogin, adminController.unlistCategory)
 admin_route.get('/addProduct', auth.isAdminLogin, productController.loadAddProduct)
-admin_route.post('/addProduct', upload.array('productImage', 4), productController.addProduct)
+admin_route.post('/addProduct', upload.array('productImage', 3), productController.addProduct)
 admin_route.get('/viewProduct', auth.isAdminLogin, productController.loadViewProducts)
 admin_route.get('/unlist_product', auth.isAdminLogin, productController.unlistProduct)
 admin_route.get('/edit_product', auth.isAdminLogin, productController.loadEditProduct)

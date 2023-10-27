@@ -58,7 +58,7 @@
                                     <div class="form-row">
                                         <label for="">File upload (Multiple Images)</label>
                                     </div>
-                                    
+
                                     <div class="form-row">
                                         <div class="col-md-6 mb-0">
                                             <div class="dynamic-image-inputs">
@@ -73,6 +73,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <br>
+                                    <div class="message-container"></div>
 
                                     <br>
                                     <div class="form-row">
@@ -92,18 +94,19 @@
                 document.addEventListener("DOMContentLoaded", function () {
                     const addImageButton = document.querySelector(".add-image-input");
                     const dynamicImageInputs = document.querySelector(".dynamic-image-inputs");
-                    
+                    const messageContainer = document.querySelector(".message-container"); // Add this line
+
                     // Define a variable to keep track of the number of added image fields.
                     let imageFieldCount = 0;
-            
+
                     addImageButton.addEventListener("click", function () {
                         // Check if the maximum limit of 4 image fields has been reached.
-                        if (imageFieldCount < 4) {
+                        if (imageFieldCount < 2) {
                             const inputGroup = document.createElement("div");
                             inputGroup.className = "input-group";
                             const inputFile = document.createElement("input");
                             inputFile.type = "file";
-                            inputFile.name = "images";
+                            inputFile.name = "productImage";
                             inputFile.className = "form-control";
                             inputFile.required = true;
                             const inputGroupAppend = document.createElement("div");
@@ -116,21 +119,26 @@
                                 inputGroup.remove();
                                 // Decrease the count when an image field is removed.
                                 imageFieldCount--;
+                                // Hide the message container if it's currently visible.
+                                messageContainer.style.display = "none";
                             });
                             inputGroupAppend.appendChild(removeButton);
                             inputGroup.appendChild(inputFile);
                             inputGroup.appendChild(inputGroupAppend);
                             dynamicImageInputs.appendChild(inputGroup);
-            
+
                             // Increase the count when a new image field is added.
                             imageFieldCount++;
                         } else {
-                            // Display an alert or message when the maximum limit is reached.
-                            alert("You can only add up to 4 image fields.");
+                            // Update the message in the message container.
+                            messageContainer.textContent = "You can only add up to 3 image fields.";
+                            // Make the message container visible.
+                            messageContainer.style.display = "block";
                         }
                     });
                 });
+
             </script>
-            
+
 
             <%- include('./layouts/footer.ejs') %>
