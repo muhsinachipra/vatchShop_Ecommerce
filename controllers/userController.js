@@ -1,4 +1,5 @@
 const User = require('../models/userModel');
+const Product = require('../models/productModel');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const otpGenerator = require("otp-generator")
@@ -44,7 +45,7 @@ const verifyLogin = async(req,res)=>{
             const passwordMatch = await bcrypt.compare(password,userData.password)
             if (passwordMatch) {
                 req.session.user_id = userData._id
-                res.redirect('/home')
+                res.redirect('/userHome')
             } else {
                 res.render('login',{message:"incorrect email or password"})
             }
@@ -85,13 +86,16 @@ const verifyLogin = async(req,res)=>{
 //     }
 // }
 
+
 const loadHome = async(req,res)=>{
     try {
-        res.render('home')
+        const pro = await Product.find()
+        res.render('userHome', { product: pro })
     } catch (error) {
         console.log(error.message);
     }
 }
+
 
 const userLogout = async(req,res)=>{
     try {

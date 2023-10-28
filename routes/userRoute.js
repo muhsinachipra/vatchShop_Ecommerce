@@ -31,7 +31,7 @@ user_route.post('/register',userController.insertUser);
 user_route.get('/otp',auth.isUserLogout,userController.loadOtp);
 user_route.post('/otp', userController.verifyOTP)
 user_route.post('/resendOTP', userController.resendOTP)
-user_route.get('/home',auth.isUserLogin,userController.loadHome)
+user_route.get('/userHome',auth.isUserLogin,userController.loadHome)
 user_route.get('/logout',auth.isUserLogin,userController.userLogout)
 
 

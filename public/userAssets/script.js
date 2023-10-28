@@ -31,8 +31,13 @@
     const passwordRegex = /^(?=.*[a-zA-Z]).{5,}$/;
     if (!passwordRegex.test(password.value)) {
       alert("Password must be at least 5 characters and contain at least one letter.");
+      // password.setCustomValidity("Password must be at least 5 characters and contain at least one letter.");
       return false;
     }
+    // else{
+    //   password.setCustomValidity("");
+    //   return true;
+    // }
 
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
