@@ -94,7 +94,31 @@ module.exports = {
         } catch (error) {
             console.log(error.message);
         }
-    }
+    },
+
+    loadUserProducts: async (req, res) => {
+
+        try {
+            const products = await Product.find()
+            res.render('productView', { product: products });
+        } catch (error) {
+            console.log(error.message);
+            // res.status(500).send('Internal Server Error');
+        }
+    },
+
+    loadUserProductDetails: async (req, res) => {
+
+        try {
+            const id = req.query.id;
+            const pro = await Product.findById(id).populate('productCategory productImage');
+
+            res.render('productDetails', { product: pro })
+        } catch (error) {
+            console.log(error.message);
+            // res.status(500).send('Internal Server Error');
+        }
+    },
 
 
 }

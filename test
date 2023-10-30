@@ -1,210 +1,280 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-body{
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #4070f4;
-}
-.wrapper{
-  position: relative;
-  max-width: 430px;
-  width: 100%;
-  background: #fff;
-  padding: 34px;
-  border-radius: 6px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-}
-.wrapper h2{
-  position: relative;
-  font-size: 22px;
-  font-weight: 600;
-  color: #333;
-}
-.wrapper h2::before{
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 3px;
-  width: 28px;
-  border-radius: 12px;
-  background: #4070f4;
-}
-.wrapper form{
-  margin-top: 30px;
-}
-.wrapper form .input-box{
-  height: 52px;
-  margin: 18px 0;
-}
-form .input-box input{
-  height: 100%;
-  width: 100%;
-  outline: none;
-  padding: 0 15px;
-  font-size: 17px;
-  font-weight: 400;
-  color: #333;
-  border: 1.5px solid #C7BEBE;
-  border-bottom-width: 2.5px;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-}
-.input-box input:focus,
-.input-box input:valid{
-  border-color: #4070f4;
-}
-form .policy{
-  display: flex;
-  align-items: center;
-}
-form h3{
-  color: #707070;
-  font-size: 14px;
-  font-weight: 500;
-  margin-left: 10px;
-}
-.input-box.button input{
-  color: #fff;
-  letter-spacing: 1px;
-  border: none;
-  background: #4070f4;
-  cursor: pointer;
-}
-.input-box.button input:hover{
-  background: #0e4bf1;
-}
-form .text h3{
- color: #333;
- width: 100%;
- text-align: center;
-}
-form .text h3 a{
-  color: #4070f4;
-  text-decoration: none;
-}
-form .text h3 a:hover{
-  text-decoration: underline;
-}
+<%- include('./layouts/header.ejs') %>
+
+
+  <div class="container pt-5 mt-5">
+
+
+    <div class="row">
+      <div class="col-md-6 col-lg-7 p-b-30">
+        <div class="p-l-25 p-r-30 p-lr-0-lg">
+          <div class="wrap-slick3 flex-sb flex-w">
+            <div class="wrap-slick3-dots"></div>
+            <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
+
+            <div class="slick3 gallery-lb">
+              <div class="item-slick3"
+                data-thumb="/car/adminAssets/assets/images/products/<%= product.productImage[0] %>">
+                <div class="wrap-pic-w pos-relative">
+                  <img src="/car/adminAssets/assets/images/products/<%= product.productImage[0] %>" alt="IMG-PRODUCT">
+
+                  <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                    href="/car/adminAssets/assets/images/products/<%= product.productImage[0] %>">
+                    <i class="fa fa-expand"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="item-slick3"
+                data-thumb="/car/adminAssets/assets/images/products/<%= product.productImage[1] %>">
+                <div class="wrap-pic-w pos-relative">
+                  <img src="/car/adminAssets/assets/images/products/<%= product.productImage[1] %>" alt="IMG-PRODUCT">
+
+                  <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                    href="/car/adminAssets/assets/images/products/<%= product.productImage[1] %>">
+                    <i class="fa fa-expand"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="item-slick3"
+                data-thumb="/car/adminAssets/assets/images/products/<%= product.productImage[2] %>">
+                <div class="wrap-pic-w pos-relative">
+                  <img src="/car/adminAssets/assets/images/products/<%= product.productImage[2] %>" alt="IMG-PRODUCT">
+
+                  <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                    href="/car/adminAssets/assets/images/products/<%= product.productImage[2] %>">
+                    <i class="fa fa-expand"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-5 p-b-30">
+        <div class="p-r-50 p-t-5 p-lr-0-lg">
+          <h4 class="mtext-105 cl2 js-name-detail p-b-14">
+            <%= product.productName %>
+          </h4>
+
+          <span class="mtext-106 cl2">
+            <%= product.productPrice %>
+          </span>
+
+          <p class="stext-102 cl3 p-t-23">
+            <%= product.productDescription %>
+          </p>
+
+          <!--  -->
+          <div class="p-t-33">
+            <div class="flex-w flex-r-m p-b-10">
+              <div class="size-203 flex-c-m respon6">
+                Size
+              </div>
+
+              <div class="size-204 respon6-next">
+                <div class="rs1-select2 bor8 bg0">
+                  <select class="js-select2" name="time">
+                    <option>Choose an option</option>
+                    <option>Size S</option>
+                    <option>Size M</option>
+                    <option>Size L</option>
+                    <option>Size XL</option>
+                  </select>
+                  <div class="dropDownSelect2"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex-w flex-r-m p-b-10">
+              <div class="size-203 flex-c-m respon6">
+                Color
+              </div>
+
+              <div class="size-204 respon6-next">
+                <div class="rs1-select2 bor8 bg0">
+                  <select class="js-select2" name="time">
+                    <option>Choose an option</option>
+                    <option>Red</option>
+                    <option>Blue</option>
+                    <option>White</option>
+                    <option>Grey</option>
+                  </select>
+                  <div class="dropDownSelect2"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex-w flex-r-m p-b-10">
+              <div class="size-204 flex-w flex-m respon6-next">
+                <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                  <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                    <i class="fs-16 zmdi zmdi-minus"></i>
+                  </div>
+
+                  <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1">
+
+                  <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                    <i class="fs-16 zmdi zmdi-plus"></i>
+                  </div>
+                </div>
+
+                <button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                  Add to cart
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!--  -->
+          <div class="flex-w flex-m p-l-100 p-t-40 respon7">
+            <div class="flex-m bor9 p-r-10 m-r-11">
+              <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
+                data-tooltip="Add to Wishlist">
+                <i class="zmdi zmdi-favorite"></i>
+              </a>
+            </div>
+
+            <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+
+            <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+
+            <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+              data-tooltip="Google Plus">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="slick3 gallery-lb">
+      <% product.productImage.forEach((data)=> { %>
+        <div class="item-slick3" data-thumb="/car/adminAssets/assets/images/products/<%= data %>">
+          <div class="wrap-pic-w pos-relative main-image-<%= product.productImage.indexOf(data) %>">
+            <img id="main-img-<%= product.productImage.indexOf(data) %>"
+              src="/car/adminAssets/assets/images/products/<%= data %>" alt="IMG-PRODUCT">
+
+            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+              href="/car/adminAssets/assets/images/products/<%= data %>">
+              <i class="fa fa-expand"></i>
+            </a>
+          </div>
+        </div>
+        <% }) %>
+    </div>
+  </div>
 
 
 
-/* login */
+  <script>
+    {
+      const mainImage = document.querySelector('.main-image-0');
+      const img = document.getElementById('main-img-0');
+
+      mainImage.addEventListener('mousemove', zoomIn);
+      mainImage.addEventListener('mouseleave', zoomOut);
+
+      function zoomIn(event) {
+        const boundingRect = mainImage.getBoundingClientRect();
+        const mouseX = event.clientX - boundingRect.left;
+        const mouseY = event.clientY - boundingRect.top;
+
+        const offsetX = (mouseX / boundingRect.width) * 100;
+        const offsetY = (mouseY / boundingRect.height) * 100;
+
+        img.style.transformOrigin = ${ offsetX }% ${ offsetY }%;
+        img.style.transform = 'scale(2)'; // Adjust the scale factor as desired
+      }
+
+      function zoomOut() {
+        img.style.transform = 'scale(1)';
+      }
+    }
+
+    // zoom1
+    {
+      const mainImage = document.querySelector('.main-image-1');
+      const img = document.getElementById('main-img-1');
+
+      mainImage.addEventListener('mousemove', zoomIn);
+      mainImage.addEventListener('mouseleave', zoomOut);
+
+      function zoomIn(event) {
+        const boundingRect = mainImage.getBoundingClientRect();
+        const mouseX = event.clientX - boundingRect.left;
+        const mouseY = event.clientY - boundingRect.top;
+
+        const offsetX = (mouseX / boundingRect.width) * 100;
+        const offsetY = (mouseY / boundingRect.height) * 100;
+
+        img.style.transformOrigin = ${ offsetX }% ${ offsetY }%;
+        img.style.transform = 'scale(2)'; // Adjust the scale factor as desired
+      }
+
+      function zoomOut() {
+        img.style.transform = 'scale(1)';
+      }
+    }
+
+    // zoom2
+
+    {
+      const mainImage = document.querySelector('.main-image-2');
+      const img = document.getElementById('main-img-2');
+
+      mainImage.addEventListener('mousemove', zoomIn);
+      mainImage.addEventListener('mouseleave', zoomOut);
+
+      function zoomIn(event) {
+        const boundingRect = mainImage.getBoundingClientRect();
+        const mouseX = event.clientX - boundingRect.left;
+        const mouseY = event.clientY - boundingRect.top;
+
+        const offsetX = (mouseX / boundingRect.width) * 100;
+        const offsetY = (mouseY / boundingRect.height) * 100;
+
+        img.style.transformOrigin = ${ offsetX }% ${ offsetY }%;
+        img.style.transform = 'scale(2)'; // Adjust the scale factor as desired
+      }
+
+      function zoomOut() {
+        img.style.transform = 'scale(1)';
+      }
+    }
 
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins',sans-serif;
-}
-body{
-  background: #1abc9c;
-  overflow: hidden;
-}
-::selection{
-  background: rgba(26,188,156,0.3);
-}
-.container{
-  max-width: 440px;
-  padding: 0 20px;
-  margin: 170px auto;
-}
-.wrapper{
-  width: 100%;
-  background: #fff;
-  border-radius: 5px;
-  box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.1);
-}
-.wrapper .title{
-  height: 90px;
-  background: #16a085;
-  border-radius: 5px 5px 0 0;
-  color: #fff;
-  font-size: 30px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.wrapper form{
-  padding: 30px 25px 25px 25px;
-}
-.wrapper form .row{
-  height: 45px;
-  margin-bottom: 15px;
-  position: relative;
-}
-.wrapper form .row input{
-  height: 100%;
-  width: 100%;
-  outline: none;
-  padding-left: 60px;
-  border-radius: 5px;
-  border: 1px solid lightgrey;
-  font-size: 16px;
-  transition: all 0.3s ease;
-}
-form .row input:focus{
-  border-color: #16a085;
-  box-shadow: inset 0px 0px 2px 2px rgba(26,188,156,0.25);
-}
-form .row input::placeholder{
-  color: #999;
-}
-.wrapper form .row i{
-  position: absolute;
-  width: 47px;
-  height: 100%;
-  color: #fff;
-  font-size: 18px;
-  background: #16a085;
-  border: 1px solid #16a085;
-  border-radius: 5px 0 0 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.wrapper form .pass{
-  margin: -8px 0 20px 0;
-}
-.wrapper form .pass a{
-  color: #16a085;
-  font-size: 17px;
-  text-decoration: none;
-}
-.wrapper form .pass a:hover{
-  text-decoration: underline;
-}
-.wrapper form .button input{
-  color: #fff;
-  font-size: 20px;
-  font-weight: 500;
-  padding-left: 0px;
-  background: #16a085;
-  border: 1px solid #16a085;
-  cursor: pointer;
-}
-form .button input:hover{
-  background: #12876f;
-}
-.wrapper form .signup-link{
-  text-align: center;
-  margin-top: 20px;
-  font-size: 17px;
-}
-.wrapper form .signup-link a{
-  color: #16a085;
-  text-decoration: none;
-}
-form .signup-link a:hover{
-  text-decoration: underline;
-}
+    // zoom3
+
+    {
+      const mainImage = document.querySelector('.main-image-3');
+      const img = document.getElementById('main-img-3');
+
+      mainImage.addEventListener('mousemove', zoomIn);
+      mainImage.addEventListener('mouseleave', zoomOut);
+
+      function zoomIn(event) {
+        const boundingRect = mainImage.getBoundingClientRect();
+        const mouseX = event.clientX - boundingRect.left;
+        const mouseY = event.clientY - boundingRect.top;
+
+        const offsetX = (mouseX / boundingRect.width) * 100;
+        const offsetY = (mouseY / boundingRect.height) * 100;
+
+        img.style.transformOrigin = ${ offsetX }% ${ offsetY }%;
+        img.style.transform = 'scale(2)'; // Adjust the scale factor as desired
+      }
+
+      function zoomOut() {
+        img.style.transform = 'scale(1)';
+      }
+    }
+  </script>
+
+  <%- include('./layouts/footer.ejs') %>

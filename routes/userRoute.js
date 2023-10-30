@@ -23,22 +23,22 @@ user_route.use(express.static('public'))
 const path= require("path")
 
 const userController = require("../controllers/userController");
+const productController = require("../controllers/productController");
 
-// user_route.get('/',auth.isUserLogout,userController.loginLoad)
-// user_route.post('/',userController.verifyLogin)
-// user_route.get('/register',auth.isUserLogout,userController.loadRegister);
-// user_route.post('/register',userController.insertUser);
-// user_route.get('/otp',auth.isUserLogout,userController.loadOtp);
-// user_route.post('/otp', userController.verifyOTP)
-// user_route.post('/resendOTP', userController.resendOTP)
+
 // user_route.get('/logout',auth.isUserLogin,userController.userLogout)
-// user_route.get('/userHome',auth.isUserLogin,userController.loadHome)
 
 
 user_route.get('/',auth.isUserLogout,userController.loadHome)
 user_route.get('/login',auth.isUserLogout,userController.loginLoad)
-
-
+user_route.post('/login',userController.verifyLogin)
+user_route.get('/register',auth.isUserLogout,userController.loadRegister);
+user_route.post('/register',userController.insertUser);
+user_route.get('/otp',auth.isUserLogout,userController.loadOtp);
+user_route.post('/otp', userController.verifyOTP)
+user_route.post('/resendOTP', userController.resendOTP)
+user_route.get('/productView',auth.isUserLogout,productController.loadUserProducts)
+user_route.get('/productDetails',auth.isUserLogout,productController.loadUserProductDetails)
 
 
 module.exports=user_route

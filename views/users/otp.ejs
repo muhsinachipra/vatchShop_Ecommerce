@@ -1,85 +1,59 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Corona Admin</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="car/adminAssets/assets/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="car/adminAssets/assets/vendors/css/vendor.bundle.base.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <link rel="stylesheet" href="car/adminAssets/assets/css/style.css">
-    <!-- End layout styles -->
-    <link rel="shortcut icon" href="car/adminAssets/assets/images/favicon.png" />
-  </head>
-  <body>
-    <div class="container-scroller">
-      <div class="container-fluid page-body-wrapper full-page-wrapper">
-        <div class="row w-100 m-0">
-          <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
-            <div class="card col-lg-4 mx-auto">
-              <div class="card-body px-5 py-5">
-                <h3 class="card-title text-left mb-3">OTP Verification</h3>
-                <form action="otp" method="post">
-                  <div class="form-group">
-                    <label>Enter the OTP sent to your mail</label>
-                    <input type="text" class="form-control p_input" id="otp" name="otp" required>
-                  </div>
-                  <div class="form-group d-flex align-items-center justify-content-between">
-                    <div class="form-check">
-                      <label class="form-check-label">
-                        <!-- <input type="checkbox" class="form-check-input"> Remember me </label> -->
-                    </div>
-                    <!-- <a href="#" class="forgot-pass">Forgot password</a> -->
-                  </div>
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-block enter-btn">Verify</button>
-                  </div>
-                </form>
-                <form action="resendOTP" method="post">
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-block enter-btn">Resent OTP</button>
-                  </div>
-                </form>
-                
-                  <% if (typeof message !== 'undefined') { %>
-                  <p class="successfully"><%= message %></p>
-                  <% } %>
-              </div>
-            </div>
-          </div>
-          <!-- content-wrapper ends -->
-        </div>
-        <!-- row ends -->
-      </div>
-      <!-- page-body-wrapper ends -->
-    </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="car/adminAssets/assets/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="car/adminAssets/assets/js/off-canvas.js"></script>
-    <script src="car/adminAssets/assets/js/hoverable-collapse.js"></script>
-    <script src="car/adminAssets/assets/js/misc.js"></script>
-    <script src="car/adminAssets/assets/js/settings.js"></script>
-    <script src="car/adminAssets/assets/js/todolist.js"></script>
-    <script src="/car/user/script.js"></script>
-    <!-- endinject -->
-
+    <title>OTP Verification - SHOPIFY</title>
     
-    <script src="/car/user/script.js"></script>
-  </body>
-  </html>
+    <!-- Include necessary CSS and JS files -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/car/userAssets/login/css/style.css">
+    
+    <!-- Additional CSS and JS specific to the OTP page if needed -->
+
+</head>
+<body>
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-7 col-lg-5">
+                    <div class="wrap">
+                        <div class="img" style="background-image: url(car/userAssets/login/images/bg-1.jpg);"></div>
+                        <div class="login-wrap p-4 p-md-5">
+                            <div class="d-flex">
+                                <div class="w-100">
+                                    <h3 class="mb-4">OTP Verification</h3>
+                                </div>
+                            </div>
+                            <form action="otp" method="post">
+                                <div class="form-group">
+                                    <label>Enter the OTP sent to your mail</label>
+                                    <input type="text" class="form-control" id="otp" name="otp" required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="form-control btn btn-primary rounded submit px-3">Verify</button>
+                                </div>
+                            </form>
+                            <form action="resendOTP" method="post">
+                                <div class="text-center">
+                                    <button type="submit" class="form-control btn btn-primary rounded submit px-3">Resend OTP</button>
+                                </div>
+                            </form>
+                            <% if (typeof message !== 'undefined') { %>
+                                <p class="successfully"><%= message %></p>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Include necessary JavaScript files -->
+    <script src="/car/userAssets/login/js/jquery.min.js"></script>
+    <script src="/car/userAssets/login/js/popper.js"></script>
+    <script src="/car/userAssets/login/js/bootstrap.min.js"></script>
+    <script src="/car/userAssets/login/js/main.js"></script>
+    <!-- Additional scripts if needed for OTP functionality -->
+</body>
+</html>
