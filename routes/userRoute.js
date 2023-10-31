@@ -24,21 +24,24 @@ const path= require("path")
 
 const userController = require("../controllers/userController");
 const productController = require("../controllers/productController");
+const cartController = require("../controllers/cartController");
 
 
 // user_route.get('/logout',auth.isUserLogin,userController.userLogout)
 
 
-user_route.get('/',auth.isUserLogout,userController.loadHome)
-user_route.get('/login',auth.isUserLogout,userController.loginLoad)
+user_route.get('/',userController.loadHome)
+user_route.get('/login',userController.loginLoad)
 user_route.post('/login',userController.verifyLogin)
-user_route.get('/register',auth.isUserLogout,userController.loadRegister);
+user_route.get('/register',userController.loadRegister);
 user_route.post('/register',userController.insertUser);
-user_route.get('/otp',auth.isUserLogout,userController.loadOtp);
+user_route.get('/otp',userController.loadOtp);
 user_route.post('/otp', userController.verifyOTP)
 user_route.post('/resendOTP', userController.resendOTP)
-user_route.get('/productView',auth.isUserLogout,productController.loadUserProducts)
-user_route.get('/productDetails',auth.isUserLogout,productController.loadUserProductDetails)
+user_route.get('/productView',productController.loadUserProducts)
+user_route.get('/productDetails',productController.loadUserProductDetails)
+user_route.get('/cart',auth.isUserLogin,cartController.loadCart)
+user_route.post('/addToCart/:id',auth.isUserLogin,cartController.addToCart)
 
 
 module.exports=user_route

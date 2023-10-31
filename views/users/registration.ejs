@@ -23,7 +23,7 @@
 									</p>
 								</div> -->
 							</div>
-							<form action="register" class="signin-form" method="post" onsubmit="return validateForm()">
+							<form id="registration-form" action="register" class="signin-form" method="post" onsubmit="return validateForm()">
 								<div class="form-group mt-3">
 									<input type="text" class="form-control" id="firstName" name="firstName" required>
 									<label class="form-control-placeholder" for="firstName">First Name</label>
@@ -41,19 +41,19 @@
 									<label class="form-control-placeholder" for="mobileno">Mobile Number</label>
 								</div>
 								<div class="form-group">
-									<input id="password-field" type="password" class="form-control" name="password"
+									<input id="password" type="password" class="form-control" name="password"
 										required>
-									<label class="form-control-placeholder" for="password-field">Password</label>
-									<span toggle="#password-field"
+									<label class="form-control-placeholder" for="password">Password</label>
+									<span toggle="#password"
 										class="fa fa-fw fa-eye field-icon toggle-password"></span>
 								</div>
 
 								<div class="form-group">
-									<input id="password-confirm-field" type="password" class="form-control"
+									<input id="passwordConfirm" type="password" class="form-control"
 										name="passwordConfirm" required>
-									<label class="form-control-placeholder" for="password-confirm-field">Confirm
+									<label class="form-control-placeholder" for="passwordConfirm">Confirm
 										Password</label>
-									<span toggle="#password-confirm-field"
+									<span toggle="#passwordConfirm"
 										class="fa fa-fw fa-eye field-icon toggle-password"></span>
 								</div>
 
@@ -87,4 +87,7 @@
 		</div>
 	</section>
 
+
+	
+	
 	<%- include('./layouts/footer.ejs') %>

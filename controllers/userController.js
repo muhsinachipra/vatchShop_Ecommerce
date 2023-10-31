@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const otpGenerator = require("otp-generator")
 
-const securePassword = async (password) =>{
+const securePassword = async (password) => {
     try {
         const passwordHash = await bcrypt.hash(password, 10);
         return passwordHash;
@@ -14,7 +14,7 @@ const securePassword = async (password) =>{
 }
 
 
-const loginLoad = async(req,res)=>{
+const loginLoad = async (req, res) => {
     try {
         res.render('login')
     } catch (error) {
@@ -23,10 +23,10 @@ const loginLoad = async(req,res)=>{
 }
 
 
-const loadRegister = async(req,res)=>{
+const loadRegister = async (req, res) => {
     try {
 
-        res.render('registration.ejs'); 
+        res.render('registration.ejs');
 
     } catch (error) {
         console.log(error.message);
@@ -34,23 +34,23 @@ const loadRegister = async(req,res)=>{
 }
 
 
-const verifyLogin = async(req,res)=>{
+const verifyLogin = async (req, res) => {
     try {
-        const email=req.body.email
-        const password=req.body.password
+        const email = req.body.email
+        const password = req.body.password
 
 
-        const userData= await User.findOne({email:email})
-        if(userData){
-            const passwordMatch = await bcrypt.compare(password,userData.password)
+        const userData = await User.findOne({ email: email })
+        if (userData) {
+            const passwordMatch = await bcrypt.compare(password, userData.password)
             if (passwordMatch) {
-                req.session.user_id = userData._id
-                res.redirect('/userHome')
+                req.session.userId = userData._id
+                res.render('userHome')
             } else {
-                res.render('login',{message:"incorrect email or password"})
+                res.render('login', { message: "incorrect email or password" })
             }
-        }else{
-            res.render('login',{message:"incorrect email or password"})
+        } else {
+            res.render('login', { message: "incorrect email or password" })
         }
 
     } catch (error) {
@@ -87,7 +87,7 @@ const verifyLogin = async(req,res)=>{
 // }
 
 
-const loadHome = async(req,res)=>{
+const loadHome = async (req, res) => {
     try {
         const pro = await Product.find()
         res.render('userHome', { product: pro })
@@ -97,7 +97,7 @@ const loadHome = async(req,res)=>{
 }
 
 
-const userLogout = async(req,res)=>{
+const userLogout = async (req, res) => {
     try {
         req.session.destroy()
         res.redirect('/')
@@ -106,7 +106,7 @@ const userLogout = async(req,res)=>{
     }
 }
 
-const loadOtp = async(req,res)=>{
+const loadOtp = async (req, res) => {
     try {
         res.render('otp')
     } catch (error) {
@@ -146,7 +146,7 @@ const insertUser = async (req, res) => {
     try {
         // Generate OTP
         const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
-        
+
         // Store OTP and its creation time in the session
         const currentTime = new Date();
         const otpCreationTime = currentTime.getMinutes()
@@ -155,24 +155,29 @@ const insertUser = async (req, res) => {
             creationTime: otpCreationTime,
         };
 
-        const userCheck = await User.findOne({ email: req.body.email });
-
+        const { passwordConfirm, password, mobileno, email, lastName, firstName } = req.body
+        req.session.email = email
+        const userCheck = await User.findOne({ email });
         if (userCheck) {
             res.render('registration', { message: "Email already exists" });
         } else {
-            const spassword = await securePassword(req.body.password);
+            const hashedPassword = await securePassword(password);
 
-            req.session.firstName = req.body.firstName;
-            req.session.lastName = req.body.lastName;
-            req.session.mobileno = req.body.mobileno;
-            req.session.email = req.body.email;
 
-            if (req.body.firstName && req.body.email && req.session.lastName && req.session.mobileno) {
-                if (req.body.password === req.body.passwordConfirm) {
-                    req.session.password = spassword;
+
+            if (firstName && email && lastName && mobileno) {
+                if (password === passwordConfirm) {
+                    const user = new User({
+                        firstName,
+                        lastName,
+                        email,
+                        mobileno,
+                        password: hashedPassword
+                    });
+                    const result = await user.save();
 
                     // Send OTP to the user's email
-                    otpSent(req.session.email, req.session.otp.code);
+                    otpSent(email, req.session.otp.code);
                     res.render("otp");
                 } else {
                     res.render("registration", { message: "Password doesn't match" });
@@ -193,7 +198,7 @@ const verifyOTP = async (req, res) => {
         const enteredOTP = req.body.otp;
         const storedOTP = req.session.otp.code;
         const otpCreationTime = req.session.otp.creationTime;
-
+        const email = req.session.email
         // Calculate the time difference in seconds
         const currentTimeFull = new Date();
         const currentTime = currentTimeFull.getMinutes()
@@ -202,26 +207,33 @@ const verifyOTP = async (req, res) => {
 
         if (enteredOTP === storedOTP && timeDiff <= 1) {
             // OTP is valid and within the 1-minute window
-            const user = new User({
-                firstName: req.session.firstName,
-                lastName: req.session.lastName,
-                email: req.session.email,
-                mobileno: req.session.mobileno,
-                password: req.session.password,
-                isVerified: 1
-            });
 
-            const result = await user.save();
-            res.render('login', { message: "registration successfull" });
+
+            const user = await User.findOne({ email: email });
+
+            if (user) {
+                // Update the user's document to set "isVerified" to true
+                user.isVerified = true;
+                const updatedUser = await user.save();
+
+                if (updatedUser) {
+                    res.render('login', { message: "Registration successful" });
+                } else {
+                    res.render('otp', { message: "Error updating user data" });
+                }
+            } else {
+                res.render('otp', { message: "User not found" });
+            }
         } else {
             res.render('otp', { message: "Invalid OTP or OTP has expired" });
         }
+
     } catch (error) {
         console.log(error.message);
     }
 };
 
-const resendOTP = async (req, res) =>{
+const resendOTP = async (req, res) => {
     try {
         // Generate a new OTP and resend it to the user's email
         const newOTP = otpGenerator.generate(6, { upperCase: false, specialChars: false });

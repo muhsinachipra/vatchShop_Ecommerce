@@ -68,7 +68,7 @@
 
                     <!--  -->
                     <div class="p-t-33">
-                        <div class="flex-w flex-r-m p-b-10">
+                        <!-- <div class="flex-w flex-r-m p-b-10">
                             <div class="size-203 flex-c-m respon6">
                                 Size
                             </div>
@@ -85,9 +85,9 @@
                                     <div class="dropDownSelect2"></div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="flex-w flex-r-m p-b-10">
+                        <!-- <div class="flex-w flex-r-m p-b-10">
                             <div class="size-203 flex-c-m respon6">
                                 Color
                             </div>
@@ -104,7 +104,7 @@
                                     <div class="dropDownSelect2"></div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="flex-w flex-r-m p-b-10">
                             <div class="size-204 flex-w flex-m respon6-next">
@@ -121,8 +121,8 @@
                                     </div>
                                 </div>
 
-                                <button
-                                    class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                                <button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"
+                                    onclick="addToCart('<%= product._id %>')">
                                     Add to cart
                                 </button>
                             </div>
@@ -188,4 +188,39 @@
         });
     </script>
 
+    <!-- addToCartBtn -->
+    <script>
+        function addToCart(productId) {
+            // Make an AJAX request to the server to add the product to the cart
+            fetch(`/addToCart/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // You can send additional data here if needed
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response and show a SweetAlert message
+                    if (data.message === 'Product added to cart') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Product Added to Cart',
+                            showConfirmButton: false,
+                            timer: 1500 // Adjust the duration of the alert
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Product not added to cart'
+                        });
+                    }
+                })
+                .catch(error => {
+                    // Handle any errors
+                    console.error(error);
+                });
+        }
+    </script>
     <%- include('./layouts/footer.ejs') %>
