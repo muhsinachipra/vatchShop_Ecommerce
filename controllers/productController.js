@@ -1,7 +1,8 @@
-const Category = require('../models/categoryModel');
-const Product = require('../models/productModel');
-const Admin = require('../models/adminModel');
 const User = require('../models/userModel');
+const Product = require('../models/productModel');
+const Cart = require('../models/cartModel');
+const Category = require('../models/categoryModel');
+const Admin = require('../models/adminModel');
 const fs = require("fs")
 
 
@@ -17,7 +18,7 @@ module.exports = {
 
     addProduct: async (req, res) => {
         try {
-            const { productName, productBrand, productDescription, productCategory, productPrice, productQuantity } = req.body
+            const { productName, productBrand, productDescription, productCategory, productPrice, productStock } = req.body
             const productImage = []
             for (let i = 0; i < req.files.length; i++) {
                 productImage[i] = req.files[i].filename
@@ -28,7 +29,7 @@ module.exports = {
                 productDescription,
                 productCategory,
                 productPrice,
-                productQuantity,
+                productStock,
                 productImage
             })
             const productData = await newProduct.save()
@@ -82,13 +83,13 @@ module.exports = {
 
     editProduct: async (req, res) => {
         try {
-            const { id, productName, productDescription, productCategory, productQuantity, productPrice, productBrand } = req.body;
+            const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand } = req.body;
             const productImage = []
             for (let i = 0; i < req.files.length; i++) {
                 productImage[i] = req.files[i].filename
             }
             await Product.findByIdAndUpdate(id, {
-                $set: { productName, productDescription, productCategory, productImage, productQuantity, productPrice, productBrand }
+                $set: { productName, productDescription, productCategory, productImage, productStock, productPrice, productBrand }
             });
             res.redirect('/admin/viewProduct');
         } catch (error) {

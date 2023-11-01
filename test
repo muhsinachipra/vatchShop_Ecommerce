@@ -1,280 +1,51 @@
-<%- include('./layouts/header.ejs') %>
-
-
-  <div class="container pt-5 mt-5">
-
-
-    <div class="row">
-      <div class="col-md-6 col-lg-7 p-b-30">
-        <div class="p-l-25 p-r-30 p-lr-0-lg">
-          <div class="wrap-slick3 flex-sb flex-w">
-            <div class="wrap-slick3-dots"></div>
-            <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
-
-            <div class="slick3 gallery-lb">
-              <div class="item-slick3"
-                data-thumb="/car/adminAssets/assets/images/products/<%= product.productImage[0] %>">
-                <div class="wrap-pic-w pos-relative">
-                  <img src="/car/adminAssets/assets/images/products/<%= product.productImage[0] %>" alt="IMG-PRODUCT">
-
-                  <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                    href="/car/adminAssets/assets/images/products/<%= product.productImage[0] %>">
-                    <i class="fa fa-expand"></i>
-                  </a>
-                </div>
-              </div>
-
-              <div class="item-slick3"
-                data-thumb="/car/adminAssets/assets/images/products/<%= product.productImage[1] %>">
-                <div class="wrap-pic-w pos-relative">
-                  <img src="/car/adminAssets/assets/images/products/<%= product.productImage[1] %>" alt="IMG-PRODUCT">
-
-                  <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                    href="/car/adminAssets/assets/images/products/<%= product.productImage[1] %>">
-                    <i class="fa fa-expand"></i>
-                  </a>
-                </div>
-              </div>
-
-              <div class="item-slick3"
-                data-thumb="/car/adminAssets/assets/images/products/<%= product.productImage[2] %>">
-                <div class="wrap-pic-w pos-relative">
-                  <img src="/car/adminAssets/assets/images/products/<%= product.productImage[2] %>" alt="IMG-PRODUCT">
-
-                  <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                    href="/car/adminAssets/assets/images/products/<%= product.productImage[2] %>">
-                    <i class="fa fa-expand"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+<% if (cart && cart.length> 0) { %>
+  <%cart.forEach((data,index)=>{%>
+    <tr class="cart-item">
+      <td class="product-thumbnail">
+        <a href="shop-details.html">
+          <img src="/public/products/images/<%=data.productId.images.image1%>" alt="IMG">
+        </a>
+        <div class="product-name">
+          <%=data.productId.product_name%>`
         </div>
-      </div>
+      </td>
+      <td class="product-price">
+        <%=data.productId.product_price%>
+      </td>
+      <td class="product-quantity">
+        <div class="quantity">
 
-      <div class="col-md-6 col-lg-5 p-b-30">
-        <div class="p-r-50 p-t-5 p-lr-0-lg">
-          <h4 class="mtext-105 cl2 js-name-detail p-b-14">
-            <%= product.productName %>
-          </h4>
-
-          <span class="mtext-106 cl2">
-            <%= product.productPrice %>
+          <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn"
+            onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)">-</a>
+          <span class="mtext-104 cl3 txt-center num-product p-2" id="<%=data.productId._id%>"
+            data-price="<%=data.productId.product_price%>">
+            <%=data.quantity%>
           </span>
+          <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn "
+            onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)">+</a>
 
-          <p class="stext-102 cl3 p-t-23">
-            <%= product.productDescription %>
-          </p>
-
-          <!--  -->
-          <div class="p-t-33">
-            <div class="flex-w flex-r-m p-b-10">
-              <div class="size-203 flex-c-m respon6">
-                Size
-              </div>
-
-              <div class="size-204 respon6-next">
-                <div class="rs1-select2 bor8 bg0">
-                  <select class="js-select2" name="time">
-                    <option>Choose an option</option>
-                    <option>Size S</option>
-                    <option>Size M</option>
-                    <option>Size L</option>
-                    <option>Size XL</option>
-                  </select>
-                  <div class="dropDownSelect2"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="flex-w flex-r-m p-b-10">
-              <div class="size-203 flex-c-m respon6">
-                Color
-              </div>
-
-              <div class="size-204 respon6-next">
-                <div class="rs1-select2 bor8 bg0">
-                  <select class="js-select2" name="time">
-                    <option>Choose an option</option>
-                    <option>Red</option>
-                    <option>Blue</option>
-                    <option>White</option>
-                    <option>Grey</option>
-                  </select>
-                  <div class="dropDownSelect2"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="flex-w flex-r-m p-b-10">
-              <div class="size-204 flex-w flex-m respon6-next">
-                <div class="wrap-num-product flex-w m-r-20 m-tb-10">
-                  <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                    <i class="fs-16 zmdi zmdi-minus"></i>
-                  </div>
-
-                  <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1">
-
-                  <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                    <i class="fs-16 zmdi zmdi-plus"></i>
-                  </div>
-                </div>
-
-                <button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
-                  Add to cart
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!--  -->
-          <div class="flex-w flex-m p-l-100 p-t-40 respon7">
-            <div class="flex-m bor9 p-r-10 m-r-11">
-              <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
-                data-tooltip="Add to Wishlist">
-                <i class="zmdi zmdi-favorite"></i>
-              </a>
-            </div>
-
-            <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Facebook">
-              <i class="fa fa-facebook"></i>
-            </a>
-
-            <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Twitter">
-              <i class="fa fa-twitter"></i>
-            </a>
-
-            <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-              data-tooltip="Google Plus">
-              <i class="fa fa-google-plus"></i>
-            </a>
-          </div>
+          <!-- </div> -->
         </div>
-      </div>
-    </div>
 
-
-    <div class="slick3 gallery-lb">
-      <% product.productImage.forEach((data)=> { %>
-        <div class="item-slick3" data-thumb="/car/adminAssets/assets/images/products/<%= data %>">
-          <div class="wrap-pic-w pos-relative main-image-<%= product.productImage.indexOf(data) %>">
-            <img id="main-img-<%= product.productImage.indexOf(data) %>"
-              src="/car/adminAssets/assets/images/products/<%= data %>" alt="IMG-PRODUCT">
-
-            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-              href="/car/adminAssets/assets/images/products/<%= data %>">
-              <i class="fa fa-expand"></i>
-            </a>
-          </div>
         </div>
-        <% }) %>
-    </div>
-  </div>
+      </td>
 
+      <!-- Subtotal -->
+      <td class="product-subtotal" id="subtotal-<%=data.productId._id%>" data-price="<%=data.productId.product_price%>">
+        <span>&#8377; <span id="subtotal-<%=data.productId._id%>">
+            <%= (parseFloat(data.productId.product_price) * data.quantity).toFixed(2) %>
+          </span></span>
+      </td>
 
+      <td class="product-remove">
+        <a class=" btn  text-white " onclick="removeProduct('<%=data.productId._id%>')">Remove</a>
+      </td>
+    </tr>
 
-  <script>
-    {
-      const mainImage = document.querySelector('.main-image-0');
-      const img = document.getElementById('main-img-0');
-
-      mainImage.addEventListener('mousemove', zoomIn);
-      mainImage.addEventListener('mouseleave', zoomOut);
-
-      function zoomIn(event) {
-        const boundingRect = mainImage.getBoundingClientRect();
-        const mouseX = event.clientX - boundingRect.left;
-        const mouseY = event.clientY - boundingRect.top;
-
-        const offsetX = (mouseX / boundingRect.width) * 100;
-        const offsetY = (mouseY / boundingRect.height) * 100;
-
-        img.style.transformOrigin = ${ offsetX }% ${ offsetY }%;
-        img.style.transform = 'scale(2)'; // Adjust the scale factor as desired
-      }
-
-      function zoomOut() {
-        img.style.transform = 'scale(1)';
-      }
-    }
-
-    // zoom1
-    {
-      const mainImage = document.querySelector('.main-image-1');
-      const img = document.getElementById('main-img-1');
-
-      mainImage.addEventListener('mousemove', zoomIn);
-      mainImage.addEventListener('mouseleave', zoomOut);
-
-      function zoomIn(event) {
-        const boundingRect = mainImage.getBoundingClientRect();
-        const mouseX = event.clientX - boundingRect.left;
-        const mouseY = event.clientY - boundingRect.top;
-
-        const offsetX = (mouseX / boundingRect.width) * 100;
-        const offsetY = (mouseY / boundingRect.height) * 100;
-
-        img.style.transformOrigin = ${ offsetX }% ${ offsetY }%;
-        img.style.transform = 'scale(2)'; // Adjust the scale factor as desired
-      }
-
-      function zoomOut() {
-        img.style.transform = 'scale(1)';
-      }
-    }
-
-    // zoom2
-
-    {
-      const mainImage = document.querySelector('.main-image-2');
-      const img = document.getElementById('main-img-2');
-
-      mainImage.addEventListener('mousemove', zoomIn);
-      mainImage.addEventListener('mouseleave', zoomOut);
-
-      function zoomIn(event) {
-        const boundingRect = mainImage.getBoundingClientRect();
-        const mouseX = event.clientX - boundingRect.left;
-        const mouseY = event.clientY - boundingRect.top;
-
-        const offsetX = (mouseX / boundingRect.width) * 100;
-        const offsetY = (mouseY / boundingRect.height) * 100;
-
-        img.style.transformOrigin = ${ offsetX }% ${ offsetY }%;
-        img.style.transform = 'scale(2)'; // Adjust the scale factor as desired
-      }
-
-      function zoomOut() {
-        img.style.transform = 'scale(1)';
-      }
-    }
-
-
-    // zoom3
-
-    {
-      const mainImage = document.querySelector('.main-image-3');
-      const img = document.getElementById('main-img-3');
-
-      mainImage.addEventListener('mousemove', zoomIn);
-      mainImage.addEventListener('mouseleave', zoomOut);
-
-      function zoomIn(event) {
-        const boundingRect = mainImage.getBoundingClientRect();
-        const mouseX = event.clientX - boundingRect.left;
-        const mouseY = event.clientY - boundingRect.top;
-
-        const offsetX = (mouseX / boundingRect.width) * 100;
-        const offsetY = (mouseY / boundingRect.height) * 100;
-
-        img.style.transformOrigin = ${ offsetX }% ${ offsetY }%;
-        img.style.transform = 'scale(2)'; // Adjust the scale factor as desired
-      }
-
-      function zoomOut() {
-        img.style.transform = 'scale(1)';
-      }
-    }
-  </script>
-
-  <%- include('./layouts/footer.ejs') %>
+    <% }) %>
+      <% } else { %>
+        <tr>
+          <td colspan="4">Cart is empty</td>
+        </tr>
+        <% } %>
+        

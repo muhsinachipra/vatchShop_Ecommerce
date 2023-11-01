@@ -40,8 +40,10 @@ user_route.post('/otp', userController.verifyOTP)
 user_route.post('/resendOTP', userController.resendOTP)
 user_route.get('/productView',productController.loadUserProducts)
 user_route.get('/productDetails',productController.loadUserProductDetails)
+user_route.post('/add-to-cart',cartController.addToCart)
 user_route.get('/cart',auth.isUserLogin,cartController.loadCart)
-user_route.post('/addToCart/:id',auth.isUserLogin,cartController.addToCart)
+user_route.post('/cart-quantity',cartController.cartQuantity)
+user_route.post('/remove-product',cartController.removeProduct) 
 
 
 module.exports=user_route

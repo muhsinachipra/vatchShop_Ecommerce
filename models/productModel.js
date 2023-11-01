@@ -20,7 +20,7 @@ const productSchema = mongoose.Schema({
         ref: 'Category',
         required: true
     },
-    productQuantity: {
+    productStock: {
         type: Number,
         required: true
     },

@@ -41,10 +41,10 @@
                                                 name="productPrice" placeholder="Price" required>
                                         </div>
                                         <div class="col-sm-4 my-1">
-                                            <label for="exampleInputName1">Quantity</label>
+                                            <label for="exampleInputName1">Stock</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="productQuantity"
-                                                    name="productQuantity" placeholder="Quantity" required>
+                                                <input type="text" class="form-control" id="productStock"
+                                                    name="productStock" placeholder="Stock" required>
                                             </div>
                                         </div>
                                     </div>
@@ -171,14 +171,14 @@
                         }
                     });
 
-                    // Validate Quantity (Only numbers)
-                    const productQuantityInput = document.getElementById("productQuantity");
-                    productQuantityInput.addEventListener("input", function () {
-                        const value = productQuantityInput.value;
+                    // Validate Stock (Only numbers)
+                    const productStockInput = document.getElementById("productStock");
+                    productStockInput.addEventListener("input", function () {
+                        const value = productStockInput.value;
                         if (!/^\d+(\.\d{1,2})?$/.test(value)) {
-                            productQuantityInput.setCustomValidity("Quantity can only contain numbers, optionally with up to 2 decimal places.");
+                            productStockInput.setCustomValidity("Stock can only contain numbers, optionally with up to 2 decimal places.");
                         } else {
-                            productQuantityInput.setCustomValidity("");
+                            productStockInput.setCustomValidity("");
                         }
                     });
 

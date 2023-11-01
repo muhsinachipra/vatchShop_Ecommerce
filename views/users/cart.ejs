@@ -3,9 +3,9 @@
 
 
     <!-- breadcrumb -->
-    <div class="container">
+    <div class="container pt-5">
         <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-            <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
+            <a href="/" class="stext-109 cl8 hov-cl1 trans-04">
                 Home
                 <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
             </a>
@@ -31,57 +31,96 @@
                                     <th class="column-3">Price</th>
                                     <th class="column-4">Quantity</th>
                                     <th class="column-5">Total</th>
+                                    <th class="column-5"></th>
                                 </tr>
 
-                                <tr class="table_row">
-                                    <td class="column-1">
-                                        <div class="how-itemcart1">
-                                            <img src="images/item-cart-04.jpg" alt="IMG">
-                                        </div>
-                                    </td>
-                                    <td class="column-2">Fresh Strawberries</td>
-                                    <td class="column-3">$ 36.00</td>
-                                    <td class="column-4">
-                                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-minus"></i>
-                                            </div>
 
-                                            <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                                name="num-product1" value="1">
+                                <% if (cart && cart.length> 0) { %>
+                                    <%cart.forEach((data,index)=>{%>
+                                        <tr class="table_row">
+                                            <td class="column-1">
+                                                <div class="how-itemcart1">
+                                                    <img src="/car/adminAssets/assets/images/products/<%=data.productId.productImage[0]%>"
+                                                        alt="IMG">
+                                                </div>
 
-                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-plus"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="column-5">$ 36.00</td>
-                                </tr>
 
-                                <tr class="table_row">
-                                    <td class="column-1">
-                                        <div class="how-itemcart1">
-                                            <img src="images/item-cart-05.jpg" alt="IMG">
-                                        </div>
-                                    </td>
-                                    <td class="column-2">Lightweight Jacket</td>
-                                    <td class="column-3">$ 16.00</td>
-                                    <td class="column-4">
-                                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-minus"></i>
-                                            </div>
 
-                                            <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                                name="num-product2" value="1">
 
-                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-plus"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="column-5">$ 16.00</td>
-                                </tr>
+                                            </td>
+                                            <td class="column-2">
+                                                <%=data.productId.productName%>
+                                            </td>
+                                            <td class="column-3">₹ <%=data.productId.productPrice%>
+                                            </td>
+                                            <td class="column-4">
+                                                <div class="wrap-num-product flex-w m-l-auto m-r-0">
+
+
+                                                    <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn"
+                                                        onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)">-</a>
+                                                    <span class="mtext-104 cl3 txt-center num-product p-2"
+                                                        id="<%=data.productId._id%>"
+                                                        data-price="<%=data.productId.productPrice%>">
+                                                        <%=data.quantity%>
+                                                    </span>
+                                                    <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn "
+                                                        onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)">+</a>
+
+
+                                                </div>
+                                            </td>
+                                            <td class="column-5" id="subtotal-<%=data.productId._id%>"
+                                                data-price="<%=data.productId.productPrice%>">
+                                                ₹ <span id="subtotal-<%=data.productId._id%>">
+                                                    <%= (parseFloat(data.productId.productPrice) *
+                                                        data.quantity).toFixed(2) %>
+                                                </span>
+                                            </td>
+
+                                            <td class="product-remove">
+                                                <a class=" btn  text-white "
+                                                    onclick="removeProduct('<%=data.productId._id%>')">Remove</a>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                            <% } else { %>
+                                                <tr>
+                                                    <td colspan="4">Cart is empty</td>
+                                                </tr>
+                                                <% } %>
+
+
+
+                                                    <!-- <tr class="table_row">
+                                                        <td class="column-1">
+                                                            <div class="how-itemcart1">
+                                                                <img src="/car/userAssets/images/item-cart-05.jpg"
+                                                                    alt="IMG">
+                                                            </div>
+                                                        </td>
+                                                        <td class="column-2">Lightweight Jacket</td>
+                                                        <td class="column-3">$ 16.00</td>
+                                                        <td class="column-4">
+                                                            <div class="wrap-num-product flex-w m-l-auto m-r-0">
+                                                                <div
+                                                                    class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                                                    <i class="fs-16 zmdi zmdi-minus"></i>
+                                                                </div>
+
+                                                                <input class="mtext-104 cl3 txt-center num-product"
+                                                                    type="number" name="num-product2" value="1">
+
+                                                                <div
+                                                                    class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                                    <i class="fs-16 zmdi zmdi-plus"></i>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="column-5">$ 16.00</td>
+                                                    </tr> -->
+
+
                             </table>
                         </div>
 
@@ -118,8 +157,9 @@
                             </div>
 
                             <div class="size-209">
-                                <span class="mtext-110 cl2">
-                                    $79.65
+                                <span class="mtext-110 cl2" id="total">
+                                    ₹ <%= total.toFixed(2) %>
+
                                 </span>
                             </div>
                         </div>
@@ -180,8 +220,8 @@
                             </div>
 
                             <div class="size-209 p-t-1">
-                                <span class="mtext-110 cl2">
-                                    $79.65
+                                <span class="mtext-110 cl2" id="total">
+                                    ₹ <%= total.toFixed(2) %>
                                 </span>
                             </div>
                         </div>
@@ -197,4 +237,102 @@
 
 
 
-<%- include('./layouts/footer.ejs') %>
+    <script>
+
+        function removeProduct(proId) {
+            $.ajax({
+                url: '/remove-product',
+                method: 'post',
+                encoded: true,
+                data: {
+                    product: proId,
+                },
+            }).done((data) => {
+                if (data.success) {
+                    // Update the total on the page
+                    updateTotal();
+
+                    // Optionally, update other UI elements or take additional actions
+                    swal('Item removed');
+                    location.reload();
+                } else {
+                    // Handle unsuccessful removal
+                    swal('Error removing item');
+                }
+            });
+        }
+
+
+
+
+        const updateTotal = () => {
+            const totalElement = document.getElementById('total');
+            const products = document.querySelectorAll('.num-product');
+
+            // Recalculate the total based on all product quantities and update the total element
+            let newTotal = 0;
+            products.forEach((product) => {
+                const productPrice = parseFloat(product.dataset.price || 0);
+                const productQuantity = parseInt(product.textContent);
+                newTotal += productPrice * productQuantity;
+            });
+
+            totalElement.textContent = `₹ ${newTotal.toFixed(2)}`;
+        };
+
+        const updateSubtotal = (productId, newQuantity) => {
+            const subtotalElement = document.getElementById(`subtotal-${productId}`);
+            if (subtotalElement) {
+                const productPrice = parseFloat(subtotalElement.dataset.price || 0);
+                const newSubtotal = (productPrice * newQuantity).toFixed(2);
+                subtotalElement.textContent = `₹ ${newSubtotal}`; // Update the format accordingly
+            }
+        };
+
+
+
+        const cartCount = (productId, userId, count) => {
+            $.ajax({
+                type: 'POST',
+                url: '/cart-quantity', // Replace with your actual endpoint
+                data: {
+                    product: productId,
+                    user: userId,
+                    count: count,
+                },
+                success: function (response) {
+                    if (response.changeSuccess) {
+                        // Update the quantity on the page
+                        const quantityElement = document.getElementById(productId);
+                        const currentQuantity = parseInt(quantityElement.textContent);
+                        const newQuantity = currentQuantity + count;
+
+                        // Check if the new quantity is greater than or equal to 1 before updating
+                        if (newQuantity >= 1) {
+                            quantityElement.textContent = newQuantity;
+
+                            // Update the total on the page
+                            updateTotal();
+
+                            // Update the subtotal on the page
+                            updateSubtotal(productId, newQuantity);
+                        } else {
+                            // Optionally, display a message or take any other action to indicate the quantity cannot go below 1
+                            console.log("Quantity cannot be less than 1");
+                        }
+                    } else {
+                        // Handle unsuccessful response
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        };
+
+
+
+    </script>
+
+
+    <%- include('./layouts/footer.ejs') %>
