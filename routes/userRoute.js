@@ -25,6 +25,8 @@ const path= require("path")
 const userController = require("../controllers/userController");
 const productController = require("../controllers/productController");
 const cartController = require("../controllers/cartController");
+const profileController = require("../controllers/profileController");
+const checkoutController = require("../controllers/checkoutController");
 
 
 // user_route.get('/logout',auth.isUserLogin,userController.userLogout)
@@ -43,7 +45,20 @@ user_route.get('/productDetails',productController.loadUserProductDetails)
 user_route.post('/add-to-cart',cartController.addToCart)
 user_route.get('/cart',auth.isUserLogin,cartController.loadCart)
 user_route.post('/cart-quantity',cartController.cartQuantity)
-user_route.post('/remove-product',cartController.removeProduct) 
+user_route.post('/remove-product',cartController.removeProduct)
+
+user_route.get('/userProfile',auth.isUserLogin,profileController.loadProfile)
+user_route.get('/logout',profileController.userLogout)
+user_route.post('/updateUser',auth.isUserLogin,profileController.updateUser);
+user_route.post('/resetPassword',auth.isUserLogin,profileController.resetPassword);
+
+user_route.get('/address',auth.isUserLogin,profileController.loadAddress);
+user_route.post('/addAddress',auth.isUserLogin,profileController.addAddress);
+user_route.get('/editAddress',auth.isUserLogin,profileController.loadEditAddress);
+user_route.post('/editAddress',auth.isUserLogin,profileController.editAddress);
+user_route.delete('/deleteAddress',profileController.deleteAddress);
+
+user_route.get("/checkout", checkoutController.loadCheckout);
 
 
 module.exports=user_route

@@ -112,16 +112,16 @@ module.exports = {
             const proId = req.body.product;
             const userId = req.body.user;
             const count = number;
-
+            
             const cartData = await Cart.findOne(
                 { userId: new ObjectId(userId), "items.productId": new ObjectId(proId) },
                 { "items.productId.$": 1, "items.quantity": 1 }
-            );
-
-            const [{ quantity }] = cartData.items;
-
+                );
+                
+                const [{ quantity }] = cartData.items;
+                
             const productData = await Product.findById(proId);
-
+            
             // Check if the new quantity after the update will be greater than or equal to 1
             if (quantity + count >= 1) {
                 if (productData.productStock < quantity + count) {
@@ -132,16 +132,24 @@ module.exports = {
                         {
                             $inc: { "items.$.quantity": count },
                         }
-                    );
-                    res.json({ changeSuccess: true });
+                        );
+                        res.json({ changeSuccess: true });
+                    }
+                    
+                } else {
+                    res.json({ success: false, message: "Quantity cannot be less than 1" });
                 }
 
-            } else {
-                res.json({ success: false, message: "Quantity cannot be less than 1" });
-            }
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({ error: 'An error occurred' });
+                // console.log(req.body.count);
+                // console.log(userId);
+                // console.log(proId);
+                // console.log(quantity);
+                // console.log(productData);
+                // console.log(cartData);
+
+            } catch (error) {
+                console.log(error);
+                res.status(500).json({ error: 'An error occurred' });
         }
     },
     removeProduct: async (req, res) => {

@@ -1,0 +1,402 @@
+<%- include('./layouts/header.ejs') %>
+
+
+    <div class="site-wrap">
+        <div class="bg-light py-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 mb-0">
+                        <a href="/">Home</a> <span class="mx-2 mb-0">/</span> <a href="/cart">Cart</a>
+                        <span class="mx-2 mb-0">/</span> <strong class="text-black">Checkout</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="site-section" style="padding-top: 40px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 mb-5 mb-md-0">
+                        <h2 class="h3 mb-3 text-black">Billing Details</h2>
+
+                        <div class="row">
+                            <% if (address) { %>
+                                <% for (let i=0; i < address.address.length; i++) { %>
+                                    <div class="col-md-6 col-12 mb-3 mt-3"
+                                        id="address-card-<%= address.address[i]._id %>">
+                                        <div class="card p-2" style="background: #f3f3f9; border-radius: 10px">
+                                            <div class="card-body">
+                                                <h6 class="card-title data-full-name " style="font-size: 15px">Name:<%=
+                                                        address.address[i].fullName %>
+                                                </h6>
+                                                <p class="card-text  data-mobile">Number: <%= address.address[i].mobile
+                                                        %>
+                                                </p>
+                                                <p class="card-text  data-district">District: <%=
+                                                        address.address[i].district %>
+                                                </p>
+                                                <p class="card-text  data-city">City:<%= address.address[i].city %>
+                                                </p>
+                                                <p class="card-text  data-state">State: <%= address.address[i].state %>
+                                                </p>
+                                                <p class="card-text">Pincode: <%= address.address[i].pincode %>
+                                                </p>
+
+                                                <hr class="my-3" />
+                                                <div class="d-flex justify-content-between">
+                                                    <button class="btn btn-outline-primary-2 edit-address-btn"
+                                                        type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#editAddressModal"
+                                                        data-address-id="<%= address.address[i]._id %>">
+                                                        Edit
+                                                    </button>
+
+                                                    <a onclick="removeAddress('<%=address.address[i]._id%>')">
+                                                        <button class="btn btn-outline-primary-2" type="button"
+                                                            data-bs-toggle="modal" data-bs-target="">
+                                                            Remove
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <a href=""><button type="submit" class="btn btn-sm"
+                                                    style="background-color: black; color: white">
+                                                    Set as default
+                                                </button></a>
+                                        </div>
+                                    </div>
+
+                                    <% } %>
+                                        <% } else { %>
+                                            <% } %>
+                        </div>
+
+                        <div>
+                            <a href="/address">
+                                <button type="submit" class="btn btn-primary btn-sm">Add Address</button>
+                            </a>
+                        </div>
+                        <br />
+
+                        <div class="form-group">
+                            <label for="c_order_notes" class="text-black">Order Notes</label>
+                            <textarea name="c_order_notes" id="c_order_notes" cols="30" rows="5" class="form-control"
+                                placeholder="Write your notes here..."></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row mb-5">
+                            <div class="col-md-12">
+                                <h2 class="h3 mb-3 text-black">Coupon Code</h2>
+                                <div class="p-3 p-lg-5 border">
+                                    <label for="c_code" class="text-black mb-3">Enter your coupon code if you have
+                                        one</label>
+                                    <div class="input-group w-75">
+                                        <input type="text" class="form-control" id="c_code" placeholder="Coupon Code"
+                                            aria-label="Coupon Code" aria-describedby="button-addon2" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary btn-sm" type="button" id="button-addon2">
+                                                Apply
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-5">
+                            <div class="col-md-12">
+                                <h2 class="h3 mb-3 text-black">Your Order</h2>
+                                <div class="p-3 p-lg-5 border">
+                                    <table class="table site-block-order-table mb-5">
+                                        <thead>
+                                            <th>Product</th>
+                                            <th>Image</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                        </thead>
+                                        <tbody>
+                                            <% if (cart && cart.items && cart.items.length> 0) { %> <%
+                                                    cart.items.forEach((item)=> { %>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="product-image mr-3">
+                                                                    <img src="<%= item.product.image %>"
+                                                                        alt="<%= item.product.name %>" />
+                                                                </div>
+                                                                <div class="product-details">
+                                                                    <h6 class="product-title">
+                                                                        <%= item.product.name %>
+                                                                    </h6>
+                                                                    <p class="product-description">
+                                                                        <%= item.product.description %>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <img src="/static/admin/Assets/images/products/<%= item.product.image?.[0] %>"
+                                                                alt="ProductImage"
+                                                                style="max-width: 5rem; max-height: 5rem" />
+                                                        </td>
+                                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= item.quantity %>
+                                                        </td>
+                                                        <td>₹ <%= (item.product.price * item.quantity).toFixed(2) %>
+                                                        </td>
+                                                    </tr>
+                                                    <% }); %>
+                                                        <% } else { %>
+                                                            <tr>
+                                                                <td colspan="4">Your cart is empty.</td>
+                                                            </tr>
+                                                            <% } %>
+                                        </tbody>
+                                    </table>
+
+                                    //==========================================================
+
+                                    <button type="button" class="btn btn-primary edit-address-btn"
+                                        data-bs-toggle="modal" data-bs-target="#editAddressModal"
+                                        data-address-id="your-address-id">Edit Address</button>
+
+                                    ===================================================
+
+                                    <div class="modal fade" id="editAddressModal" tabindex="-1"
+                                        aria-labelledby="editAddressModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editAddressModalLabel">Edit Address</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!-- Edit address form goes here -->
+                                                    <input type="hidden" id="addressId">
+                                                    <div class="mb-3">
+                                                        <label for="editFullName" class="form-label">Full Name</label>
+                                                        <input type="text" class="form-control" id="editFullName"
+                                                            name="editFullName" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editMobile" class="form-label">Mobile Number</label>
+                                                        <input type="tel" class="form-control" id="editMobile"
+                                                            name="editMobile" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editState" class="form-label">State</label>
+                                                        <input type="text" class="form-control" id="editState"
+                                                            name="editState" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editDistrict" class="form-label">District</label>
+                                                        <input type="text" class="form-control" id="editDistrict"
+                                                            name="editDistrict" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editCity" class="form-label">City</label>
+                                                        <input type="text" class="form-control" id="editCity"
+                                                            name="editCity" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editPincode" class="form-label">Pincode</label>
+                                                        <input type="text" class="form-control" id="editPincode"
+                                                            name="editPincode" required>
+                                                    </div>
+                                                    <button type="button" class="btn btn-primary"
+                                                        onclick="saveChanges()">Save Changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    //===========================================================
+
+                                    <div class="border p-3 mb-3">
+                                        <h3 class="h6 mb-0">
+                                            <a class="d-block" data-toggle="collapse" href="#collapsebank" role="button"
+                                                aria-expanded="false" aria-controls="collapsebank">Direct Bank
+                                                Transfer</a>
+                                        </h3>
+
+                                        <div class="collapse" id="collapsebank">
+                                            <div class="py-2">
+                                                <p class="mb-0">
+                                                    Make your payment directly into our bank account. Please use your
+                                                    Order ID
+                                                    as the payment reference. Your order won’t be shipped until the
+                                                    funds have
+                                                    cleared in our account.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="border p-3 mb-3">
+                                        <h3 class="h6 mb-0">
+                                            <a class="d-block" data-toggle="collapse" href="#collapsecheque"
+                                                role="button" aria-expanded="false"
+                                                aria-controls="collapsecheque">Cheque Payment</a>
+                                        </h3>
+
+                                        <div class="collapse" id="collapsecheque">
+                                            <div class="py-2">
+                                                <p class="mb-0">
+                                                    Make your payment directly into our bank account. Please use your
+                                                    Order ID
+                                                    as the payment reference. Your order won’t be shipped until the
+                                                    funds have
+                                                    cleared in our account.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="border p-3 mb-5">
+                                        <h3 class="h6 mb-0">
+                                            <a class="d-block" data-toggle="collapse" href="#collapsepaypal"
+                                                role="button" aria-expanded="false"
+                                                aria-controls="collapsepaypal">Paypal</a>
+                                        </h3>
+
+                                        <div class="collapse" id="collapsepaypal">
+                                            <div class="py-2">
+                                                <p class="mb-0">
+                                                    Make your payment directly into our bank account. Please use your
+                                                    Order ID
+                                                    as the payment reference. Your order won’t be shipped until the
+                                                    funds have
+                                                    cleared in our account.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button class="btn btn-primary btn-lg py-3 btn-block"
+                                            onclick="window.location='thankyou.html'">
+                                            Place Order
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- </form> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS library -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+    <!-- Bootstrap JS library -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <script>
+        function removeAddress(addressId) {
+            // Remove the address card from the DOM
+            const addressCard = document.getElementById(`address-card-${addressId}`);
+            if (addressCard) {
+                addressCard.remove();
+            }
+        }
+    </script>
+
+    // Event listener for "Edit" button click
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const editAddressButtons = document.querySelectorAll(".edit-address-btn");
+
+            editAddressButtons.forEach((button) => {
+                button.addEventListener("click", function () {
+                    const addressId = button.getAttribute("data-address-id");
+                    const fullName = button.getAttribute("data-full-name");
+                    const mobile = button.getAttribute("data-mobile");
+                    const state = button.getAttribute("data-state");
+                    const district = button.getAttribute("data-district");
+                    const city = button.getAttribute("data-city");
+                    const pincode = button.getAttribute("data-pincode");
+
+                    // Set default values for modal fields
+                    document.getElementById("addressId").value = addressId;
+                    document.getElementById("editFullName").value = fullName;
+                    document.getElementById("editMobile").value = mobile;
+                    document.getElementById("editState").value = state;
+                    document.getElementById("editDistrict").value = district;
+                    document.getElementById("editCity").value = city;
+                    document.getElementById("editPincode").value = pincode;
+
+                    // Show the modal
+                    const editAddressModal = new bootstrap.Modal(document.getElementById("editAddressModal"));
+                    editAddressModal.show();
+                });
+            });
+        });
+
+        function saveChanges() {
+            // Retrieve values from modal fields
+            const addressId = document.getElementById("addressId").value;
+            const fullName = document.getElementById("editFullName").value;
+            const mobile = document.getElementById("editMobile").value;
+            const state = document.getElementById("editState").value;
+            const district = document.getElementById("editDistrict").value;
+            const city = document.getElementById("editCity").value;
+            const pincode = document.getElementById("editPincode").value;
+
+            // Prepare the data to be sent in the request body
+            const data = {
+                addressId: addressId,
+                fullName: fullName,
+                mobile: mobile,
+                state: state,
+                district: district,
+                city: city,
+                pincode: pincode
+            };
+
+            // Perform an AJAX POST request to save changes
+            fetch("/your-save-endpoint", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Check the response from the server-side logic
+                    // If the changes are saved successfully, you can handle it here
+                    // For example, close the modal and update the UI if needed
+                    if (data.success) {
+                        const editAddressModal = new bootstrap.Modal(document.getElementById("editAddressModal"));
+                        editAddressModal.hide();
+                        // Perform additional actions if necessary, such as updating the UI
+                    } else {
+                        // Handle error scenarios if changes couldn't be saved
+                        console.error("Failed to save changes.");
+                    }
+                })
+                .catch(error => {
+                    // Handle network errors or other exceptions
+                    console.error("Error occurred while saving changes:", error);
+                });
+        }
+
+
+    </script>
+
+    
+<%- include('./layouts/footer.ejs') %>

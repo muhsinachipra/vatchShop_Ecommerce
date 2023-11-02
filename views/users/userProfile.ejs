@@ -1,0 +1,268 @@
+<%- include('./layouts/header.ejs') %>
+
+
+    <link rel="stylesheet" href="/car/userAssets/css/profile.css">
+
+
+    <main class="main">
+        <div class="page-header text-center m-t-85">
+            <div class="container">
+                <h1 class="page-title text-dark">My Account</h1>
+            </div>
+        </div>
+
+        <!-- breadcrumb -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <!-- <li class="breadcrumb-item " aria-current="page">My Account</li> -->
+                    <li class="breadcrumb-item"><a href="/userProfile">My Account</a></li>
+                </ol>
+            </div>
+        </nav>
+
+        <div class="page-content">
+            <div class="dashboard">
+                <div class="container">
+                    <div class="row">
+
+                        <aside class="col-md-4 col-lg-3">
+                            <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab"
+                                        href="#tab-dashboard" role="tab" aria-controls="tab-dashboard"
+                                        aria-selected="true">My Profile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account"
+                                        role="tab" aria-controls="tab-account" aria-selected="false">Edit Profile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-order-link" data-toggle="tab" href="#tab-order"
+                                        role="tab" aria-controls="tab-order" aria-selected="false">My Orders</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address"
+                                        role="tab" aria-controls="tab-address" aria-selected="false">Manage
+                                        Addresses</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/profile/coupons">Coupons</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/logout">Sign Out</a>
+                                </li>
+                            </ul>
+                        </aside><!-- End .col-lg-3 -->
+
+                        <div class="col-md-8 col-lg-9">
+                            <div class="tab-content">
+
+                                <!-- MY PROFILE -->
+                                <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
+                                    aria-labelledby="tab-dashboard-link">
+                                    <h6 class="text-center fs-1 font-monospace text-decoration-underline">My Profile
+                                    </h6>
+
+                                    <form action="#">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>First Name</label>
+                                                <input type="text" class="form-control" value="<%=user.firstName %>"
+                                                    disabled>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label>Last Name</label>
+                                                <input type="text" class="form-control" value="<%=user.lastName %>"
+                                                    disabled>
+                                            </div>
+                                        </div>
+
+                                        <label>Email address</label>
+                                        <input type="email" class="form-control" value="<%= user.email %>" disabled>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>Mobile Number</label>
+                                                <input type="tel" class="form-control" value="<%= user.mobileno %>"
+                                                    name="pincode" disabled>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- MY ORDERS -->
+                                <div class="tab-pane fade" id="tab-order" role="tabpanel"
+                                    aria-labelledby="tab-order-link">
+                                    <!-- <div class="row mx-auto"> -->
+                                    <div class="card col-md-5 col-10 m-2 shadow-sm" id="allorder"
+                                        style="border-radius: 7px; background: #F3F3F9; cursor: pointer;">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-center mt-1 py-4">
+                                                <i class="fa-solid fa-box-open mx-3" style="font-size: 35px;"></i>
+                                                <h5 class="m-0 align-self-center" style="font-weight: 300;">All Orders
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- MANAGE ADDRESS -->
+                                <div class="tab-pane fade" id="tab-address" role="tabpanel"
+                                    aria-labelledby="tab-address-link">
+
+
+                                    <a href="/address">
+                                        <div class="card col-md-5 col-10 m-2 shadow-sm" id="addressDiv"
+                                            style="border-radius: 7px; background: #F3F3F9; cursor: pointer;  height: 86px;">
+                                            <div class="card-body" style="height: 190px;">
+                                                <div class="d-flex justify-content-center mt-1 py-4">
+
+                                                    <h5 class="m-0 align-self-center" style="font-weight: 300;">Add New
+                                                        Address</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                    <div class="row">
+                                        <% if (address) { %>
+                                            <% for (let i=0; i < address.address.length; i++) { %>
+                                                <div class="col-md-6 col-12 mb-3 mt-3">
+                                                    <div class="card p-4"
+                                                        style="background: #F3F3F9; border-radius: 10px;">
+                                                        <div class="card-body">
+                                                            <h6 class="card-title" style="font-size: 15px;">
+                                                                <%= address.address[i].fullName %>
+                                                            </h6>
+                                                            <p class="card-text mt-3">
+                                                                Number: <%= address.address[i].mobile %>
+                                                            </p>
+                                                            <p class="card-text">
+                                                                Location: <%= address.address[i].state %>, <%=
+                                                                        address.address[i].district %>, <%=
+                                                                            address.address[i].city %>
+                                                            </p>
+                                                            <p class="card-text">
+                                                                Pincode: <%= address.address[i].pincode %>
+                                                            </p>
+
+                                                            <hr class="my-3">
+                                                            <div class="d-flex justify-content-between">
+                                                                <a href="/editAddress?id=<%= address.address[i]._id %>">
+                                                                    <button class="btn btn-outline-primary-2"
+                                                                        type="button" id="editBTN"
+                                                                        data-bs-toggle="modal" data-bs-target="">
+                                                                        Edit
+                                                                    </button>
+                                                                </a>
+                                                                <a
+                                                                    onclick="removeAddress('<%=address.address[i]._id%>')">
+                                                                    <button class="btn btn-outline-primary-2"
+                                                                        type="button" data-bs-toggle="modal"
+                                                                        data-bs-target="">
+                                                                        Remove
+                                                                    </button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                                    <% } else { %>
+                                                        <% } %>
+                                    </div>
+                                </div>
+
+                                <!-- EDIT PROFILE -->
+                                <div class="tab-pane fade" id="tab-account" role="tabpanel"
+                                    aria-labelledby="tab-account-link">
+                                    <h6 class="text-center fs-1 font-monospace text-decoration-underline">Edit Profile
+                                    </h6>
+                                    <form action="/updateUser" method="post" onsubmit="return validEditAddress()">
+                                        <div class="row">
+                                            <!-- First Name -->
+                                            <div class="col-sm-6">
+                                                <label>First Name</label>
+                                                <input type="text" class="form-control" name="Fname" id="Fname"
+                                                    value="<%=user.firstName %>">
+                                                <span id="Fname-error" class="text-danger"></span>
+                                            </div>
+                                            <!-- Last Name -->
+                                            <div class="col-sm-6">
+                                                <label>Last Name</label>
+                                                <input type="text" class="form-control" name="Lname" id="Lname"
+                                                    value="<%=user.lastName %>">
+                                                <span id="Lname-error" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <!-- Email and Mobile Number -->
+                                        <input type="email" class="form-control" name="email" value="<%= user.email %>"
+                                            disabled>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>Mobile Number</label>
+                                                <input type="text" class="form-control" name="mobile" id="mobile"
+                                                    value="<%= user.mobileno %>" name="pincode">
+                                                <span id="mobile-error" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-outline-primary-2">
+                                            <span>Save Changes</span>
+                                        </button>
+                                    </form>
+
+                                    <hr>
+                                    <h6 class="fs-1 font-monospace">Change Password</h6>
+                                    <form action="/resetPassword" method="post" onsubmit="return validatePasswords()">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label>Current Password</label>
+                                                    <input type="password" name="oldPassword" class="form-control">
+                                                    <span id="current-password-error" class="text-danger"></span>
+                                                </div><!-- End .col-sm-6 -->
+                                                <div class="col-sm-6">
+                                                    <label>Create New Password</label>
+                                                    <input type="password" name="newPassword" class="form-control">
+                                                    <span id="new-password-error" class="text-danger"></span>
+                                                </div><!-- End .col-sm-6 -->
+                                            </div><!-- End .row -->
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>Save Changes</span>
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </div><!-- .End .tab-pane -->
+                            </div>
+                        </div><!-- End .col-lg-9 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .dashboard -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+
+
+    <!-- // ================ swal ============= -->
+
+
+    <script>
+        window.onload = function () {
+            const editForm = document.querySelector('form[action="/updateUser"]');
+            const resetPasswordForm = document.querySelector('form[action="/resetPassword"]');
+
+            editForm.onsubmit = function () {
+                return validEditAddress();
+            };
+
+            resetPasswordForm.onsubmit = function () {
+                return validatePasswords();
+            };
+        };
+    </script>
+
+
+
+
+    <%- include('./layouts/footer.ejs') %>
