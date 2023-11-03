@@ -1,6 +1,6 @@
 <%- include('./layouts/header.ejs') %>
 
-	<section class="ftco-section">
+	<section class="ftco-section bg2">
 		<div class="container">
 			<!-- <div class="row justify-content-center">
 				<div class="col-md-6 text-center mb-5">
@@ -23,7 +23,8 @@
 									</p>
 								</div> -->
 							</div>
-							<form id="registration-form" action="register" class="signin-form" method="post" onsubmit="return validateForm()">
+							<form id="registration-form" action="register" class="signin-form" method="post"
+								onsubmit="return validateForm()">
 								<div class="form-group mt-3">
 									<input type="text" class="form-control" id="firstName" name="firstName" required>
 									<label class="form-control-placeholder" for="firstName">First Name</label>
@@ -41,11 +42,9 @@
 									<label class="form-control-placeholder" for="mobileno">Mobile Number</label>
 								</div>
 								<div class="form-group">
-									<input id="password" type="password" class="form-control" name="password"
-										required>
+									<input id="password" type="password" class="form-control" name="password" required>
 									<label class="form-control-placeholder" for="password">Password</label>
-									<span toggle="#password"
-										class="fa fa-fw fa-eye field-icon toggle-password"></span>
+									<span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
 								</div>
 
 								<div class="form-group">
@@ -88,6 +87,6 @@
 	</section>
 
 
-	
-	
+
+
 	<%- include('./layouts/footer.ejs') %>

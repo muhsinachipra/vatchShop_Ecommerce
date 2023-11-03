@@ -4,6 +4,7 @@ const Cart = require('../models/cartModel');
 const Category = require('../models/categoryModel');
 const Admin = require('../models/adminModel');
 const Address = require('../models/addressModel');
+const Order = require('../models/orderModel');
 
 
 const { ObjectId } = require('mongoose').Types;
@@ -191,6 +192,13 @@ module.exports = {
             console.log(error.message);
         }
     },
-
+    loadOrder: async (req, res) => {
+        try {
+            const userId = req.session.userId
+            res.render('address', { user: userId })
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
 
 }

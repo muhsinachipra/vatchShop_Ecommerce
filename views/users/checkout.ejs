@@ -1,7 +1,21 @@
 <%- include('./layouts/header.ejs') %>
+<style>
+    .payment-option {
+        background-color: #f3f3f9;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+    }
 
+    .selected-payment {
+        background-color: #007bff;
+        color: #fff;
+    }
+</style>
 
-    <div class="site-wrap">
+    <div class="site-wrap m-t-75 bg0">
+
         <div class="bg-light py-3">
             <div class="container">
                 <div class="row">
@@ -16,9 +30,11 @@
         <div class="site-section" style="padding-top: 40px">
             <div class="container">
                 <div class="row">
+
+                    <!-- main two -->
+
                     <div class="col-md-6 mb-5 mb-md-0">
                         <h2 class="h3 mb-3 text-black">Billing Details</h2>
-
                         <div class="row">
                             <% if (address) { %>
                                 <% for (let i=0; i < address.address.length; i++) { %>
@@ -26,8 +42,8 @@
                                         id="address-card-<%= address.address[i]._id %>">
                                         <div class="card p-2" style="background: #f3f3f9; border-radius: 10px">
                                             <div class="card-body">
-                                                <h6 class="card-title data-full-name " style="font-size: 15px">Name:<%=
-                                                        address.address[i].fullName %>
+                                                <h6 class="card-title data-full-name " style="font-size: 15px">Name:
+                                                    <%= address.address[i].fullName %>
                                                 </h6>
                                                 <p class="card-text  data-mobile">Number: <%= address.address[i].mobile
                                                         %>
@@ -62,9 +78,8 @@
                                         </div>
 
                                         <div>
-                                            <a href=""><button type="submit" class="btn btn-sm"
-                                                    style="background-color: black; color: white">
-                                                    Set as default
+                                            <a href=""><button type="submit" class="btn m-t-5 btn-dark">
+                                                    Use this address
                                                 </button></a>
                                         </div>
                                     </div>
@@ -76,17 +91,22 @@
 
                         <div>
                             <a href="/address">
-                                <button type="submit" class="btn btn-primary btn-sm">Add Address</button>
+                                <button type="submit" class="btn btn-primary btn-sm">Add Another Address</button>
                             </a>
                         </div>
-                        <br />
 
-                        <div class="form-group">
+                        <br>
+
+                        <!-- <div class="form-group">
                             <label for="c_order_notes" class="text-black">Order Notes</label>
                             <textarea name="c_order_notes" id="c_order_notes" cols="30" rows="5" class="form-control"
                                 placeholder="Write your notes here..."></textarea>
-                        </div>
+                        </div> -->
+
                     </div>
+
+                    <!-- main two -->
+
                     <div class="col-md-6">
                         <div class="row mb-5">
                             <div class="col-md-12">
@@ -125,27 +145,24 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="product-image mr-3">
-                                                                    <img src="<%= item.product.image %>"
-                                                                        alt="<%= item.product.name %>" />
+                                                                    <img src="<%= item.productId.productImage %>"
+                                                                        alt="<%= item.productId.productName %>" />
                                                                 </div>
                                                                 <div class="product-details">
                                                                     <h6 class="product-title">
-                                                                        <%= item.product.name %>
+                                                                        <%= item.productId.productName %>
                                                                     </h6>
-                                                                    <p class="product-description">
-                                                                        <%= item.product.description %>
-                                                                    </p>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <img src="/static/admin/Assets/images/products/<%= item.product.image?.[0] %>"
+                                                            <img src="/static/admin/Assets/images/products/<%= item.productId.productImage?.[0] %>"
                                                                 alt="ProductImage"
                                                                 style="max-width: 5rem; max-height: 5rem" />
                                                         </td>
                                                         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= item.quantity %>
                                                         </td>
-                                                        <td>₹ <%= (item.product.price * item.quantity).toFixed(2) %>
+                                                        <td>₹ <%= (item.productId.productPrice * item.quantity).toFixed(2) %>
                                                         </td>
                                                     </tr>
                                                     <% }); %>
@@ -157,33 +174,33 @@
                                         </tbody>
                                     </table>
 
-                                    //==========================================================
 
-                                    <button type="button" class="btn btn-primary edit-address-btn"
-                                        data-bs-toggle="modal" data-bs-target="#editAddressModal"
-                                        data-address-id="your-address-id">Edit Address</button>
 
-                                    ===================================================
+
 
                                     <div class="modal fade" id="editAddressModal" tabindex="-1"
                                         aria-labelledby="editAddressModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="editAddressModalLabel">Edit Address</h5>
+                                                    <h5 class="modal-title" id="editAddressModalLabel">Edit Address
+                                                    </h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <!-- Edit address form goes here -->
+
+
                                                     <input type="hidden" id="addressId">
                                                     <div class="mb-3">
-                                                        <label for="editFullName" class="form-label">Full Name</label>
+                                                        <label for="editFullName" class="form-label">Full
+                                                            Name</label>
                                                         <input type="text" class="form-control" id="editFullName"
                                                             name="editFullName" required>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="editMobile" class="form-label">Mobile Number</label>
+                                                        <label for="editMobile" class="form-label">Mobile
+                                                            Number</label>
                                                         <input type="tel" class="form-control" id="editMobile"
                                                             name="editMobile" required>
                                                     </div>
@@ -215,68 +232,23 @@
                                     </div>
 
 
-
-                                    //===========================================================
-
-                                    <div class="border p-3 mb-3">
-                                        <h3 class="h6 mb-0">
-                                            <a class="d-block" data-toggle="collapse" href="#collapsebank" role="button"
-                                                aria-expanded="false" aria-controls="collapsebank">Direct Bank
-                                                Transfer</a>
-                                        </h3>
-
-                                        <div class="collapse" id="collapsebank">
-                                            <div class="py-2">
-                                                <p class="mb-0">
-                                                    Make your payment directly into our bank account. Please use your
-                                                    Order ID
-                                                    as the payment reference. Your order won’t be shipped until the
-                                                    funds have
-                                                    cleared in our account.
-                                                </p>
-                                            </div>
-                                        </div>
+                                    <div class="mb-3 text-center ">
+                                        <button class="btn payment-option" data-payment="cash-on-delivery">Cash On
+                                            Delivery</button>
                                     </div>
 
-                                    <div class="border p-3 mb-3">
-                                        <h3 class="h6 mb-0">
-                                            <a class="d-block" data-toggle="collapse" href="#collapsecheque"
-                                                role="button" aria-expanded="false"
-                                                aria-controls="collapsecheque">Cheque Payment</a>
-                                        </h3>
-
-                                        <div class="collapse" id="collapsecheque">
-                                            <div class="py-2">
-                                                <p class="mb-0">
-                                                    Make your payment directly into our bank account. Please use your
-                                                    Order ID
-                                                    as the payment reference. Your order won’t be shipped until the
-                                                    funds have
-                                                    cleared in our account.
-                                                </p>
-                                            </div>
-                                        </div>
+                                    <div class="mb-3 text-center ">
+                                        <button class="btn payment-option" data-payment="cheque-payment">Cheque
+                                            Payment</button>
                                     </div>
 
-                                    <div class="border p-3 mb-5">
-                                        <h3 class="h6 mb-0">
-                                            <a class="d-block" data-toggle="collapse" href="#collapsepaypal"
-                                                role="button" aria-expanded="false"
-                                                aria-controls="collapsepaypal">Paypal</a>
-                                        </h3>
-
-                                        <div class="collapse" id="collapsepaypal">
-                                            <div class="py-2">
-                                                <p class="mb-0">
-                                                    Make your payment directly into our bank account. Please use your
-                                                    Order ID
-                                                    as the payment reference. Your order won’t be shipped until the
-                                                    funds have
-                                                    cleared in our account.
-                                                </p>
-                                            </div>
-                                        </div>
+                                    <div class="mb-3 text-center ">
+                                        <button class="btn payment-option" data-payment="paypal">Paypal</button>
                                     </div>
+
+
+
+
 
                                     <div class="form-group">
                                         <button class="btn btn-primary btn-lg py-3 btn-block"
@@ -288,21 +260,38 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
-                <!-- </form> -->
             </div>
         </div>
+
     </div>
 
-    <!-- Bootstrap JS library -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Popper.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
-    <!-- Bootstrap JS library -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
+
+
+
+    <script>
+        // Get all payment buttons
+        const paymentButtons = document.querySelectorAll(".payment-option");
+
+        // Add click event listeners to each button
+        paymentButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                // Remove the selected class from all buttons
+                paymentButtons.forEach(btn => {
+                    btn.classList.remove("selected-payment");
+                });
+
+                // Add the selected class to the clicked button
+                button.classList.add("selected-payment");
+
+                // Handle the selection here, e.g., store the selected payment method in a variable
+                const selectedPayment = button.getAttribute("data-payment");
+                console.log(`Selected Payment: ${selectedPayment}`);
+            });
+        });
+    </script>
 
 
     <script>
@@ -398,5 +387,5 @@
 
     </script>
 
-    
-<%- include('./layouts/footer.ejs') %>
+
+    <%- include('./layouts/footer.ejs') %>

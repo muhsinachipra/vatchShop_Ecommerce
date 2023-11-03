@@ -4,6 +4,7 @@ const Cart = require('../models/cartModel');
 const Category = require('../models/categoryModel');
 const Admin = require('../models/adminModel');
 const Address = require('../models/addressModel');
+const Order = require('../models/orderModel');
 
 
 const { ObjectId } = require('mongoose').Types;
@@ -22,7 +23,7 @@ module.exports = {
             const userData = await User.findById({ _id: userId })
             console.log(userData);
             const userAddress = await Address.findOne({ userId });
-            const cartData = await Cart.findOne({ user_id: userId }).populate('items.product');
+            const cartData = await Cart.findOne({ userId: userId }).populate('items.productId');
 
             res.render('checkout', { user: userData, address: userAddress, cart: cartData });
         } catch (error) {

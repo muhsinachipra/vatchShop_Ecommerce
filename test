@@ -1,178 +1,263 @@
-products.forEach((product) => {
-  const productPrice = parseFloat(product.dataset.price || 0);
-  const productQuantity = parseInt(product.textContent);
-  newTotal += productPrice * productQuantity;
-});
+<%- include('./layouts/header.ejs') %>
+
+    <!-- Your EJS Template -->
+    <form class="bg0 p-t-75 p-b-85">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 m-lr-auto m-b-50">
+                    <div class="m-l-25 m-r-25 m-lr-0-xl">
+                        <div class="wrap-table-shopping-cart">
+                            <table class="table-shopping-cart" style="width: 100%; overflow-x: auto;">
+                                <tr class="table_head">
+                                    <th class="column-1">Image</th>
+                                    <th class="column-2 text-center">Product Name</th>
+                                    <th class="column-3 text-center">Price</th>
+                                    <th class="column-4 text-center">Quantity</th>
+                                    <th class="column-5 text-center">Total</th>
+                                    <th class="column-6 text-center">Action</th>
+                                </tr>
+                                <tr class="table_row">
+                                    <td class="column-1">
+                                        <div class="how-itemcart1">
+                                            <img src="/public/adminAssets/assets/images/products/" alt="Product Image">
+                                        </div>
+                                    </td>
+                                    <td class="column-2 text-center"></td>
+                                    <td class="column-3 text-center"
+                                        style="justify-content: center; align-items: center;"><span
+                                            class="product-price"></span></td>
+                                    <td class="column-4">
+                                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
+                                            <div
+                                                class="btn-num-product-down fs-16.zmdi.zmdi-plus cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-minus" onclick="updateQuantity('')"></i>
+                                            </div>
+                                            <input class="mtext-104 cl3 txt-center num-product" type="number"
+                                                name="num-product" value="" readonly data-productid="">
+                                            <div
+                                                class="btn-num-product-up fs-16.zmdi.zmdi-plus cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-plus" onclick="updateQuantity('', 1, '')"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="column-5 text-center">₹<span class="product-total"
+                                            data-productid=""></span></td>
+                                    <td class="column-6 text-center">
+                                        <button class="btn btn-danger remove-from-cart-button" data-product-id=""
+                                            data-price="">Remove</button>
+                                    </td>
+                                </tr>
+                                <tr class="table_row">
+                                    <td class="column-1" colspan="6">
+                                        <h1>Your Cart is Empty</h1>
+                                        <p>Add items to your cart to see them here.</p>
+                                    </td>
+                                </tr>
+                            </table>
 
 
-products.forEach((product) => {
-  const productPrice = parseFloat(product.dataset.price || 0);
-  const productQuantity = parseInt(product.textContent);
-
-  if (isNaN(productPrice) || isNaN(productQuantity)) {
-      console.log('Invalid data: productPrice=', productPrice, 'productQuantity=', productQuantity);
-  } else {
-      newTotal += productPrice * productQuantity;
-  }
-});
-
-
-
-<style>
-    /* Add CSS to style text and lines in black */
-    .stext-301,
-    .form-check-label,
-    .stext-101,
-    .w-full {
-        color: #000;
-    }
-
-    /* Style for the line separator */
-    .line-separator {
-        border-bottom: 1px solid #000;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-</style>
-
-<!-- Checkout Page -->
-<div class="bg-white p-t-75 p-b-32">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <h2 class="stext-301 cl0 p-b-30">
-                    Checkout
-                </h2>
-                
-                <!-- Shipping Information -->
-                <div class="p-b-30">
-                    <h4 class="stext-301 cl0 p-b-20">
-                        Shipping Information
-                    </h4>
-                    <form>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="wrap-input1 w-full p-b-4">
-                                    <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="firstname" placeholder="First Name">
-                                    <div class="focus-input1 trans-04"></div>
+                        </div>
+                        <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
+                            <div class="flex-w flex-m m-r-20 m-tb-5">
+                                <input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text"
+                                    name="coupon" placeholder="Coupon Code">
+                                <div
+                                    class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
+                                    Apply coupon
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="wrap-input1 w-full p-b-4">
-                                    <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="lastname" placeholder="Last Name">
-                                    <div class="focus-input1 trans-04"></div>
-                                </div>
+                            <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"
+                                onclick="updateCart()">
+                                Update Cart
                             </div>
                         </div>
-                        <div class="wrap-input1 w-full p-b-4">
-                            <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="address" placeholder="Address">
-                            <div class="focus-input1 trans-04"></div>
-                        </div>
-                        <div class="wrap-input1 w-full p-b-4">
-                            <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="city" placeholder="City">
-                            <div class="focus-input1 trans-04"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="wrap-input1 w-full p-b-4">
-                                    <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="zip" placeholder="ZIP Code">
-                                    <div class="focus-input1 trans-04"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="wrap-input1 w-full p-b-4">
-                                    <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="country" placeholder="Country">
-                                    <div class="focus-input1 trans-04"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-t-10">
-                            <label class="stext-107 cl7">
-                                <input type="checkbox" name="shipToDifferentAddress" id="shipToDifferentAddress">
-                                Ship to a different address
-                            </label>
-                        </div>
-                        <!-- Hidden form for different shipping address -->
-                        <div id="differentAddressForm" style="display: none;">
-                            <h4 class="stext-301 cl0 p-b-20">
-                                Different Shipping Address
-                            </h4>
-                            <div class="wrap-input1 w-full p-b-4">
-                                <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="differentAddress" placeholder="Different Address">
-                                <div class="focus-input1 trans-04"></div>
-                            </div>
-                            <!-- Add more fields as needed -->
-                        </div>
-                    </form>
+                    </div>
                 </div>
-                
-                <!-- Payment Information -->
-                <div class="p-b-30">
-                    <h4 class="stext-301 cl0 p-b-20">
-                        Payment Information
-                    </h4>
-                    <form>
-                        <!-- Payment options -->
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="paymentMethod" value="cashOnDelivery">
-                                Cash on Delivery
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="paymentMethod" value="paypal">
-                                PayPal
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="paymentMethod" value="razorpay">
-                                Razorpay
-                            </label>
-                        </div>
-                    </form>
-                </div>
-                
-                <!-- Order Summary -->
-                <div class="p-b-30">
-                    <h4 class="stext-301 cl0 p-b-20">
-                        Order Summary
-                    </h4>
-                    <!-- Display order summary here -->
-                    <!-- You can use a loop to list the items in the cart and calculate the total -->
-                </div>
-                
             </div>
-            <div class="col-md-4">
-                <!-- Order Total -->
-                <div class="p-b-30">
-                    <h4 class="stext-301 cl0 p-b-20">
-                        Order Total
-                    </h4>
-                    <!-- Display the order total and any additional charges here -->
-                </div>
-                <!-- Proceed to Payment Button -->
-                <div class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
-                    Proceed to Payment
+            <div class="row">
+                <div class="col-lg-12 m-lr-auto m-b-50">
+                    <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-63 m-lr-0-xl p-lr-15-sm">
+                        <h4 class="mtext-109 cl2 p-b-30">
+                            Cart Totals
+                        </h4>
+                        <div class="flex-w flex-t bor12 p-b-13">
+                            <div class="size-208">
+                                <span class="stext-110 cl2">
+                                    Subtotal:
+                                </span>
+                            </div>
+                            <div class="size-209" id="totalPrice">
+                                <span class="mtext-110 cl2"></span>
+                            </div>
+                        </div>
+                        <div class="flex-w flex-t p-t-27 p-b-33">
+                            <div class="size-208">
+                                <span class="mtext-101 cl2">
+                                    Total:
+                                </span>
+                            </div>
+                            <div class="size-209 p-t-1" id="cartPrice">
+                                <span class="mtext-110 cl2"></span>
+                            </div>
+                        </div>
+                        <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"><a
+                                href="/checkout0" style="color: aliceblue;">
+                                Proceed to Checkout</a>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </form>
 
-<script>
-    // Show/hide different shipping address form
-    const shipToDifferentAddressCheckbox = document.getElementById('shipToDifferentAddress');
-    const differentAddressForm = document.getElementById('differentAddressForm');
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 
-    shipToDifferentAddressCheckbox.addEventListener('change', function () {
-        if (shipToDifferentAddressCheckbox.checked) {
-            differentAddressForm.style.display = 'block';
-        } else {
-            differentAddressForm.style.display = 'none';
+    <script>
+        const debouncedUpdateQuantity = _.debounce(updateQuantity, 5);
+
+        function updateQuantity(productId, change, index) {
+            const quantityInput = document.querySelector(`[name="num-product${productId}"]`);
+            const updateButton = document.querySelector(`.fs-16.zmdi.zmdi-plus[onclick="updateQuantity('${productId}', 1, '${index}')"]`);
+            const productTotalElement = document.querySelector(`.product-total[data-productid="${productId}"]`);
+
+            quantityInput.disabled = true;
+            updateButton.disabled = true;
+
+            fetch(`/update_quantity/${productId}/${change}`, {
+                method: 'PATCH',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        productTotalElement.textContent = `${data.cart.items[index].total}`;
+                        const totalPriceElement = document.getElementById('totalPrice');
+                        totalPriceElement.textContent = `${data.cart.totalPrice}`;
+                    } else {
+                        Swal.fire(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    Swal.fire('An error occurred while updating the quantity.');
+                })
+                .finally(() => {
+                    quantityInput.disabled = false;
+                    updateButton.disabled = false;
+                });
         }
-    });
-</script>
+
+        function updateCart() {
+            fetch('/update_cart', {
+                method: 'PATCH',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const totalPriceElement = document.getElementById('cartPrice');
+                        totalPriceElement.textContent = data.cart.totalPrice;
+                    } else {
+                        Swal.fire(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    Swal.fire('An error occurred while updating the cart.');
+                });
+        }
+    </script>
+
+    <script>
+
+        document.querySelectorAll('.remove-from-cart-button').forEach(button => {
+            button.addEventListener('click', async (event) => {
+                event.preventDefault(); // Prevent the default behavior (page navigation)
+
+                const productId = event.target.getAttribute('data-product-id');
+                const price = event.target.getAttribute('data-price');
+                const rowToRemove = event.target.closest('.table_row'); // Find the row to remove
+
+                try {
+                    const response = await fetch(`/cart_remove?id=${productId}&price=${price}`, {
+                        method: 'GET'
+                    });
+
+                    if (response.ok) {
+                        // Item removed successfully, remove the row from the cart UI
+                        rowToRemove.remove();
+                        Swal.fire("Item removed from cart") // Remove the row from the cart table
+                        // You can also update the total price in the UI if needed
+                    } else {
+                        // Handle errors or display a message to the user
+                        const data = await response.json();
+                        console.log('Error: ' + data.message);
+                    }
+                } catch (error) {
+                    // Handle fetch errors
+                    console.log('Error: ' + error.message);
+                }
+            });
+        });
+    </script>
 
 
+
+
+    <%- include('./layouts/footer.ejs') %>
+
+
+
+
+
+       
+
+
+             
+    </div>
+    <!-- <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
+        <div class="flex-w flex-m m-r-20 m-tb-5">
+            <input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text" name="coupon" placeholder="Coupon Code">
+            <div class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
+                Apply coupon
+            </div>
+        </div>
+        <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10" onclick="updateCart()">
+            Update Cart
+        </div>
+    </div> -->
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-lg-12 m-lr-auto m-b-50">
+<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-63 m-lr-0-xl p-lr-15-sm">
+    <h4 class="mtext-109 cl2 p-b-30">
+        Cart Totals
+    </h4>
+    <div class="flex-w flex-t bor12 p-b-13">
+        <div class="size-208">
+            <span class="stext-110 cl2">
+                Subtotal:
+            </span>
+        </div>
+        <div class="size-209" id="totalPrice">
+            <span class="mtext-110 cl2"></span>
+        </div>
+    </div>
+    <div class="flex-w flex-t p-t-27 p-b-33">
+        <div class="size-208">
+            <span class="mtext-101 cl2">
+                Total:
+            </span>
+        </div>
+        <div class="size-209 p-t-1" id="cartPrice">
+            <span class="mtext-110 cl2"></span>
+        </div>
+    </div>
+    <button  class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"><a href="/checkout" style="color: aliceblue;">
+        Proceed to Checkout</a>
+    </button>
+</div>
+</div>
+</div>
+</div>
+</form>
