@@ -261,3 +261,497 @@
 </div>
 </div>
 </form>
+
+
+
+
+<!-- checkout page virgin -->
+
+<%- include('./layouts/header.ejs') %>
+    <style>
+        /* .payment-option {
+            background-color: #f3f3f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .selected-payment {
+            background-color: #429cfd;
+            color: #fff;
+        } */
+
+        /* Example custom CSS for the modal */
+        /* .modal-content {
+            background-color: #e7e7e7;
+            border: 2px solid #444444;
+        }
+
+        .modal-title {
+            color: #007BFF;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .btn-primary {
+            background-color: #007BFF;
+            color: #fff;
+        } */
+
+        /* to highlight the address */
+        /* .highlighted-address {
+            border: 2px solid #007bff;
+            /* You can change the border style to match your design */
+            /* background-color: #f0f8ff; */
+            /* You can change the background color to match your design */
+        /* } */
+    </style>
+
+    <form action="/checkout" method="post">
+        <div class="site-wrap m-t-75 bg0">
+
+            <div class="bg-light py-3">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 mb-0">
+                            <a href="/">Home</a> <span class="mx-2 mb-0">/</span> <a href="/cart">Cart</a>
+                            <span class="mx-2 mb-0">/</span> <strong class="text-black">Checkout</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="site-section" style="padding-top: 40px">
+                <div class="container">
+                    <div class="row">
+
+                        <!-- main two -->
+
+                        <div class="col-md-6 mb-5 mb-md-0">
+                            <h2 class="h3 mb-3 text-black">Billing Details</h2>
+                            <div class="row">
+                                <div class="col-md-12 col-12">
+                                    <p>Choose One Address</p>
+                                </div>
+                                <% if (address) { %>
+                                    <% for (let i=0; i < address.address.length; i++) { %>
+
+
+
+                                        <div class="col-md-6 col-12 mb-3 mt-3 address-options"
+                                            id="address-card-<%= address.address[i]._id %>">
+                                            <div class="card p-2" style="background: #f3f3f9; border-radius: 10px">
+                                                <div class="card-body">
+                                                    <h6 class="card-title data-full-name " style="font-size: 15px">
+                                                        Name:
+                                                        <%= address.address[i].fullName %>
+                                                    </h6>
+                                                    <p class="card-text  data-mobile">Number: <%=
+                                                            address.address[i].mobile %>
+                                                    </p>
+                                                    <p class="card-text  data-district">District: <%=
+                                                            address.address[i].district %>
+                                                    </p>
+                                                    <p class="card-text  data-city">City:<%= address.address[i].city %>
+                                                    </p>
+                                                    <p class="card-text  data-state">State: <%= address.address[i].state
+                                                            %>
+                                                    </p>
+                                                    <p class="card-text">Pincode: <%= address.address[i].pincode %>
+                                                    </p>
+
+                                                    <!-- <hr class="my-3" /> -->
+
+                                                    <!-- <div class="d-flex justify-content-between">
+                                                    <button class="btn btn-outline-primary-2 edit-address-btn"
+                                                        type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#editAddressModal"
+                                                        data-address-id="<%= address.address[i]._id %>">
+                                                        Edit
+                                                    </button>
+                                                    
+
+                                                    <a onclick="removeAddress('<%=address.address[i]._id%>')">
+                                                        <button class="btn btn-outline-primary-2" type="button"
+                                                            data-bs-toggle="modal" data-bs-target="">
+                                                            Remove
+                                                        </button>
+                                                    </a>
+                                                </div> -->
+
+                                                </div>
+                                                <input type="radio" name="addressOption"
+                                                value="<%= address.address[i]._id %>" required>
+                                            </div>
+
+
+                                        </div>
+
+                                        <% } %>
+                                            <% } else { %>
+                                                <% } %>
+                            </div>
+
+                            <div>
+                                <a href="/address">
+                                    <button type="submit" class="btn btn-primary btn-sm">Add Another Address</button>
+                                </a>
+                            </div>
+
+                            <br>
+
+                            <!-- <div class="form-group">
+                            <label for="c_order_notes" class="text-black">Order Notes</label>
+                            <textarea name="c_order_notes" id="c_order_notes" cols="30" rows="5" class="form-control"
+                                placeholder="Write your notes here..."></textarea>
+                        </div> -->
+
+                        </div>
+
+                        <!-- main two -->
+
+                        <div class="col-md-6">
+                            <div class="row mb-5">
+                                <div class="col-md-12">
+                                    <h2 class="h3 mb-3 text-black">Coupon Code</h2>
+                                    <div class="p-3 p-lg-5 border">
+                                        <label for="c_code" class="text-black mb-3">Enter your coupon code if you have
+                                            one</label>
+                                        <div class="input-group w-75">
+                                            <input type="text" class="form-control" id="c_code"
+                                                placeholder="Coupon Code" aria-label="Coupon Code"
+                                                aria-describedby="button-addon2" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary btn-sm" type="button" id="button-addon2">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-5">
+                                <div class="col-md-12">
+                                    <h2 class="h3 mb-3 text-black">Your Order</h2>
+                                    <div class="p-3 p-lg-5 border">
+                                        <table class="table site-block-order-table mb-5">
+                                            <thead>
+                                                <th>Product</th>
+                                                <th>Image</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                            </thead>
+                                            <tbody>
+                                                <% if (cart && cart.items && cart.items.length> 0) { %>
+                                                    <% cart.items.forEach((item)=> { %>
+                                                        <tr>
+
+                                                            <td>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="product-details">
+                                                                        <h6 class="product-title">
+                                                                            <%= item.productId.productName %>
+                                                                        </h6>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+
+                                                            <td>
+                                                                <img src="/car/adminAssets/assets/images/products/<%= item.productId.productImage?.[0] %>"
+                                                                    alt="ProductImage"
+                                                                    style="max-width: 5rem; max-height: 5rem" />
+                                                            </td>
+
+                                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= item.quantity %>
+                                                            </td>
+
+                                                            <td>₹ <%= (item.productId.productPrice *
+                                                                    item.quantity).toFixed(2) %>
+                                                            </td>
+
+                                                        </tr>
+                                                        <% }); %>
+                                                            <% } else { %>
+                                                                <tr>
+                                                                    <td colspan="4">Your cart is empty.</td>
+                                                                </tr>
+                                                                <% } %>
+                                            </tbody>
+                                        </table>
+
+
+                                        <!-- edit modal -->
+
+
+                                        <!-- <div class="modal fade" id="editAddressModal" tabindex="-1"
+                                        aria-labelledby="editAddressModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editAddressModalLabel">Edit Address
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+
+
+                                                    <input type="hidden" id="addressId">
+                                                    <div class="mb-3">
+                                                        <label for="editFullName" class="form-label">Full
+                                                            Name</label>
+                                                        <input type="text" class="form-control" id="editFullName"
+                                                            name="editFullName" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editMobile" class="form-label">Mobile
+                                                            Number</label>
+                                                        <input type="tel" class="form-control" id="editMobile"
+                                                            name="editMobile" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editState" class="form-label">State</label>
+                                                        <input type="text" class="form-control" id="editState"
+                                                            name="editState" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editDistrict" class="form-label">District</label>
+                                                        <input type="text" class="form-control" id="editDistrict"
+                                                            name="editDistrict" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editCity" class="form-label">City</label>
+                                                        <input type="text" class="form-control" id="editCity"
+                                                            name="editCity" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="editPincode" class="form-label">Pincode</label>
+                                                        <input type="text" class="form-control" id="editPincode"
+                                                            name="editPincode" required>
+                                                    </div>
+                                                    <button type="button" class="btn btn-primary"
+                                                        onclick="saveChanges()">Save Changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+
+
+
+
+
+
+
+
+
+                                        <!-- <div class="mb-3 text-center ">
+                                        <button class="btn payment-option" data-payment="cash-on-delivery">Cash On
+                                            Delivery</button>
+                                    </div>
+
+                                    <div class="mb-3 text-center ">
+                                        <button class="btn payment-option" data-payment="cheque-payment">Cheque
+                                            Payment</button>
+                                    </div>
+
+                                    <div class="mb-3 text-center ">
+                                        <button class="btn payment-option" data-payment="paypal">Paypal</button>
+                                    </div> -->
+
+
+
+
+                                        <div class="payment-options">
+                                            <h2>Select Payment Option</h2>
+                                            <label>
+                                                <input type="radio" name="paymentOption" value="COD" required> Cash On
+                                                Delivery
+                                            </label>
+                                            <br>
+                                            <label>
+                                                <input type="radio" name="paymentOption" value="Other" required> Cheque
+                                                Payment
+                                            </label>
+                                            <br>
+                                            <label>
+                                                <input type="radio" name="paymentOption" value="PayPal" required> Paypal
+                                            </label>
+                                        </div>
+
+
+
+
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-lg py-3 btn-block">
+                                                Place Order
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- <script>
+        // Store the currently selected address ID
+        let selectedAddressId = null;
+
+        // Get all the address cards
+        const addressCards = document.querySelectorAll('.address-card2');
+
+        // Attach a click event listener to each address card
+        addressCards.forEach(card => {
+            card.addEventListener('click', function () {
+                const addressId = this.id.split('-')[2];
+
+                // Clear the highlight from the previously selected address
+                if (selectedAddressId) {
+                    const previousSelectedCard = document.getElementById(`address-card-${selectedAddressId}`);
+                    if (previousSelectedCard) {
+                        previousSelectedCard.classList.remove('highlighted-address');
+                    }
+                }
+
+                // Highlight the selected address
+                this.classList.add('highlighted-address');
+
+                // Update the selected address ID
+                selectedAddressId = addressId;
+            });
+        });
+    </script> -->
+
+
+
+
+    <!-- payment button selection indicator -->
+    <!-- <script>
+        // Get all payment buttons
+        const paymentButtons = document.querySelectorAll(".payment-option");
+
+        // Add click event listeners to each button
+        paymentButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                // Remove the selected class from all buttons
+                paymentButtons.forEach(btn => {
+                    btn.classList.remove("selected-payment");
+                });
+
+                // Add the selected class to the clicked button
+                button.classList.add("selected-payment");
+
+                // Handle the selection here, e.g., store the selected payment method in a variable
+                const selectedPayment = button.getAttribute("data-payment");
+                console.log(`Selected Payment: ${selectedPayment}`);
+            });
+        });
+    </script> -->
+
+
+    <!-- <script>
+        function removeAddress(addressId) {
+            // Remove the address card from the DOM
+            const addressCard = document.getElementById(`address-card-${addressId}`);
+            if (addressCard) {
+                addressCard.remove();
+            }
+        }
+    </script> -->
+
+    <!-- Event listener for Edit button click -->
+
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const editAddressButtons = document.querySelectorAll(".edit-address-btn");
+
+            editAddressButtons.forEach((button) => {
+                button.addEventListener("click", function () {
+                    const addressId = button.getAttribute("data-address-id");
+                    const fullName = button.getAttribute("data-full-name");
+                    const mobile = button.getAttribute("data-mobile");
+                    const state = button.getAttribute("data-state");
+                    const district = button.getAttribute("data-district");
+                    const city = button.getAttribute("data-city");
+                    const pincode = button.getAttribute("data-pincode");
+
+                    // Set default values for modal fields
+                    document.getElementById("addressId").value = addressId;
+                    document.getElementById("editFullName").value = fullName;
+                    document.getElementById("editMobile").value = mobile;
+                    document.getElementById("editState").value = state;
+                    document.getElementById("editDistrict").value = district;
+                    document.getElementById("editCity").value = city;
+                    document.getElementById("editPincode").value = pincode;
+
+                    // Show the modal
+                    const editAddressModal = new bootstrap.Modal(document.getElementById("editAddressModal"));
+                    editAddressModal.show();
+                });
+            });
+        });
+
+        function saveChanges() {
+            // Retrieve values from modal fields
+            const addressId = document.getElementById("addressId").value;
+            const fullName = document.getElementById("editFullName").value;
+            const mobile = document.getElementById("editMobile").value;
+            const state = document.getElementById("editState").value;
+            const district = document.getElementById("editDistrict").value;
+            const city = document.getElementById("editCity").value;
+            const pincode = document.getElementById("editPincode").value;
+
+            // Prepare the data to be sent in the request body
+            const data = {
+                addressId: addressId,
+                fullName: fullName,
+                mobile: mobile,
+                state: state,
+                district: district,
+                city: city,
+                pincode: pincode
+            };
+
+            // Perform an AJAX POST request to save changes
+            fetch("/your-save-endpoint", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Check the response from the server-side logic
+                    // If the changes are saved successfully, you can handle it here
+                    // For example, close the modal and update the UI if needed
+                    if (data.success) {
+                        const editAddressModal = new bootstrap.Modal(document.getElementById("editAddressModal"));
+                        editAddressModal.hide();
+                        // Perform additional actions if necessary, such as updating the UI
+                    } else {
+                        // Handle error scenarios if changes couldn't be saved
+                        console.error("Failed to save changes.");
+                    }
+                })
+                .catch(error => {
+                    // Handle network errors or other exceptions
+                    console.error("Error occurred while saving changes:", error);
+                });
+        }
+
+
+    </script> -->
+
+
+    <%- include('./layouts/footer.ejs') %>
+
+<!-- checkout page virgin -->

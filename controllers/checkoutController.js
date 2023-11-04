@@ -30,5 +30,48 @@ module.exports = {
             console.log(error.message);
             res.status(500).send('Internal Server Error');
         }
+    },
+    placeOrder: async (req, res) => {
+        try {
+            // Get the user's ID from the authenticated user (assuming you have implemented user authentication)
+            const userId = req.session.userId;
+
+            // Retrieve the selected address ID from the request body
+            const selectedAddressId = req.body.addressOption;
+
+            // Get the user's cart data (assuming you have a cart system implemented)
+            const cart = await Cart.findOne({ userId: userId }).populate('items.productId');
+
+            // Calculate the total order amount based on the cart contents
+            let totalAmount = 0;
+            for (const item of cart.items) {
+                totalAmount += item.productId.productPrice * item.quantity;
+            }
+
+            // Create the order document
+            const order = new Order({
+                user: userId,
+                cart: {
+                    user: userId,
+                    products: cart.items,
+                },
+                deliveryAddress: selectedAddressId,
+                paymentOption: req.body.paymentOption, // Get the selected payment option from the request
+                totalAmount: totalAmount,
+            });
+
+            // Save the order to the database
+            await order.save();
+
+            // Clear the user's cart (you should implement a cart clearing mechanism)
+            // For example, you can update the user's cart in the User model or a dedicated Cart model
+
+            // Update the user's order history (you should implement this as needed)
+
+            // Respond with a success message
+            res.redirect('/thankyou')
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 }

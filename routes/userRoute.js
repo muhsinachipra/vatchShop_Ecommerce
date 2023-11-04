@@ -58,7 +58,8 @@ user_route.get('/editAddress',auth.isUserLogin,profileController.loadEditAddress
 user_route.post('/editAddress',auth.isUserLogin,profileController.editAddress);
 user_route.delete('/deleteAddress',profileController.deleteAddress);
 
-user_route.get("/checkout", checkoutController.loadCheckout);
+user_route.get("/checkout",auth.isUserLogin, checkoutController.loadCheckout);
+user_route.post("/checkout",auth.isUserLogin, checkoutController.placeOrder);
 
 
 module.exports=user_route
