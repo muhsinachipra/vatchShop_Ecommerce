@@ -84,18 +84,41 @@ module.exports = {
     editProduct: async (req, res) => {
         try {
             const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand } = req.body;
-            const productImage = []
-            for (let i = 0; i < req.files.length; i++) {
-                productImage[i] = req.files[i].filename
+    
+            // Retrieve the existing product data
+            const existingProduct = await Product.findById(id);
+    
+            // Create an array to store the updated product images
+            const updatedProductImages = [];
+    
+            // Iterate over the product images and check if they are updated
+            for (let i = 0; i < existingProduct.productImage.length; i++) {
+                if (req.files[i]) {
+                    // If an updated image is available, use it
+                    updatedProductImages.push(req.files[i].filename);
+                } else {
+                    // Otherwise, keep the existing image
+                    updatedProductImages.push(existingProduct.productImage[i]);
+                }
             }
+    
             await Product.findByIdAndUpdate(id, {
-                $set: { productName, productDescription, productCategory, productImage, productStock, productPrice, productBrand }
+                $set: {
+                    productName,
+                    productDescription,
+                    productCategory,
+                    productImage: updatedProductImages,
+                    productStock,
+                    productPrice,
+                    productBrand,
+                }
             });
             res.redirect('/admin/viewProduct');
         } catch (error) {
             console.log(error.message);
         }
     },
+    
 
     loadUserProducts: async (req, res) => {
 

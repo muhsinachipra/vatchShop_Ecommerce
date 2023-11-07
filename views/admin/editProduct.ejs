@@ -58,9 +58,9 @@
                                     </div>
                                     <br>
 
-                                    
-                                    
-                                    <div class="form-row">
+
+
+                                    <!-- <div class="form-row">
                                         <label for="">File upload (Multiple Images)</label>
                                     </div>
                                     <div class="form-row">
@@ -78,12 +78,36 @@
                                         </div>
                                     </div>
                                     <br>
-                                    <div class="message-container"></div>
+                                    <div class="message-container"></div> -->
+
+
+                                    <!-- NEW IMAGE EDIT -->
+                                    <div class="row">
+                                        <% for (var i=0; i < product.productImage.length; i++) { %>
+                                            <div class="col-md-6 col-xl-4">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">Image<%= i+1 %>
+                                                        </h4>
+                                                        <div class="item">
+                                                            <img src="/car/adminAssets/assets/images/products/<%= product.productImage[i] %>"
+                                                                alt="" class="img-responsive"
+                                                                style="max-width: 100%; height: auto;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <input type="file" name="productImage" class="form-control">
+                                            </div>
+                                            <% } %>
+                                    </div>
+                                    <!-- NEW IMAGE EDIT -->
+
+
 
 
                                     <br>
 
-                                    <div class="col-md-6 col-xl-4 grid-margin stretch-card">
+                                    <!-- <div class="col-md-6 col-xl-4 grid-margin stretch-card">
                                         <div class="card">
                                             <div class="card-body">
                                                 <h4 class="card-title">Existing Images</h4>
@@ -98,11 +122,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
 
 
-                                    
+
                                     <br>
                                     <div class="input-container">
                                         <input type="hidden" name="id" value="<%= product._id %>">
