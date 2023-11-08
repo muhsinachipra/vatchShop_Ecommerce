@@ -26,6 +26,11 @@ const orderSchema = new mongoose.Schema({
                 type: Number,
                 default: 0,
             },
+            status: {
+                type: String,
+                enum: ['Placed', 'Shipped', 'Delivered', 'Cancelled'],
+                default: 'Placed',
+            }
         }],
     },
     deliveryAddress: {
@@ -45,17 +50,7 @@ const orderSchema = new mongoose.Schema({
     orderDate: {
         type: Date,
         default: Date.now,
-    },
-    isCanceled: {
-        type: Boolean,
-        default: false
-    },
-    orderStatus: {
-        type: String,
-        enum: ['pending', 'shipped', 'delivered'],
-        default: 'pending'
     }
-    // You can add more fields as needed, such as order items, order status, etc.
 });
 
 // Create and export the Order model

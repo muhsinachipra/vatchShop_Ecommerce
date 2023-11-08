@@ -1,14 +1,14 @@
 <%- include('./layouts/header.ejs') %>
 
-
-    <form action="/checkout" method="post">
+    <form id="checkoutForm" action="/checkout" method="post" onsubmit="return validateCheckoutForm();">
         <div class="site-wrap m-t-75 bg0">
             <div class="bg-light py-3">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 mb-0">
-                            <a href="/">Home</a> <span class="mx-2 mb-0">/</span> <a href="/cart">Cart</a>
-                            <span class="mx-2 mb-0">/</span> <strong class="text-black">Checkout</strong>
+                            <a href="/">Home</a> <span class="mx-2 mb-0">/</span>
+                            <a href="/cart">Cart</a> <span class="mx-2 mb-0">/</span>
+                            <strong class="text-black">Checkout</strong>
                         </div>
                     </div>
                 </div>
@@ -16,7 +16,6 @@
             <div class="site-section" style="padding-top: 40px">
                 <div class="container">
                     <div class="row">
-
                         <!-- main two -->
 
                         <div class="col-md-6 mb-5 mb-md-0">
@@ -31,42 +30,43 @@
                                             id="address-card-<%= address.address[i]._id %>">
                                             <div class="card p-2" style="background: #f3f3f9; border-radius: 10px">
                                                 <div class="card-body">
-                                                    <h6 class="card-title data-full-name " style="font-size: 15px">
-                                                        Name:
-                                                        <%= address.address[i].fullName %>
+                                                    <h6 class="card-title data-full-name" style="font-size: 15px">
+                                                        Name: <%= address.address[i].fullName %>
                                                     </h6>
-                                                    <p class="card-text  data-mobile">Number: <%=
-                                                            address.address[i].mobile %>
+                                                    <p class="card-text data-mobile">
+                                                        Number: <%= address.address[i].mobile %>
                                                     </p>
-                                                    <p class="card-text  data-district">District: <%=
-                                                            address.address[i].district %>
+                                                    <p class="card-text data-district">
+                                                        District: <%= address.address[i].district %>
                                                     </p>
-                                                    <p class="card-text  data-city">City:<%= address.address[i].city %>
+                                                    <p class="card-text data-city">
+                                                        City:<%= address.address[i].city %>
                                                     </p>
-                                                    <p class="card-text  data-state">State: <%= address.address[i].state
-                                                            %>
+                                                    <p class="card-text data-state">
+                                                        State: <%= address.address[i].state %>
                                                     </p>
-                                                    <p class="card-text">Pincode: <%= address.address[i].pincode %>
+                                                    <p class="card-text">
+                                                        Pincode: <%= address.address[i].pincode %>
                                                     </p>
-
-
                                                 </div>
                                                 <input type="radio" name="addressOption"
-                                                    value="<%= address.address[i]._id %>" required>
+                                                    value="<%= address.address[i]._id %>" required />
                                             </div>
                                         </div>
 
                                         <% } %>
                                             <% } else { %>
                                                 <% } %>
+
+
                             </div>
 
                             <div>
-                                <a href="/address">
-                                    <button type="submit" class="btn btn-primary btn-sm">Add Another Address</button>
+                                <a href="/checkoutAddress">
+                                    <button id="addAddressButton" class="btn btn-primary btn-sm">Add Address</button>
                                 </a>
                             </div>
-                            <br>
+                            <br />
                         </div>
 
                         <!-- main two -->
@@ -104,10 +104,9 @@
                                                 <th>Price</th>
                                             </thead>
                                             <tbody>
-                                                <% if (cart && cart.items && cart.items.length> 0) { %>
-                                                    <% cart.items.forEach((item)=> { %>
+                                                <% if (cart && cart.items && cart.items.length> 0) { %> <%
+                                                        cart.items.forEach((item)=> { %>
                                                         <tr>
-
                                                             <td>
                                                                 <div class="d-flex align-items-center">
                                                                     <div class="product-details">
@@ -124,13 +123,14 @@
                                                                     style="max-width: 5rem; max-height: 5rem" />
                                                             </td>
 
-                                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= item.quantity %>
+                                                            <td>
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= item.quantity %>
                                                             </td>
 
-                                                            <td>₹ <%= (item.productId.productPrice *
+                                                            <td>
+                                                                ₹ <%= (item.productId.productPrice *
                                                                     item.quantity).toFixed(2) %>
                                                             </td>
-
                                                         </tr>
                                                         <% }); %>
                                                             <% } else { %>
@@ -144,17 +144,18 @@
                                         <div class="payment-options">
                                             <h3>Select Payment Option</h3>
                                             <label>
-                                                <input type="radio" name="paymentOption" value="COD" required> Cash On
-                                                Delivery
+                                                <input type="radio" name="paymentOption" value="COD" required />
+                                                Cash On Delivery
                                             </label>
-                                            <br>
+                                            <br />
                                             <label>
-                                                <input type="radio" name="paymentOption" value="Other" required> Cheque
-                                                Payment
+                                                <input type="radio" name="paymentOption" value="Other" required />
+                                                Cheque Payment
                                             </label>
-                                            <br>
+                                            <br />
                                             <label>
-                                                <input type="radio" name="paymentOption" value="PayPal" required> Paypal
+                                                <input type="radio" name="paymentOption" value="PayPal" required />
+                                                Paypal
                                             </label>
                                         </div>
 
@@ -173,5 +174,43 @@
         </div>
     </form>
 
+    <script>
+        document
+            .getElementById("addAddressButton")
+            .addEventListener("click", function (event) {
+                // Prevent the form submission
+                event.preventDefault();
+                // Redirect to the address adding page
+                window.location.href = "/checkoutAddress";
+            });
+    </script>
+
+    <script>
+        function validateCheckoutForm() {
+            // Check if at least one address option is selected
+            const addressOptions = document.querySelectorAll(
+                'input[name="addressOption"]'
+            );
+            let isAddressSelected = false;
+
+            addressOptions.forEach((option) => {
+                if (option.checked) {
+                    isAddressSelected = true;
+                }
+            });
+
+            if (!isAddressSelected) {
+                // No address is selected, show a SweetAlert message
+                Swal.fire({
+                    title: "Please add an address before placing the order.",
+                    icon: "error",
+                });
+
+                return false; // Prevent the form from submitting
+            }
+
+            return true; // Allow the form to submit
+        }
+    </script>
 
     <%- include('./layouts/footer.ejs') %>

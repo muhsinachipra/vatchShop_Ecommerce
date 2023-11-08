@@ -106,7 +106,7 @@
                                         </div>
                                     </div>
 
-                                    
+
                                 </div>
 
                                 <!-- MANAGE ADDRESS -->
@@ -262,6 +262,31 @@
                 return validatePasswords();
             };
         };
+
+        function removeAddress(id) {
+            console.log(id);
+            $.ajax({
+                url: '/deleteAddress',
+                method: 'delete',
+                data: { id },
+                success: (response) => {
+                    console.log(response)
+                    if (response.remove == 1) {
+                        Swal.fire({
+
+                            title: 'Success!',
+                            text: 'address removed!',
+                            icon: 'success',
+                            timer: 2000
+
+                        }).then(() => {
+                            location.reload();
+                        });
+                    }
+                }
+            });
+        }
+        
     </script>
 
 

@@ -1,0 +1,62 @@
+<%- include('./layouts/header.ejs') %>
+
+
+<form class="bg2" action="/checkoutAddAddress" method="post" onsubmit="return validAddress()">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 m-t-90">
+                <h2 class="checkout-title mb-3">Add Address</h2>
+                <div class="form-group">
+                    <label for="company-name">Full Name</label>
+                    <input type="text" class="form-control" id="fullName" name="fullName">
+                    <p id="name-error" style="color: red;"></p>
+                </div>
+  
+                <div class="form-group">
+                    <label for="phone">Mobile Number</label>
+                    <input type="tel" class="form-control" id="phone" name="mobile">
+                    <p id="mobile-error" style="color: red;"></p>
+                </div>
+  
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="state-county">State</label>
+                            <input type="text" class="form-control" id="state" name="state">
+                            <p id="state-error" style="color: red;"></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="country">District</label>
+                            <input type="text" class="form-control" id="district" name="district">
+                            <p id="district-error" style="color: red;"></p>
+                        </div>
+                    </div>
+                </div>
+  
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="town-city">City</label>
+                            <input type="text" class="form-control" id="city" name="city">
+                            <p id="city-error" style="color: red;"></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="postcode">Pincode</label>
+                            <input type="text" class="form-control" id="pinCode" name="pincode">
+                            <p id="pincode-error" style="color: red;"></p>
+                        </div>
+                    </div>
+                    <div class="col-12 text-center mb-3">
+                        <button type="submit" class="btn btn-dark">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </form>
+
+<%- include('./layouts/footer.ejs') %>
