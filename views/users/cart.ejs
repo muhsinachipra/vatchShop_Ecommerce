@@ -1,5 +1,6 @@
 <%- include('./layouts/header.ejs') %>
 
+
     <!-- breadcrumb -->
     <div class="container pt-5">
         <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
@@ -22,80 +23,93 @@
                 <div class="col-lg-12 m-lr-auto m-b-50">
                     <div class="m-l-25 m-r-25 m-lr-0-xl">
                         <div class="wrap-table-shopping-cart">
+
+
                             <table class="table-shopping-cart" style="width: 100%; overflow-x: auto;">
-                                <tr class="table_head">
-                                    <th class="column-1">Product</th>
-                                    <th class="column-2"></th>
-                                    <th class="column-3">Price</th>
-                                    <th class="column-4">Quantity</th>
-                                    <th class="column-5">Total</th>
-                                    <th class="column-5"></th>
-                                </tr>
+                                <thead>
+
+                                    <tr class="table_head">
+                                        <th class="column-1">Product</th>
+                                        <th class="column-2"></th>
+                                        <th class="column-3">Price</th>
+                                        <th class="column-4">Quantity</th>
+                                        <th class="column-5">Total</th>
+                                        <th class="column-5"></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <% if (cart && cart.length> 0) { %>
+                                        <% cart.forEach((data, index)=> { %>
+
+                                            <tr class="table_row">
+                                                <td class="column-1">
+                                                    <div class="how-itemcart1">
+                                                        <img src="/car/adminAssets/assets/images/products/<%=data.productId.productImage[0]%>"
+                                                            alt="IMG">
+                                                    </div>
+
+                                                </td>
+                                                <td class="column-2">
+                                                    <%=data.productId.productName%>
+                                                </td>
+                                                <td class="column-3">₹ <%=data.productId.productPrice%>
+                                                </td>
+                                                <td class="column-4">
+                                                    <div class="wrap-num-product flex-w m-l-auto m-r-0">
 
 
-                                <% if (cart && cart.length> 0) { %>
-                                    <%cart.forEach((data,index)=>{%>
-                                        <tr class="table_row">
-                                            <td class="column-1">
-                                                <div class="how-itemcart1">
-                                                    <img src="/car/adminAssets/assets/images/products/<%=data.productId.productImage[0]%>"
-                                                        alt="IMG">
-                                                </div>
+                                                        <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn"
+                                                            onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)">-</a>
+                                                        <span class="mtext-104 cl3 txt-center num-product p-2"
+                                                            id="<%=data.productId._id%>"
+                                                            data-price="<%=data.productId.productPrice%>">
+                                                            <%=data.quantity%>
+                                                        </span>
+                                                        <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn "
+                                                            onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)">+</a>
 
 
-
-
-                                            </td>
-                                            <td class="column-2">
-                                                <%=data.productId.productName%>
-                                            </td>
-                                            <td class="column-3">₹ <%=data.productId.productPrice%>
-                                            </td>
-                                            <td class="column-4">
-                                                <div class="wrap-num-product flex-w m-l-auto m-r-0">
-
-
-                                                    <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn"
-                                                        onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)">-</a>
-                                                    <span class="mtext-104 cl3 txt-center num-product p-2"
-                                                        id="<%=data.productId._id%>"
-                                                        data-price="<%=data.productId.productPrice%>">
-                                                        <%=data.quantity%>
+                                                    </div>
+                                                </td>
+                                                <td class="column-5" id="subtotal-<%=data.productId._id%>"
+                                                    data-price="<%=data.productId.productPrice%>">
+                                                    ₹ <span id="subtotal-<%=data.productId._id%>">
+                                                        <%= (parseFloat(data.productId.productPrice) *
+                                                            data.quantity).toFixed(2) %>
                                                     </span>
-                                                    <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn "
-                                                        onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)">+</a>
+                                                </td>
 
+                                                <td class="product-remove">
+                                                    <a class=" btn  text-black "
+                                                        onclick="removeProduct('<%=data.productId._id%>')">Remove</a>
+                                                </td>
+                                            </tr>
 
-                                                </div>
-                                            </td>
-                                            <td class="column-5" id="subtotal-<%=data.productId._id%>"
-                                                data-price="<%=data.productId.productPrice%>">
-                                                ₹ <span id="subtotal-<%=data.productId._id%>">
-                                                    <%= (parseFloat(data.productId.productPrice) *
-                                                        data.quantity).toFixed(2) %>
-                                                </span>
-                                            </td>
-
-                                            <td class="product-remove">
-                                                <a class=" btn  text-black "
-                                                    onclick="removeProduct('<%=data.productId._id%>')">Remove</a>
-                                            </td>
-                                        </tr>
-                                        <% }) %>
-                                            <% } else { %>
-                                                <tr>
-                                                    <td colspan="4">Cart is empty</td>
+                                            <% if (data.quantity> data.productId.productStock) { %>
+                                                <tr class="out-of-stock-message">
+                                                    <td colspan="5">
+                                                        <p class="text-danger">Out of stock: <%=
+                                                                data.productId.productName %>
+                                                        </p>
+                                                    </td>
                                                 </tr>
                                                 <% } %>
+                                                    <% }) %>
+                                                        <% } else { %>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td colspan="5" style="color: red;">Cart is empty</td>
 
-
-
+                                                            </tr>
+                                                            <% } %>
+                                </tbody>
 
                             </table>
 
                         </div>
-
-
 
                     </div>
                 </div>
@@ -120,8 +134,6 @@
                             </div>
                         </div>
 
-
-
                         <div class="flex-w flex-t p-t-27 p-b-33">
                             <div class="size-208">
                                 <span class="mtext-101 cl2">
@@ -135,7 +147,6 @@
                                 </span>
                             </div>
                         </div>
-
 
                         <% if(cart==0){ %>
                             <a href="/productView">
@@ -155,7 +166,6 @@
 
                     </div>
                 </div>
-
 
             </div>
         </div>
@@ -188,42 +198,10 @@
                         },
                     }).done((data) => {
                         if (data.success) {
-                            // Remove the corresponding row from the table
-                            const rowToRemove = document.querySelector(`.cart-item[data-product-id="${proId}"]`);
-                            if (rowToRemove) {
-                                rowToRemove.remove();
-                            }
 
-                            // Update the total on the page
                             updateTotal();
+                            location.reload();
 
-                            // Check if the cart is empty and display the empty cart message
-                            const cartItems = document.querySelectorAll('.cart-item');
-                            const emptyCartMessage = document.querySelector('.empty-cart-message');
-
-                            if (cartItems.length === 0) {
-                                // If there are no cart items, hide both the tbody and thead
-                                const tbody = document.querySelector('tbody');
-                                const thead = document.querySelector('thead');
-                                if (tbody) {
-                                    tbody.style.display = 'none';
-                                }
-                                if (thead) {
-                                    thead.style.display = 'none';
-                                }
-                               
-                                // Display the empty cart message
-                                if (emptyCartMessage) {
-                                    emptyCartMessage.style.display = 'block';
-                                }
-                            }
-
-                            // Optionally, update other UI elements or take additional actions
-                            Swal.fire(
-                                'Removed!',
-                                'Your product has been removed.',
-                                'success'
-                            );
                         } else {
                             // Handle unsuccessful removal
                             Swal.fire(
