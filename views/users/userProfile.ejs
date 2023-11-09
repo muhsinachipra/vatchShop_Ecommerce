@@ -8,6 +8,11 @@
         <div class="page-header text-center m-t-85">
             <div class="container">
                 <h1 class="page-title text-dark">My Account</h1>
+                <% if(error){ %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                    <% } %>
             </div>
         </div>
 
@@ -91,23 +96,58 @@
                                     </form>
                                 </div>
 
+
                                 <!-- MY ORDERS -->
                                 <div class="tab-pane fade" id="tab-order" role="tabpanel"
                                     aria-labelledby="tab-order-link">
-                                    <!-- <div class="row mx-auto"> -->
-                                    <div class="card col-md-5 col-10 m-2 shadow-sm" id="allorder"
-                                        style="border-radius: 7px; background: #F3F3F9; cursor: pointer;">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-center mt-1 py-4">
-                                                <i class="fa-solid fa-box-open mx-3" style="font-size: 35px;"></i>
-                                                <h5 class="m-0 align-self-center" style="font-weight: 300;">All Orders
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <!-- <h6 class="text-center fs-1 font-monospace text-decoration-underline">My Orders</h6> -->
 
-
+                                    <table class="table table-hover table-secondary">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>Order ID</th>
+                                                <th>Order Date</th>
+                                                <th>Expected Delivery</th>
+                                                <th>Total Amount</th>
+                                                <th>Order Details</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Loop through user's orders and generate table rows -->
+                                            <% if (orders && orders.length> 0) { %>
+                                                <% orders.forEach(order=> { %>
+                                                    <tr class="text-center">
+                                                        <td>
+                                                            <%= order._id %>
+                                                        </td>
+                                                        <td>
+                                                            <%= order.orderDate.toDateString() %>
+                                                        </td>
+                                                        <td>
+                                                            <%= order.expectedDelivery.toDateString() %>
+                                                        </td>
+                                                        <td>
+                                                            ₹ <%= order.totalAmount %>
+                                                        </td>
+                                                        <td>
+                                                            <a href="/orderdetails/<%= order._id %>" class="btn-small d-block">View</a>
+                                                        </td>
+                                                    </tr>
+                                                    <% }); %>
+                                                        <% } else { %>
+                                                            <tr class="text-center">
+                                                                <td colspan="4">No orders found.
+                                                                </td>
+                                                            </tr>
+                                                            <% } %>
+                                        </tbody>
+                                    </table>
                                 </div>
+
+
+
+
+
 
                                 <!-- MANAGE ADDRESS -->
                                 <div class="tab-pane fade" id="tab-address" role="tabpanel"
@@ -286,7 +326,7 @@
                 }
             });
         }
-        
+
     </script>
 
 

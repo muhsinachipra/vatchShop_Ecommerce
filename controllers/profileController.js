@@ -21,11 +21,19 @@ module.exports = {
             const id = req.session.userId
             const userData = await User.findById({ _id: id })
             const userAddress = await Address.findOne({ userId: id })
+            const orderData = await Order.find({ 'user': id }).sort({ orderDate: -1 });
 
-            res.render('userProfile', { user: userData, address: userAddress })
+            // Check if userData is not null or undefined
+            if (userData) {
+                res.render('userProfile', { user: userData, address: userAddress, orders: orderData, error: null });
+            } else {
+                console.log('User Data is null or undefined');
+                res.render('userProfile', { user: id, orders: [], error: 'User Data is null or undefined' });
+            }
 
         } catch (error) {
             console.log(error);
+            res.render('userProfile', { user: req.session.userId, address: null, orders: [], error: 'Error fetching user data' });
         }
     },
     userLogout: async (req, res) => {
@@ -196,6 +204,13 @@ module.exports = {
         try {
             const userId = req.session.userId
             res.render('address', { user: userId })
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+    loadOrderDetails: async (req, res) => {
+        try {
+            res.render('orderDetails')
         } catch (error) {
             console.log(error.message);
         }

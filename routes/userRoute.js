@@ -62,6 +62,9 @@ user_route.get("/checkout",auth.isUserLogin, checkoutController.loadCheckout);
 user_route.post("/checkout",auth.isUserLogin, checkoutController.placeOrder);
 user_route.get('/checkoutAddress',auth.isUserLogin,checkoutController.checkoutLoadAddress);
 user_route.post('/checkoutAddAddress',auth.isUserLogin,checkoutController.checkoutAddAddress);
+user_route.get("/thankyou",auth.isUserLogin, checkoutController.loadThankyou);
+
+user_route.get('/orderdetails/:orderId',auth.isUserLogin,profileController.loadOrderDetails);
 
 
 module.exports=user_route

@@ -1,0 +1,17 @@
+"Pending Topics:
+remove alert show error in page 
+Name should be alphabet
+password need to be strong(1 capital,1 small,1 number ,1 special character)
+never reset the form
+user data need to save to database then trigger otp
+user blocking not working
+product management not completed in both user and admin
+duplicate category
+validation needed in code
+
+Next Week Updation:
+User Side:
+: Proceed to checkout(Add address)
+: Place order with Cash on Delivery(Address selection)
+: User profile( show orders,  cancel orders,)
+Admin Side: List orders, change order status, cancel orders

@@ -170,8 +170,15 @@ const loadEditCatogory = async (req, res) => {
 const editCategory = async (req, res) => {
     try {
         const { id, categoryName, categoryDescription } = req.body;
-        await Category.findByIdAndUpdate(id, { $set: { categoryName, categoryDescription } });
-        res.redirect('/admin/viewCategory');
+
+        const already = await Category.findOne({ categoryName: { $regex: categoryName, '$options': 'i' } })
+        if (already) {
+            res.render('editCategory', { message: "Category Already Created", category: { categoryName, categoryDescription } });
+        } else {
+            await Category.findByIdAndUpdate(id, { $set: { categoryName, categoryDescription } });
+            res.redirect('/admin/viewCategory');
+        }
+
     } catch (error) {
         console.log(error.message);
     }

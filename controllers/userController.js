@@ -36,27 +36,34 @@ const loadRegister = async (req, res) => {
 
 const verifyLogin = async (req, res) => {
     try {
-        const email = req.body.email
-        const password = req.body.password
+        const email = req.body.email;
+        const password = req.body.password;
 
+        const userData = await User.findOne({ email: email });
 
-        const userData = await User.findOne({ email: email })
         if (userData) {
-            const passwordMatch = await bcrypt.compare(password, userData.password)
+            const passwordMatch = await bcrypt.compare(password, userData.password);
+
             if (passwordMatch) {
-                req.session.userId = userData._id
-                res.render('userHome')
+                if (userData.isBlocked) {
+                    // If the user is blocked, display an error message or redirect to a blocked page.
+                    res.render('login', { message: "Your account is blocked. Please contact support for assistance." });
+                } else {
+                    // Set the session for a non-blocked user.
+                    req.session.userId = userData._id;
+                    res.render('userHome');
+                }
             } else {
-                res.render('login', { message: "incorrect email or password" })
+                res.render('login', { message: "Incorrect email or password" });
             }
         } else {
-            res.render('login', { message: "incorrect email or password" })
+            res.render('login', { message: "Incorrect email or password" });
         }
-
     } catch (error) {
         console.log(error.message);
     }
 }
+
 
 
 

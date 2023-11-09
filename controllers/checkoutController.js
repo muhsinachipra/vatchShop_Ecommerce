@@ -44,49 +44,6 @@ module.exports = {
             res.status(500).send('Internal Server Error');
         }
     },
-    placeOrder: async (req, res) => {
-        try {
-            // Get the user's ID from the authenticated user (assuming you have implemented user authentication)
-            const userId = req.session.userId;
-
-            // Retrieve the selected address ID from the request body
-            const selectedAddressId = req.body.addressOption;
-
-            // Get the user's cart data (assuming you have a cart system implemented)
-            const cart = await Cart.findOne({ userId: userId }).populate('items.productId');
-
-            // Calculate the total order amount based on the cart contents
-            let totalAmount = 0;
-            for (const item of cart.items) {
-                totalAmount += item.productId.productPrice * item.quantity;
-            }
-
-            // Create the order document
-            const order = new Order({
-                user: userId,
-                cart: {
-                    user: userId,
-                    products: cart.items,
-                },
-                deliveryAddress: selectedAddressId,
-                paymentOption: req.body.paymentOption, // Get the selected payment option from the request
-                totalAmount: totalAmount,
-            });
-
-            // Save the order to the database
-            await order.save();
-
-            // Clear the user's cart (you should implement a cart clearing mechanism)
-            // For example, you can update the user's cart in the User model or a dedicated Cart model
-
-            // Update the user's order history (you should implement this as needed)
-
-            // Respond with a success message
-            res.redirect('/thankyou')
-        } catch (error) {
-            console.log(error.message);
-        }
-    },
     checkoutLoadAddress: async (req, res) => {
         try {
             const userId = req.session.userId
@@ -135,15 +92,10 @@ module.exports = {
         try {
             const { addressOption, paymentOption } = req.body;
             const userId = req.session.userId;
-            
+
             // Fetch cart items
-            const cartItems = await Cart.findOne({ user: userId }).populate({
-                path: 'items.productId',
-                model: 'Product',
-            });
-            
-            totalAmount = cartItems.items.productId.productPrice * items.quantity
-            console.log(`totalAmount: ${totalAmount}`)
+            const cartItems = await Cart.findOne({ userId: userId }).populate('items.productId');
+
 
             // Check if the cart is empty or cartItems is null
             if (!cartItems || !cartItems.items || !Array.isArray(cartItems.items) || cartItems.items.length === 0) {
@@ -154,6 +106,13 @@ module.exports = {
                 });
             }
 
+            // Calculate the total order amount based on the cart contents
+            let totalAmount = 0;
+            for (const item of cartItems.items) {
+                totalAmount += item.productId.productPrice * item.quantity;
+            }
+            console.log(`totalAmount: ${totalAmount}`)
+
             // Parse totalAmount as a number
             const numericTotal = parseFloat(totalAmount);
 
@@ -162,7 +121,20 @@ module.exports = {
                 'address._id': addressOption,
             });
 
-            if (!addressDetails || !mongoose.Types.ObjectId.isValid(addressOption)) {
+
+            // Calculate the expected delivery date (7 days from now)
+            const today = new Date();
+            const deliveryDate = new Date(today);
+            deliveryDate.setDate(today.getDate() + 7);
+
+            // Extract the date, month, and year from the deliveryDate
+            const deliveryDay = deliveryDate.getDate();
+            const deliveryMonth = deliveryDate.getMonth()
+            const deliveryYear = deliveryDate.getFullYear();
+
+
+
+            if (!addressDetails || !ObjectId.isValid(addressOption)) {
                 console.log('Invalid or not found address ID.');
                 return res.status(400).json({
                     success: false,
@@ -174,6 +146,14 @@ module.exports = {
             const selectedAddress = addressDetails.address.find(
                 (address) => address._id.toString() === addressOption
             );
+
+            if (!selectedAddress) {
+                console.log('Invalid or not found address ID.');
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid or not found address ID. Unable to place an order.',
+                });
+            }
 
             // Create a new order with status 'Placed' and set product statuses
             const newOrder = new Order({
@@ -187,17 +167,11 @@ module.exports = {
                         status: 'Placed', // Set the initial status for each product as 'Placed'
                     })),
                 },
-                deliveryAddress: {
-                    fullname: selectedAddress.fullName,
-                    mobile: selectedAddress.mobile,
-                    city: selectedAddress.city,
-                    state: selectedAddress.state,
-                    district: selectedAddress.district,
-                    pin: selectedAddress.pincode,
-                },
+                deliveryAddress: selectedAddress._id, // Use the ObjectId of the selected address
                 paymentOption: paymentOption,
                 totalAmount: numericTotal,
                 orderDate: new Date(),
+                expectedDelivery: new Date(deliveryYear, deliveryMonth, deliveryDay) // Set the expected delivery date with only date, month, and year
             });
 
             // Save the order to the database
@@ -233,13 +207,21 @@ module.exports = {
             }
 
             // Clear the user's cart
-            await Cart.findOneAndUpdate({ user: userId }, { $set: { items: [] } });
+            await Cart.findOneAndUpdate({ userId: userId }, { $set: { items: [] } });
 
             // Redirect to the orderplaced route
             res.redirect('/thankyou');
         } catch (error) {
             console.error(error);
             res.status(500).json({ success: false, message: 'Failed to place the order' });
+        }
+    },
+    loadThankyou: async (req, res) => {
+        try {
+            const userId = req.session.userId
+            res.render('thankyou', { user: userId })
+        } catch (error) {
+            console.log(error.message);
         }
     }
 }

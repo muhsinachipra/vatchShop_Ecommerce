@@ -31,6 +31,10 @@ module.exports = {
                     return res.status(404).json({ error: 'Product not found' });
                 }
 
+                if (productData.productStock == 0) {
+                    console.log('Out of stock');
+                    return res.json({ outofstock: true });
+                }
                 // Fetch user's cart
                 let userCart = await Cart.findOne({ userId: userId });
 
