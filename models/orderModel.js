@@ -7,36 +7,52 @@ const orderSchema = new mongoose.Schema({
         ref: 'User', // Reference to the User model
         required: true,
     },
-    cart: {
-        user: {
+    products: [{
+        productId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'Product',
+            required: true,
         },
-        products: [{
-            productId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'product',
-                required: true,
-            },
-            quantity: {
-                type: Number,
-                default: 1,
-            },
-            price: {
-                type: Number,
-                default: 0,
-            },
-            status: {
-                type: String,
-                enum: ['Placed', 'Shipped', 'Delivered', 'Cancelled'],
-                default: 'Placed',
-            }
-        }],
-    },
+        quantity: {
+            type: Number,
+            default: 1,
+        },
+        price: {
+            type: Number,
+            default: 0,
+        },
+        status: {
+            type: String,
+            enum: ['Placed', 'Shipped', 'Delivered', 'Cancelled', 'Out for delivery'],
+            default: 'Placed',
+        }
+    }],
     deliveryAddress: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Address', // Reference to the Address model
-        required: true,
+        
+        fullName: {
+            type: String,
+            required: true,
+        },
+        mobile: {
+            type: Number,
+            required: true,
+        },
+        pincode: {
+            type: Number,
+            required: true,
+        },
+        state: {
+            type: String,
+            required: true,
+        },
+        district: {
+            type: String,
+            required: true,
+        },
+        city: {
+            type: String,
+            required: true,
+        },
     },
     paymentOption: {
         type: String,
@@ -51,9 +67,9 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    expectedDelivery:{
-      type:Date,
-      required:true
+    expectedDelivery: {
+        type: Date,
+        required: true
     }
 });
 

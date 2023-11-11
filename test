@@ -1067,3 +1067,700 @@ placeOrder: async (req, res) => {
       </tbody>
   </table>
 </div>
+
+
+<!-- order details page -->
+
+<%- include('./layouts/header.ejs') %>
+
+    <style>
+        .gradient-custom {
+            /* fallback for old browsers */
+            background: #cd9cf2;
+
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1));
+
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1))
+        }
+    </style>
+
+    <div class="mt-5">
+        <section class="h-100 gradient-custom">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-lg-10 col-xl-8">
+                        <div class="card" style="border-radius: 10px;">
+                            <div class="card-header px-4 py-5">
+                                <h5 class="text-muted mb-0">Thanks for your Order, <span
+                                        style="color: #a8729a;">Anna</span>!</h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <p class="lead fw-normal mb-0" style="color: #a8729a;">Receipt</p>
+                                    <p class="small text-muted mb-0">Receipt Voucher : 1KAU9-84UIL</p>
+                                </div>
+                                <div class="card shadow-0 border mb-4">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/13.webp"
+                                                    class="img-fluid" alt="Phone">
+                                            </div>
+                                            <div
+                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0">Samsung Galaxy</p>
+                                            </div>
+                                            <div
+                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0 small">White</p>
+                                            </div>
+                                            <div
+                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0 small">Capacity: 64GB</p>
+                                            </div>
+                                            <div
+                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0 small">Qty: 1</p>
+                                            </div>
+                                            <div
+                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0 small">$499</p>
+                                            </div>
+                                        </div>
+                                        <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
+                                        <div class="row d-flex align-items-center">
+                                            <div class="col-md-2">
+                                                <p class="text-muted mb-0 small">Track Order</p>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="progress" style="height: 6px; border-radius: 16px;">
+                                                    <div class="progress-bar" role="progressbar"
+                                                        style="width: 65%; border-radius: 16px; background-color: #a8729a;"
+                                                        aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <div class="d-flex justify-content-around mb-1">
+                                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Out for delivary</p>
+                                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Delivered</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card shadow-0 border mb-4">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/1.webp"
+                                                    class="img-fluid" alt="Phone">
+                                            </div>
+                                            <div
+                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0">iPad</p>
+                                            </div>
+                                            <div
+                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0 small">Pink rose</p>
+                                            </div>
+                                            <div
+                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0 small">Capacity: 32GB</p>
+                                            </div>
+                                            <div
+                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0 small">Qty: 1</p>
+                                            </div>
+                                            <div
+                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0 small">$399</p>
+                                            </div>
+                                        </div>
+                                        <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
+                                        <div class="row d-flex align-items-center">
+                                            <div class="col-md-2">
+                                                <p class="text-muted mb-0 small">Track Order</p>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="progress" style="height: 6px; border-radius: 16px;">
+                                                    <div class="progress-bar" role="progressbar"
+                                                        style="width: 20%; border-radius: 16px; background-color: #a8729a;"
+                                                        aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <div class="d-flex justify-content-around mb-1">
+                                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Out for delivary</p>
+                                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Delivered</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between pt-2">
+                                    <p class="fw-bold mb-0">Order Details</p>
+                                    <p class="text-muted mb-0"><span class="fw-bold me-4">Total</span> $898.00</p>
+                                </div>
+
+                                <div class="d-flex justify-content-between pt-2">
+                                    <p class="text-muted mb-0">Invoice Number : 788152</p>
+                                    <p class="text-muted mb-0"><span class="fw-bold me-4">Discount</span> $19.00</p>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <p class="text-muted mb-0">Invoice Date : 22 Dec,2019</p>
+                                    <p class="text-muted mb-0"><span class="fw-bold me-4">GST 18%</span> 123</p>
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-5">
+                                    <p class="text-muted mb-0">Recepits Voucher : 18KU-62IIK</p>
+                                    <p class="text-muted mb-0"><span class="fw-bold me-4">Delivery Charges</span> Free
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card-footer border-0 px-4 py-5"
+                                style="background-color: #a8729a; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                                <h5
+                                    class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">
+                                    Total
+                                    paid: <span class="h2 mb-0 ms-2">$1040</span></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <%- include('./layouts/footer.ejs') %>
+
+<!-- order details page -->
+
+
+<script>
+    loadOrder: async (req, res) => {
+        try {
+            const userId = req.session.user_id
+            const userData = await userDb.findById({ _id: userId })
+            const id = req.query.id;
+            console.log(id);
+            const orderedProduct = await orderDb.findOne({ _id: id }).populate(
+                "products.productId"
+            );
+            const cart = await cartDb.findOne({ user: req.session.user_id });
+            let cartCount = 0;
+            if (cart) {
+                cartCount = cart.products.length;
+            }
+            res.render("orderDetails", {
+                user: userData,
+                orders: orderedProduct,
+                cartCount,
+            });
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+</script>
+
+
+<script>
+    loadOrderDetails: async (req, res) => {
+        try {
+            const userId = req.session.userId
+            const userData = await User.findById({ _id: userId })
+            const orderId = req.params.orderId
+            console.log(`order id = ${orderId}`)
+
+            const order = await Order.findOne({ _id: orderId }).populate(
+                "products.productId",
+                'deliveryAddress'
+            );
+
+            // Access the order details
+            const { deliveryAddress, paymentOption, totalAmount, orderDate, status } = order;
+
+
+            const cartData = await Cart.findOne({ userId: userId });
+
+            // let cartCount = 0;
+            // if (cartData) {
+            //     cartCount = cartData.items.length;
+            // }
+
+            res.render("orderDetails", {
+                user: userData,
+                order: { 
+                    _id: order._id,
+                    user: order.user,
+                    deliveryAddress,
+                    paymentOption,
+                    totalAmount,
+                    orderDate,
+                    status,
+                  }
+            });
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+</script>
+
+
+<!-- admin controller -->
+<script>
+
+    const Admin = require('../models/adminModel');
+const User = require('../models/userModel');
+const Category = require('../models/categoryModel');
+const bcrypt = require('bcrypt');
+
+
+module.exports = {
+
+    loadLogin: async (req, res) => {
+        try {
+            res.render('login')
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+    verifyLogin: async (req, res) => {
+        try {
+
+            const email = req.body.email
+            const password = req.body.password
+
+            const adminData = await Admin.findOne({ email: email })
+            if (adminData) {
+                const passwordMatch = await bcrypt.compare(password, adminData.password)
+                if (passwordMatch) {
+                    if (adminData.isAdmin === 0) {
+                        res.render('login', { message: "email or password is incorrect" })
+                    } else {
+                        req.session.admin_id = adminData._id;
+                        res.redirect("/admin/dashboard")
+                    }
+                } else {
+                    res.render('login', { message: "email or password is incorrect" })
+                }
+            }
+            else {
+                res.render('login', { message: "email or password is incorrect" })
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+    loadDashboard: async (req, res) => {
+        try {
+            res.render("dashboard")
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+    loadUsers: async (req, res) => {
+        try {
+            const user = await User.find({})
+            res.render("Users", { users: user })
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+    blockUser: async (req, res) => {
+        try {
+            //   const page = req.query.page || 1; // Get the current page from query parameters
+            //   const pageSize = 10; // Set your desired page size
+
+            const id = req.query.id;
+            //   const skip = (page - 1) * pageSize;
+            const user1 = await User.findById(id)
+
+            if (user1) {
+                user1.isBlocked = !user1.isBlocked
+                await user1.save();
+
+            }
+
+            //   const users2 = await User.find().skip(skip).limit(pageSize);
+            //   const totalUsers = await User.countDocuments();
+            //   const totalPages = Math.ceil(totalUsers / pageSize);
+
+            res.redirect('/admin/Users')
+
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    loadAddCategory: async (req, res) => {
+        try {
+            res.render('addCategory')
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+    addCategory: async (req, res) => {
+        try {
+            const { categoryName } = req.body
+            const already = await Category.findOne({ categoryName: { $regex: categoryName, '$options': 'i' } })
+            if (already) {
+                res.render('addCategory', { message: "Category Already Created" })
+            } else {
+                //  const data=new Category({
+                //     categoryname:categoryname,
+                //     isListed:true
+                //  })
+
+                const category = await new Category({
+                    ...req.body,
+                    isListed: true
+                });
+
+                const result = await category.save()
+                res.redirect('/admin/addCategory')
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    loadViewCategory: async (req, res) => {
+        try {
+            const category = await Category.find({})
+            res.render('viewCategory', { category: category })
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+    unlistCategory: async (req, res) => {
+        try {
+            const id = req.query.id;
+            const Category1 = await Category.findById(id);
+
+            if (Category1) {
+                Category1.isListed = !Category1.isListed;
+                await Category1.save();
+            }
+            res.redirect('/admin/viewCategory')
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    loadEditCatogory: async (req, res) => {
+        try {
+            const id = req.query.id;
+            const categorydata = await Category.findById(id);
+
+            if (categorydata) {
+                res.render('editCategory', { category: categorydata });
+            } else {
+                res.redirect('/admin/viewCategory');
+            }
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Internal Server Error');
+        }
+    },
+    editCategory: async (req, res) => {
+        try {
+            const { id, categoryName, categoryDescription } = req.body;
+
+            const already = await Category.findOne({ categoryName: { $regex: categoryName, '$options': 'i' } })
+            if (already) {
+                res.render('editCategory', { message: "Category Already Created", category: { categoryName, categoryDescription } });
+            } else {
+                await Category.findByIdAndUpdate(id, { $set: { categoryName, categoryDescription } });
+                res.redirect('/admin/viewCategory');
+            }
+
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+}
+
+</script>
+
+<!-- admin controller -->
+
+
+
+<!-- user controller -->
+<script>
+const User = require('../models/userModel');
+const Product = require('../models/productModel');
+const nodemailer = require('nodemailer');
+const bcrypt = require('bcrypt');
+const otpGenerator = require("otp-generator")
+
+const securePassword = async (password) => {
+    try {
+        const passwordHash = await bcrypt.hash(password, 10);
+        return passwordHash;
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const loginLoad = async (req, res) => {
+    try {
+        res.render('login')
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const loadRegister = async (req, res) => {
+    try {
+
+        res.render('registration.ejs');
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const verifyLogin = async (req, res) => {
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+
+        const userData = await User.findOne({ email: email });
+
+        if (userData) {
+            const passwordMatch = await bcrypt.compare(password, userData.password);
+
+            if (passwordMatch) {
+                if (userData.isBlocked) {
+                    // If the user is blocked, display an error message or redirect to a blocked page.
+                    res.render('login', { message: "Your account is blocked. Please contact support for assistance." });
+                } else {
+                    // Set the session for a non-blocked user.
+                    req.session.userId = userData._id;
+                    res.render('userHome');
+                }
+            } else {
+                res.render('login', { message: "Incorrect email or password" });
+            }
+        } else {
+            res.render('login', { message: "Incorrect email or password" });
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+
+
+
+// const insertUser = async (req,res) =>{
+
+//     try {
+//         const spassword = await securePassword(req.body.password)
+//         const user = new User({
+//             firstName:req.body.firstName,
+//             lastName:req.body.lastName,
+//             email:req.body.email,
+//             password:spassword,
+//         });
+
+//     const userData = await user.save();
+
+//         if(userData) {
+//             res.render('registration', {message: "Your registration has been successfully."});
+//         }
+//         else{
+//             res.render('registration', {message: "Your registration has been failed."});
+//         }
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }
+
+
+const loadHome = async (req, res) => {
+    try {
+        const pro = await Product.find()
+        res.render('userHome', { product: pro })
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const userLogout = async (req, res) => {
+    try {
+        req.session.destroy()
+        res.redirect('/')
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const loadOtp = async (req, res) => {
+    try {
+        res.render('otp')
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const otpSent = async (email, otp) => {
+    try {
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
+            requireTLS: true,
+            auth: {
+                user: 'muhsinachipra@gmail.com',
+                pass: 'azen vizj yufk ekkt',
+            },
+        });
+
+        const mailOptions = {
+            from: 'muhsinachipra@gmail.com',
+            to: email,
+            subject: 'Verify Your Email',
+            html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
+        };
+
+        await transporter.sendMail(mailOptions);
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const insertUser = async (req, res) => {
+    try {
+        // Generate OTP
+        const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
+
+        // Store OTP and its creation time in the session
+        const currentTime = new Date();
+        const otpCreationTime = currentTime.getMinutes()
+        req.session.otp = {
+            code: otp,
+            creationTime: otpCreationTime,
+        };
+
+        const { passwordConfirm, password, mobileno, email, lastName, firstName } = req.body
+        req.session.email = email
+        const userCheck = await User.findOne({ email });
+        if (userCheck) {
+            res.render('registration', { message: "Email already exists" });
+        } else {
+            const hashedPassword = await securePassword(password);
+
+
+
+            if (firstName && email && lastName && mobileno) {
+                if (password === passwordConfirm) {
+                    const user = new User({
+                        firstName,
+                        lastName,
+                        email,
+                        mobileno,
+                        password: hashedPassword
+                    });
+                    const result = await user.save();
+
+                    // Send OTP to the user's email
+                    otpSent(email, req.session.otp.code);
+                    res.render("otp");
+                } else {
+                    res.render("registration", { message: "Password doesn't match" });
+                }
+            } else {
+                res.render("registration", { message: "Please enter all details" });
+            }
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+
+
+const verifyOTP = async (req, res) => {
+    try {
+        const enteredOTP = req.body.otp;
+        const storedOTP = req.session.otp.code;
+        const otpCreationTime = req.session.otp.creationTime;
+        const email = req.session.email
+        // Calculate the time difference in seconds
+        const currentTimeFull = new Date();
+        const currentTime = currentTimeFull.getMinutes()
+
+        const timeDiff = (currentTime - otpCreationTime);
+
+        if (enteredOTP === storedOTP && timeDiff <= 1) {
+            // OTP is valid and within the 1-minute window
+
+
+            const user = await User.findOne({ email: email });
+
+            if (user) {
+                // Update the user's document to set "isVerified" to true
+                user.isVerified = true;
+                const updatedUser = await user.save();
+
+                if (updatedUser) {
+                    res.render('login', { message: "Registration successful" });
+                } else {
+                    res.render('otp', { message: "Error updating user data" });
+                }
+            } else {
+                res.render('otp', { message: "User not found" });
+            }
+        } else {
+            res.render('otp', { message: "Invalid OTP or OTP has expired" });
+        }
+
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+const resendOTP = async (req, res) => {
+    try {
+        // Generate a new OTP and resend it to the user's email
+        const newOTP = otpGenerator.generate(6, { upperCase: false, specialChars: false });
+        req.session.otp.code = newOTP;
+        // Update the OTP creation time
+        const currentTime = new Date();
+        req.session.otp.creationTime = currentTime.getMinutes()
+        // Send the new OTP to the user's email
+        otpSent(req.session.email, req.session.otp.code);
+
+        res.render("otp", { message: "OTP resent successfully" });
+
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+
+module.exports = {
+    loginLoad,
+    verifyLogin,
+    insertUser,
+    loadRegister,
+    loadHome,
+    userLogout,
+    loadOtp,
+    otpSent,
+    verifyOTP,
+    resendOTP
+}
+</script>
+<!-- user controller -->

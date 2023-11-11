@@ -185,7 +185,6 @@ module.exports = {
     deleteAddress: async (req, res) => {
         try {
 
-
             let userAddress = await Address.findOne({ userId: req.session.userId });
             const addressToDeleteIndex = userAddress.address.findIndex(
                 (address) => address.id === req.body.id
@@ -200,20 +199,5 @@ module.exports = {
             console.log(error.message);
         }
     },
-    loadOrder: async (req, res) => {
-        try {
-            const userId = req.session.userId
-            res.render('address', { user: userId })
-        } catch (error) {
-            console.log(error.message);
-        }
-    },
-    loadOrderDetails: async (req, res) => {
-        try {
-            res.render('orderDetails')
-        } catch (error) {
-            console.log(error.message);
-        }
-    }
-
+    
 }

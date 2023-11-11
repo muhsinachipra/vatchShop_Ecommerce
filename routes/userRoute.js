@@ -27,6 +27,7 @@ const productController = require("../controllers/productController");
 const cartController = require("../controllers/cartController");
 const profileController = require("../controllers/profileController");
 const checkoutController = require("../controllers/checkoutController");
+const orderController = require("../controllers/orderController");
 
 
 // user_route.get('/logout',auth.isUserLogin,userController.userLogout)
@@ -64,7 +65,8 @@ user_route.get('/checkoutAddress',auth.isUserLogin,checkoutController.checkoutLo
 user_route.post('/checkoutAddAddress',auth.isUserLogin,checkoutController.checkoutAddAddress);
 user_route.get("/thankyou",auth.isUserLogin, checkoutController.loadThankyou);
 
-user_route.get('/orderdetails/:orderId',auth.isUserLogin,profileController.loadOrderDetails);
+user_route.get('/orderdetails/:orderId',auth.isUserLogin,orderController.loadOrderDetails);
+user_route.post('/cancelorder/:orderId',orderController.cancelOrderAjax);
 
 
 module.exports=user_route

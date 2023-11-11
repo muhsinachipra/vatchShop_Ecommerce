@@ -3,199 +3,156 @@ const User = require('../models/userModel');
 const Category = require('../models/categoryModel');
 const bcrypt = require('bcrypt');
 
-const loadLogin = async (req, res) => {
-    try {
-        res.render('login')
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-
-const verifyLogin = async (req, res) => {
-    try {
-
-        const email = req.body.email
-        const password = req.body.password
-
-        const adminData = await Admin.findOne({ email: email })
-        if (adminData) {
-            const passwordMatch = await bcrypt.compare(password, adminData.password)
-            if (passwordMatch) {
-                if (adminData.isAdmin === 0) {
-                    res.render('login', { message: "email or password is incorrect" })
-                } else {
-                    req.session.admin_id = adminData._id;
-                    res.redirect("/admin/dashboard")
-                }
-            } else {
-                res.render('login', { message: "email or password is incorrect" })
-            }
-        }
-        else {
-            res.render('login', { message: "email or password is incorrect" })
-        }
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-const loadDashboard = async (req, res) => {
-    try {
-        res.render("dashboard")
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-const loadUsers = async (req, res) => {
-    try {
-        const user = await User.find({})
-        res.render("Users", { users: user })
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-const blockUser = async (req, res) => {
-    try {
-        //   const page = req.query.page || 1; // Get the current page from query parameters
-        //   const pageSize = 10; // Set your desired page size
-
-        const id = req.query.id;
-        //   const skip = (page - 1) * pageSize;
-        const user1 = await User.findById(id)
-
-        if (user1) {
-            user1.isBlocked = !user1.isBlocked
-            await user1.save();
-
-        }
-
-        //   const users2 = await User.find().skip(skip).limit(pageSize);
-        //   const totalUsers = await User.countDocuments();
-        //   const totalPages = Math.ceil(totalUsers / pageSize);
-
-        res.redirect('/admin/Users')
-
-    } catch (error) {
-        console.log(error);
-    }
+const handleDatabaseError = (res, error) => {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
 };
-
-
-const loadAddCategory = async (req, res) => {
-    try {
-        res.render('addCategory')
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-const addCategory = async (req, res) => {
-    try {
-        const { categoryName } = req.body
-        const already = await Category.findOne({ categoryName: { $regex: categoryName, '$options': 'i' } })
-        if (already) {
-            res.render('addCategory', { message: "Category Already Created" })
-        } else {
-            //  const data=new Category({
-            //     categoryname:categoryname,
-            //     isListed:true
-            //  })
-
-            const category = await new Category({
-                ...req.body,
-                isListed: true
-            });
-
-            const result = await category.save()
-            res.redirect('/admin/addCategory')
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-
-const loadViewCategory = async (req, res) => {
-    try {
-        const category = await Category.find({})
-        res.render('viewCategory', { category: category })
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-
-const unlistCategory = async (req, res) => {
-    try {
-        const id = req.query.id;
-        const Category1 = await Category.findById(id);
-
-        if (Category1) {
-            Category1.isListed = !Category1.isListed;
-            await Category1.save();
-        }
-        res.redirect('/admin/viewCategory')
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-
-const loadEditCatogory = async (req, res) => {
-    try {
-        const id = req.query.id;
-        const categorydata = await Category.findById(id);
-
-        if (categorydata) {
-            res.render('editCategory', { category: categorydata });
-        } else {
-            res.redirect('/admin/viewCategory');
-        }
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send('Internal Server Error');
-    }
-};
-
-
-const editCategory = async (req, res) => {
-    try {
-        const { id, categoryName, categoryDescription } = req.body;
-
-        const already = await Category.findOne({ categoryName: { $regex: categoryName, '$options': 'i' } })
-        if (already) {
-            res.render('editCategory', { message: "Category Already Created", category: { categoryName, categoryDescription } });
-        } else {
-            await Category.findByIdAndUpdate(id, { $set: { categoryName, categoryDescription } });
-            res.redirect('/admin/viewCategory');
-        }
-
-    } catch (error) {
-        console.log(error.message);
-    }
-};
-
-
 
 module.exports = {
-    loadLogin,
-    verifyLogin,
-    loadDashboard,
-    loadUsers,
-    blockUser,
-    loadAddCategory,
-    addCategory,
-    loadViewCategory,
-    loadEditCatogory,
-    unlistCategory,
-    editCategory
-}
+    loadLogin: async (req, res) => {
+        try {
+            res.render('login');
+        } catch (error) {
+            handleDatabaseError(res, error);
+        }
+    },
+
+    verifyLogin: async (req, res) => {
+        try {
+            const { email, password } = req.body;
+            const adminData = await Admin.findOne({ email });
+
+            if (adminData) {
+                const passwordMatch = await bcrypt.compare(password, adminData.password);
+
+                if (passwordMatch) {
+                    if (adminData.isAdmin === 0) {
+                        return res.render('login', { message: 'email or password is incorrect' });
+                    } else {
+                        req.session.admin_id = adminData._id;
+                        return res.redirect('/admin/dashboard');
+                    }
+                }
+            }
+
+            res.render('login', { message: 'email or password is incorrect' });
+        } catch (error) {
+            handleDatabaseError(res, error);
+        }
+    },
+
+    loadDashboard: (req, res) => {
+        try {
+            res.render('dashboard');
+        } catch (error) {
+            handleDatabaseError(res, error);
+        }
+    },
+
+    loadUsers: async (req, res) => {
+        try {
+            const users = await User.find({});
+            res.render('Users', { users });
+        } catch (error) {
+            handleDatabaseError(res, error);
+        }
+    },
+
+    blockUser: async (req, res) => {
+        try {
+            const id = req.query.id;
+            const user = await User.findById(id);
+
+            if (user) {
+                user.isBlocked = !user.isBlocked;
+                await user.save();
+            }
+
+            res.redirect('/admin/Users');
+        } catch (error) {
+            handleDatabaseError(res, error);
+        }
+    },
+
+    loadAddCategory: (req, res) => {
+        try {
+            res.render('addCategory');
+        } catch (error) {
+            handleDatabaseError(res, error);
+        }
+    },
+
+    addCategory: async (req, res) => {
+        try {
+            const { categoryName } = req.body;
+            const alreadyExists = await Category.findOne({ categoryName: { $regex: categoryName, $options: 'i' } });
+
+            if (alreadyExists) {
+                return res.render('addCategory', { message: 'Category Already Created' });
+            }
+
+            const category = new Category({ ...req.body, isListed: true });
+            await category.save();
+
+            res.redirect('/admin/addCategory');
+        } catch (error) {
+            handleDatabaseError(res, error);
+        }
+    },
+
+    loadViewCategory: async (req, res) => {
+        try {
+            const categories = await Category.find({});
+            res.render('viewCategory', { category: categories });
+        } catch (error) {
+            handleDatabaseError(res, error);
+        }
+    },
+
+    unlistCategory: async (req, res) => {
+        try {
+            const id = req.query.id;
+            const category = await Category.findById(id);
+
+            if (category) {
+                category.isListed = !category.isListed;
+                await category.save();
+            }
+
+            res.redirect('/admin/viewCategory');
+        } catch (error) {
+            handleDatabaseError(res, error);
+        }
+    },
+
+    loadEditCatogory: async (req, res) => {
+        try {
+            const id = req.query.id;
+            const category = await Category.findById(id);
+
+            if (category) {
+                res.render('editCategory', { category });
+            } else {
+                res.redirect('/admin/viewCategory');
+            }
+        } catch (error) {
+            handleDatabaseError(res, error);
+        }
+    },
+
+    editCategory: async (req, res) => {
+        try {
+            const { id, categoryName, categoryDescription } = req.body;
+            const alreadyExists = await Category.findOne({ categoryName: { $regex: categoryName, $options: 'i' } });
+
+            if (alreadyExists) {
+                return res.render('editCategory', { message: 'Category Already Created', category: { categoryName, categoryDescription } });
+            }
+
+            await Category.findByIdAndUpdate(id, { $set: { categoryName, categoryDescription } });
+            res.redirect('/admin/viewCategory');
+        } catch (error) {
+            handleDatabaseError(res, error);
+        }
+    }
+};

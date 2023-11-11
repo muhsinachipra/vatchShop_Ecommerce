@@ -155,19 +155,22 @@ module.exports = {
                 });
             }
 
+            const { fullName, mobile, state, district, city, pincode } = selectedAddress;
             // Create a new order with status 'Placed' and set product statuses
             const newOrder = new Order({
                 user: userId,
-                cart: {
-                    user: userId,
-                    products: cartItems.items.map(item => ({
-                        productId: item.productId._id,
-                        quantity: item.quantity,
-                        price: item.productId.productPrice,
-                        status: 'Placed', // Set the initial status for each product as 'Placed'
-                    })),
-                },
-                deliveryAddress: selectedAddress._id, // Use the ObjectId of the selected address
+                products: cartItems.items.map(item => ({
+                    productId: item.productId._id,
+                    quantity: item.quantity,
+                    price: item.productId.productPrice,
+                    status: 'Placed', // Set the initial status for each product as 'Placed'
+                })),
+                "deliveryAddress.fullName": fullName,
+                "deliveryAddress.mobile": mobile,
+                "deliveryAddress.state": state,
+                "deliveryAddress.district": district,
+                "deliveryAddress.city": city,
+                "deliveryAddress.pincode": pincode, // Use the ObjectId of the selected address
                 paymentOption: paymentOption,
                 totalAmount: numericTotal,
                 orderDate: new Date(),
