@@ -56,6 +56,7 @@ admin_route.post('/edit_product', upload.array('productImage', 3), productContro
 
 admin_route.get('/orders',auth.isAdminLogin,orderController.loadAdminOrder)
 admin_route.get('/manageOrder/:orderId',auth.isAdminLogin,orderController.loadManageOrder)
+admin_route.post('/updateOrderStatus/:orderId', orderController.updateOrderStatus);
 
 
 

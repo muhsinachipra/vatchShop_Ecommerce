@@ -1,28 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Thank You</title>
-    <!-- Include your CSS and other necessary resources here -->
-</head>
-<body>
-    <header>
-        <!-- Include your header content here -->
-    </header>
+<%- include('./layouts/header.ejs') %>
 
-    <main>
-        <div class="container">
-            <div class="text-center mt-5">
-                <h1>Thank You for Your Purchase!</h1>
-                <p>Your order has been successfully placed.</p>
-                <p>Order ID: 123456789</p> <!-- Display the actual order ID from your system -->
-                <p>Estimated Delivery Date: [Date]</p> <!-- Display the estimated delivery date -->
-                <p>For any inquiries, please <a href="/contact">contact us</a>.</p>
-            </div>
-        </div>
-    </main>
+<style>
+    .divv {
+        text-align: center; /* Center-align text within the div */
+        margin: auto; /* Center the div itself horizontally */
+        max-width: 600px; /* Optional: Set a maximum width for the content */
+        padding: 20px; /* Optional: Add padding for better aesthetics */
+    }
+</style>
 
-    <footer>
-        <!-- Include your footer content here -->
-    </footer>
-</body>
-</html>
+    <div id="top-div" style="height: 15vh  ;"></div>
+<div class="divv">
+    <h1>Thank You for Your Purchase!</h1>
+    <p>Your order has been successfully placed.</p>
+    <p>Order ID: 123456789</p> <!-- Display the actual order ID from your system -->
+    <p>Estimated Delivery Date: <% order.expectedDelivery.toLocaleDateString('en-US', {month: 'short' , day: 'numeric' ,
+            year: 'numeric' }) %>
+    </p> <!-- Display the estimated delivery date -->
+    <p>For any inquiries, please <a href="/contact">contact us</a>.</p>
+</div>
+
+    <%- include('./layouts/footer.ejs') %>

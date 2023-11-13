@@ -222,7 +222,8 @@ module.exports = {
     loadThankyou: async (req, res) => {
         try {
             const userId = req.session.userId
-            res.render('thankyou', { user: userId })
+            const order = await Order.findOne({ user: userId })
+            res.render('thankyou', { user: userId , order})
         } catch (error) {
             console.log(error.message);
         }

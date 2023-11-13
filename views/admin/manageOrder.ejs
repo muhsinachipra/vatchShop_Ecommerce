@@ -30,266 +30,50 @@
                                                     <%= product.productId.productName %>
                                                 </td>
                                                 <td>
-                                                        <% product.productId.productImage.forEach(image=> { %>
-                                                            <img
-                                                                src="/car/adminAssets/assets/images/products/<%= image %>">
-                                                            <% }); %>
+                                                    <% product.productId.productImage.forEach(image=> { %>
+                                                        <img src="/car/adminAssets/assets/images/products/<%= image %>">
+                                                        <% }); %>
                                                 </td>
-                                                <td>product.price
+                                                <td>
                                                     ₹ <%= product.price %>
                                                 </td>
                                                 <td>
                                                     <%= product.quantity %>
                                                 </td>
                                                 <td>
+                                                    <%= order.expectedDelivery.toLocaleDateString('en-US', {
+                                                        month: 'short' , day: 'numeric' , year: 'numeric' }) %>
                                                 </td>
                                                 <td>
-                                                        <div class="col-sm-4 my-1">
+                                                    <div class="col-sm-4 my-1">
 
 
-                                                            
 
-                                                            <form action="/admin/updateOrderStatus/<%= product._id %>"
-                                                                method="post">
-                                                                <select name="status" id="status">
-                                                                    <option value="Placed"
-                                                                        <%=product.status==='Placed' ? 'selected'
-                                                                        : '' %>>Placed</option>
-                                                                    <option value="Shipped"
-                                                                        <%=product.status==='Shipped' ? 'selected'
-                                                                        : '' %>>Shipped</option>
-                                                                    <option value="Out for delivery"
-                                                                        <%=product.status==='Out for delivery'
-                                                                        ? 'selected' : '' %>>Out for delivery</option>
-                                                                    <option value="Delivered"
-                                                                        <%=product.status==='Delivered'
-                                                                        ? 'selected' : '' %>>Delivered</option>
-                                                                    <option value="Cancelled"
-                                                                        <%=product.status==='Cancelled'
-                                                                        ? 'selected' : '' %>>Cancelled</option>
-                                                                </select>
-                                                                <button type="submit">Update Status</button>
-                                                            </form>
+                                                        <form action="/admin/updateOrderStatus/<%= product._id %>"
+                                                            method="post">
+                                                            <select name="status" id="status">
+                                                                <option value="Placed" <%=product.status==='Placed'
+                                                                    ? 'selected' : '' %>>Placed</option>
+                                                                <option value="Shipped" <%=product.status==='Shipped'
+                                                                    ? 'selected' : '' %>>Shipped</option>
+                                                                <option value="Out for delivery"
+                                                                    <%=product.status==='Out for delivery' ? 'selected'
+                                                                    : '' %>>Out for delivery</option>
+                                                                <option value="Delivered"
+                                                                    <%=product.status==='Delivered' ? 'selected' : '' %>
+                                                                    >Delivered</option>
+                                                                <option value="Cancelled"
+                                                                    <%=product.status==='Cancelled' ? 'selected' : '' %>
+                                                                    >Cancelled</option>
+                                                            </select>
+                                                            <button type="submit">Update Status</button>
+                                                        </form>
 
-                                                        </div>
+                                                    </div>
                                                 </td>
-
-                                               <!-- ask this in gpt -->
-                                               this is my model:
-const mongoose = require('mongoose');
-
-// Define the order schema
-const orderSchema = new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference to the User model
-        required: true,
-    },
-    products: [{
-        productId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product',
-            required: true,
-        },
-        quantity: {
-            type: Number,
-            default: 1,
-        },
-        price: {
-            type: Number,
-            default: 0,
-        },
-        status: {
-            type: String,
-            enum: ['Placed', 'Shipped', 'Delivered', 'Cancelled', 'Out for delivery'],
-            default: 'Placed',
-        }
-    }],
-    deliveryAddress: {
-        
-        fullName: {
-            type: String,
-            required: true,
-        },
-        mobile: {
-            type: Number,
-            required: true,
-        },
-        pincode: {
-            type: Number,
-            required: true,
-        },
-        state: {
-            type: String,
-            required: true,
-        },
-        district: {
-            type: String,
-            required: true,
-        },
-        city: {
-            type: String,
-            required: true,
-        },
-    },
-    paymentOption: {
-        type: String,
-        enum: ['COD', 'PayPal', 'Other'],
-        required: true,
-    },
-    totalAmount: {
-        type: Number,
-        required: true,
-    },
-    orderDate: {
-        type: Date,
-        default: Date.now,
-    },
-    expectedDelivery: {
-        type: Date,
-        required: true
-    }
-});
-
-// Create and export the Order model
-module.exports = mongoose.model('Order', orderSchema);
-
-this is my manageOrder page:
-
-<%- include('./layouts/header.ejs') %>
-    <%- include('./layouts/sideBar.ejs') %>
-        <%- include('./layouts/navBar.ejs') %>
-
-            <div class="main-panel">
-                <div class="content-wrapper">
-
-                    <div class="col-lg-12 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h2 class="card-title" style="text-align: center;">MANAGE ORDER</h2>
-                                <div class="table-responsive">
-                                    <table class="table table-dark">
-
-
-                                        <thead>
-                                            <tr>
-                                                <th>Product Name</th>
-                                                <th>Image</th>
-                                                <th>Price</th>
-                                                <th>Quantity</th>
-                                                <th>Expected Delivery</th>
-                                                <th>Status</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <% order.products.forEach((product, index)=> { %>
-                                            <tr>
-                                                <td>
-                                                    <%= product.productId.productName %>
-                                                </td>
-                                                <td>
-                                                        <% product.productId.productImage.forEach(image=> { %>
-                                                            <img
-                                                                src="/car/adminAssets/assets/images/products/<%= image %>">
-                                                            <% }); %>
-                                                </td>
-                                                <td>product.price
-                                                    ₹ <%= product.price %>
-                                                </td>
-                                                <td>
-                                                    <%= product.quantity %>
-                                                </td>
-                                                <td>
-                                                </td>
-                                                <td>
-                                                        <div class="col-sm-4 my-1">
-
-
-                                                            
-
-                                                            <form action="/admin/updateOrderStatus/<%= product._id %>"
-                                                                method="post">
-                                                                <select name="status" id="status">
-                                                                    <option value="Placed"
-                                                                        <%=product.status==='Placed' ? 'selected'
-                                                                        : '' %>>Placed</option>
-                                                                    <option value="Shipped"
-                                                                        <%=product.status==='Shipped' ? 'selected'
-                                                                        : '' %>>Shipped</option>
-                                                                    <option value="Out for delivery"
-                                                                        <%=product.status==='Out for delivery'
-                                                                        ? 'selected' : '' %>>Out for delivery</option>
-                                                                    <option value="Delivered"
-                                                                        <%=product.status==='Delivered'
-                                                                        ? 'selected' : '' %>>Delivered</option>
-                                                                    <option value="Cancelled"
-                                                                        <%=product.status==='Cancelled'
-                                                                        ? 'selected' : '' %>>Cancelled</option>
-                                                                </select>
-                                                                <button type="submit">Update Status</button>
-                                                            </form>
-
-                                                        </div>
-                                                </td>
-
-                                               
 
                                             </tr>
-                                            <% }; %>
-
-
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-            <%- include('./layouts/footer.ejs') %>
-
-this is my manageOrder fuction:
-loadManageOrder: async (req, res) => {
-        try {
-            let orderId= req.params.orderId;
-            const order = await Order.findById(orderId).populate({
-                path: 'products.productId',
-                model: 'Product',
-            });
-            if (order) {
-                res.render('manageOrder', { order });
-            } else {
-                console.log('Order Data is null or undefined');
-                res.render('manageOrder', { order: [] });
-            }
-        } catch (error) {
-            console.log(error);
-            res.render('manageOrder', { order: [], error: 'Error fetching orders data' });
-        }
-    }
-
-now tell me why am i getting this error:
-SyntaxError: missing ) after argument list in C:\BROCAMP\PROJECT\firstProject\views\admin\manageOrder.ejs while compiling ejs
-
-If the above error is not helpful, you may want to try EJS-Lint:
-https://github.com/RyanZim/EJS-Lint
-Or, if you meant to create an async function, pass `async: true` as an option.
-    at new Function (<anonymous>)
-    at Template.compile (C:\BROCAMP\PROJECT\firstProject\node_modules\ejs\lib\ejs.js:673:12)
-    at Object.compile (C:\BROCAMP\PROJECT\firstProject\node_modules\ejs\lib\ejs.js:398:16)
-    at handleCache (C:\BROCAMP\PROJECT\firstProject\node_modules\ejs\lib\ejs.js:235:18)
-    at tryHandleCache (C:\BROCAMP\PROJECT\firstProject\node_modules\ejs\lib\ejs.js:274:16)
-    at exports.renderFile [as engine] (C:\BROCAMP\PROJECT\firstProject\node_modules\ejs\lib\ejs.js:491:10)
-    at View.render (C:\BROCAMP\PROJECT\firstProject\node_modules\express\lib\view.js:135:8)
-    at tryRender (C:\BROCAMP\PROJECT\firstProject\node_modules\express\lib\application.js:657:10)
-    at Function.render (C:\BROCAMP\PROJECT\firstProject\node_modules\express\lib\application.js:609:3)
-    at ServerResponse.render (C:\BROCAMP\PROJECT\firstProject\node_modules\express\lib\response.js:1039:7)
-                                               <!-- ask this in gpt -->
-
-                                            </tr>
-                                            <% }; %>
+                                            <% }); %>
 
 
                                     </table>

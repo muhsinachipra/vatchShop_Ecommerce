@@ -7,7 +7,7 @@ const Address = require('../models/addressModel');
 const Order = require('../models/orderModel');
 const axios = require('axios');
 
-
+const mongoose = require('mongoose');
 const { ObjectId } = require('mongoose').Types;
 // const { ObjectId } = require('mongodb');
 
@@ -136,7 +136,7 @@ module.exports = {
     },
     loadManageOrder: async (req, res) => {
         try {
-            let orderId= req.params.orderId;
+            let orderId = req.params.orderId;
             const order = await Order.findById(orderId).populate({
                 path: 'products.productId',
                 model: 'Product',
@@ -151,5 +151,59 @@ module.exports = {
             console.log(error);
             res.render('manageOrder', { order: [], error: 'Error fetching orders data' });
         }
-    }
+    },
+    updateOrderStatus: async (req, res) => {
+        try {
+            const productId = req.params.orderId;
+            const newStatus = req.body.status;
+
+            // Find the order containing the product
+            const order = await Order.findOne({ 'products._id': new mongoose.Types.ObjectId(productId) });
+
+            // Check if the order exists
+            if (!order) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Order not found',
+                });
+            }
+
+            // Find the product within the order and update its status
+            const product = order.products.find(product => product._id.toString() === productId);
+            if (product) {
+                product.status = newStatus;
+
+                // Update statusLevel based on newStatus
+                // switch (newStatus) {
+                //     case 'Shipped':
+                //         product.statusLevel = 2;
+                //         break;
+                //     case 'Out for delivery':
+                //         product.statusLevel = 3;
+                //         break;
+                //     case 'Delivered':
+                //         product.statusLevel = 4;
+                //         break;
+                //     // Add more cases if needed
+
+                //     default:
+                //         // Handle other status cases
+                //         break;
+                // }
+
+                await order.save();
+            } else {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found in order',
+                });
+            }
+
+            // Redirect back to the order details page or orders page
+            res.redirect('/admin/orders');
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ success: false, message: 'Failed to update order status' });
+        }
+    },
 }

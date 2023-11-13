@@ -20,6 +20,7 @@ app.use('/',userRoute)
 const adminRoute= require("./routes/adminRoute")
 app.use('/admin',adminRoute)
 
+
 app.listen(process.env.PORT,()=>{
     console.log("server started at http://localhost:5000");
     console.log("server started at http://localhost:5000/admin");
