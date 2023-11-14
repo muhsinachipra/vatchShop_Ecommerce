@@ -18,6 +18,33 @@ const securePassword = async (password) => {
     }
 };
 
+const otpSent = async (email, otp) => {
+    try {
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
+            requireTLS: true,
+            auth: {
+                user: 'muhsinachipra@gmail.com',
+                pass: 'azen vizj yufk ekkt',
+            },
+        });
+
+        const mailOptions = {
+            from: 'muhsinachipra@gmail.com',
+            to: email,
+            subject: 'Verify Your Email',
+            html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
+        };
+
+        await transporter.sendMail(mailOptions);
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+
 module.exports = {
     loadLogin: async (req, res) => {
         try {
@@ -88,31 +115,31 @@ module.exports = {
         }
     },
 
-    otpSent: async (email, otp) => {
-        try {
-            const transporter = nodemailer.createTransport({
-                host: 'smtp.gmail.com',
-                port: 587,
-                secure: false,
-                requireTLS: true,
-                auth: {
-                    user: 'muhsinachipra@gmail.com',
-                    pass: 'azen vizj yufk ekkt',
-                },
-            });
+    // otpSent: async (email, otp) => {
+    //     try {
+    //         const transporter = nodemailer.createTransport({
+    //             host: 'smtp.gmail.com',
+    //             port: 587,
+    //             secure: false,
+    //             requireTLS: true,
+    //             auth: {
+    //                 user: 'muhsinachipra@gmail.com',
+    //                 pass: 'azen vizj yufk ekkt',
+    //             },
+    //         });
 
-            const mailOptions = {
-                from: 'muhsinachipra@gmail.com',
-                to: email,
-                subject: 'Verify Your Email',
-                html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
-            };
+    //         const mailOptions = {
+    //             from: 'muhsinachipra@gmail.com',
+    //             to: email,
+    //             subject: 'Verify Your Email',
+    //             html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
+    //         };
 
-            await transporter.sendMail(mailOptions);
-        } catch (error) {
-            console.log(error.message);
-        }
-    },
+    //         await transporter.sendMail(mailOptions);
+    //     } catch (error) {
+    //         console.log(error.message);
+    //     }
+    // },
 
     insertUser: async (req, res) => {
         try {

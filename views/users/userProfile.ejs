@@ -130,7 +130,8 @@
                                                             ₹ <%= order.totalAmount %>
                                                         </td>
                                                         <td>
-                                                            <a href="/orderdetails/<%= order._id %>" class="btn-small d-block">View</a>
+                                                            <a href="/orderdetails/<%= order._id %>"
+                                                                class="btn-small d-block">View</a>
                                                         </td>
                                                     </tr>
                                                     <% }); %>
@@ -256,21 +257,25 @@
 
                                     <hr>
                                     <h6 class="fs-1 font-monospace">Change Password</h6>
-                                    <form action="/resetPassword" method="post" onsubmit="return validatePasswords()">
+                                    <form id="passwordChangeForm" action="/resetPassword" method="post"
+                                        onsubmit="return validatePasswords()">
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <label>Current Password</label>
-                                                    <input type="password" name="oldPassword" class="form-control">
+                                                    <input type="password" name="oldPassword" class="form-control"
+                                                        id="oldPassword">
                                                     <span id="current-password-error" class="text-danger"></span>
+                                                    <span id="oldPasswordError" class="text-danger"></span>
                                                 </div><!-- End .col-sm-6 -->
                                                 <div class="col-sm-6">
                                                     <label>Create New Password</label>
-                                                    <input type="password" name="newPassword" class="form-control">
+                                                    <input type="password" name="newPassword" class="form-control" id="newPassword">
                                                     <span id="new-password-error" class="text-danger"></span>
                                                 </div><!-- End .col-sm-6 -->
                                             </div><!-- End .row -->
-                                            <button type="submit" class="btn btn-outline-primary-2">
+                                            <button type="button" class="btn btn-outline-primary-2"
+                                                onclick="changePassword()">
                                                 <span>Save Changes</span>
                                             </button>
                                         </div>
@@ -286,7 +291,36 @@
     </main><!-- End .main -->
 
 
-    <!-- // ================ swal ============= -->
+    <!-- <script>
+        async function changePassword() {
+            const oldPassword = document.getElementById('oldPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            try {
+                const response = await fetch('/resetPassword', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ oldPassword, newPassword }),
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Password changed successfully, you may redirect or update UI accordingly.
+                    window.location.href = '/userProfile';
+                } else {
+                    // Display error message to the user.
+                    document.getElementById('oldPasswordError').innerText = data.message;
+
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+            // Explicitly submit the form
+            document.getElementById('passwordChangeForm').submit();
+        }
+    </script>
 
 
     <script>
@@ -327,8 +361,176 @@
             });
         }
 
-    </script>
+    </script> -->
 
+
+<!-- <script>
+    async function changePassword() {
+        const oldPassword = document.getElementById('oldPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+
+        try {
+            const response = await fetch('/resetPassword', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ oldPassword, newPassword }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Password changed successfully, you may redirect or update UI accordingly.
+                window.location.href = '/userProfile';
+            } else {
+                // Display error message to the user.
+                document.getElementById('oldPasswordError').innerText = data.message;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    window.onload = function () {
+        const editForm = document.querySelector('form[action="/updateUser"]');
+        const resetPasswordForm = document.querySelector('form[action="/resetPassword"]');
+
+        editForm.onsubmit = function () {
+            return validEditAddress();
+        };
+
+        resetPasswordForm.onsubmit = function () {
+            // Prevent the default form submission
+            return false;
+        };
+
+        // Optionally, you can submit the form explicitly when clicking the button
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        if (changePasswordBtn) {
+            changePasswordBtn.addEventListener('click', function () {
+                changePassword();
+                resetPasswordForm.submit(); // Explicitly submit the form after handling with JavaScript
+            });
+        }
+    };
+
+    function removeAddress(id) {
+        $.ajax({
+            url: '/deleteAddress',
+            method: 'delete',
+            data: { id },
+            success: (response) => {
+                if (response.remove == 1) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Address removed!',
+                        icon: 'success',
+                        timer: 2000,
+                    }).then(() => {
+                        location.reload();
+                    });
+                }
+            },
+        });
+    }
+</script> -->
+
+<script>
+    function validatePasswords() {
+        const currentPassword = document.querySelector('input[name="oldPassword"]').value;
+        const newPassword = document.querySelector('input[name="newPassword"]').value;
+
+        const passwordRegex = /^(?=.*[!@#$%^&*]).{6,}$/;
+
+        if (!currentPassword || !passwordRegex.test(currentPassword)) {
+            document.getElementById('current-password-error').textContent = 'Current password must be at least 6 characters and contain a special character.';
+            return false;
+        }
+
+        if (!newPassword || !passwordRegex.test(newPassword)) {
+            document.getElementById('new-password-error').textContent = 'New password must be at least 6 characters and contain a special character.';
+            return false;
+        }
+
+        return true;
+    }
+
+    async function changePassword() {
+        if (!validatePasswords()) {
+            // Password validation failed, do not proceed with changing the password
+            return;
+        }
+
+        const oldPassword = document.getElementById('oldPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+
+        try {
+            const response = await fetch('/resetPassword', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ oldPassword, newPassword }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Password changed successfully, you may redirect or update UI accordingly.
+                window.location.href = '/userProfile';
+            } else {
+                // Display error message to the user.
+                document.getElementById('oldPasswordError').innerText = data.message;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    window.onload = function () {
+        const editForm = document.querySelector('form[action="/updateUser"]');
+        const resetPasswordForm = document.querySelector('form[action="/resetPassword"]');
+
+        editForm.onsubmit = function () {
+            return validEditAddress();
+        };
+
+        resetPasswordForm.onsubmit = function () {
+            // Prevent the default form submission
+            return false;
+        };
+
+        // Optionally, you can submit the form explicitly when clicking the button
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        if (changePasswordBtn) {
+            changePasswordBtn.addEventListener('click', function () {
+                changePassword();
+                resetPasswordForm.submit(); // Explicitly submit the form after handling with JavaScript
+            });
+        }
+    };
+
+    function removeAddress(id) {
+        $.ajax({
+            url: '/deleteAddress',
+            method: 'delete',
+            data: { id },
+            success: (response) => {
+                if (response.remove == 1) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Address removed!',
+                        icon: 'success',
+                        timer: 2000,
+                    }).then(() => {
+                        location.reload();
+                    });
+                }
+            },
+        });
+    }
+</script>
 
 
 

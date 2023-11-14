@@ -66,7 +66,7 @@ user_route.post('/checkoutAddAddress',auth.isUserLogin,checkoutController.checko
 user_route.get("/thankyou",auth.isUserLogin, checkoutController.loadThankyou);
 
 user_route.get('/orderdetails/:orderId',auth.isUserLogin,orderController.loadOrderDetails);
-user_route.post('/cancelorder/:orderId',orderController.cancelOrderAjax);
+user_route.post('/cancelorder/:productId',orderController.cancelOrderAjax);
 
 
 module.exports=user_route

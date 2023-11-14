@@ -75,24 +75,38 @@ module.exports = {
         try {
             const userDetails = await User.findOne({ _id: req.session.userId })
 
-            bcrypt.compare(req.body.oldPassword, userDetails.password)
-                .then(async (status) => {
-                    if (status) {
-                        const newSecurePassword = await bcrypt.hash(req.body.newPassword, 10);
+            const isPasswordMatch = await bcrypt.compare(req.body.oldPassword, userDetails.password);
 
-                        const change = await User.updateOne(
-                            { _id: userDetails._id },
-                            { $set: { password: newSecurePassword } }
-                        );
-                        console.log(change);
-                        res.redirect("/userProfile");
-                        console.log("password changed...");
-                    } else {
-                        console.log("wrong old password");
-                        res.redirect("/userProfile");
-                    }
+            if (isPasswordMatch) {
+                const newSecurePassword = await bcrypt.hash(req.body.newPassword, 10);
+    
+                await User.updateOne({ _id: userDetails._id }, { $set: { password: newSecurePassword } });
+    
+                return res.status(200).json({ success: true, message: 'Password changed successfully.' });
+            } else {
+                return res.status(400).json({ success: false, message: 'Incorrect old password.' });
+            }
 
-                })
+            // bcrypt.compare(req.body.oldPassword, userDetails.password)
+            //     .then(async (status) => {
+            //         if (status) {
+            //             const newSecurePassword = await bcrypt.hash(req.body.newPassword, 10);
+
+            //             const change = await User.updateOne(
+            //                 { _id: userDetails._id },
+            //                 { $set: { password: newSecurePassword } }
+            //             );
+            //             console.log(change);
+            //             res.redirect("/userProfile");
+            //             console.log("password changed...");
+            //         } else {
+            //             console.log("wrong old password");
+            //             res.redirect("/userProfile");
+            //             return res.status(200).json({ oldPasswordNoMatch: true });
+            //         }
+
+            //     })
+            
         } catch (error) {
             console.log(error);
         }
@@ -200,4 +214,5 @@ module.exports = {
         }
     },
     
+
 }

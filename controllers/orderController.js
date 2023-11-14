@@ -71,14 +71,13 @@ module.exports = {
     },
     cancelOrderAjax: async (req, res) => {
         try {
-            const orderId = req.params.orderId;
+            const productId = req.params.productId;
 
             // Find the order in the database
-            const order = await Order.findById(orderId).populate({
+            const order = await Order.findById(productId).populate({
                 path: 'products.productId',
                 model: 'Product',
             });
-
             // Check if the order exists
             if (!order) {
                 return res.status(404).json({
@@ -86,7 +85,7 @@ module.exports = {
                     message: 'Order not found',
                 });
             }
-
+            
             // Check if the order is cancelable (e.g., status is 'Placed' or 'Shipped')
             if (order.products.some(product => product.status !== 'Placed' && product.status !== 'Shipped')) {
                 return res.status(400).json({
@@ -94,10 +93,13 @@ module.exports = {
                     message: 'Order cannot be canceled at this stage',
                 });
             }
+           
 
-            // Update the order status to 'Cancelled' for all products
+
             order.products.forEach(product => {
-                product.status = 'Cancelled';
+                if(product._id === productId){
+                    product.status = 'Cancelled';
+                }
             });
 
             // Save the updated order
