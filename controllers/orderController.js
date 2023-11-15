@@ -73,11 +73,18 @@ module.exports = {
         try {
             const productId = req.params.productId;
 
-            // Find the order in the database
-            const order = await Order.findById(productId).populate({
+            const order = await Order.findOne({
+                'products._id': productId,
+            }).populate({
                 path: 'products.productId',
                 model: 'Product',
             });
+            // Find the order in the database
+            // const order = await Order.findById(productId).populate({
+            //     path: 'products.productId',
+            //     model: 'Product',
+            // });
+
             // Check if the order exists
             if (!order) {
                 return res.status(404).json({
@@ -85,22 +92,31 @@ module.exports = {
                     message: 'Order not found',
                 });
             }
+
+            // // Check if the order is cancelable (e.g., status is 'Placed' or 'Shipped')
+            // if (order.products._id.toString() === productId.toString()(product => product.status !== 'Placed' && product.status !== 'Shipped')) {
+            //     return res.status(400).json({
+            //         success: false,
+            //         message: 'Order cannot be canceled at this stage',
+            //     });
+            // }
             
-            // Check if the order is cancelable (e.g., status is 'Placed' or 'Shipped')
-            if (order.products.some(product => product.status !== 'Placed' && product.status !== 'Shipped')) {
+            const invalidProduct = order.products.find(product => product._id.toString() === productId.toString() && (product.status !== 'Placed' && product.status !== 'Shipped'));
+
+            if (invalidProduct) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Order cannot be canceled at this stage',
+                    message: `Order cannot be canceled at this stage due to product "${invalidProduct.productId.productName}" with status "${invalidProduct.status}"`,
                 });
             }
-           
-
+            
 
             order.products.forEach(product => {
-                if(product._id === productId){
+                if (product._id.toString() === productId.toString()) {
                     product.status = 'Cancelled';
                 }
             });
+            
 
             // Save the updated order
             await order.save();

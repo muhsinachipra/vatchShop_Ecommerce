@@ -28,23 +28,33 @@
 								<div class="form-group mt-3">
 									<input type="text" class="form-control" id="firstName" name="firstName" required>
 									<label class="form-control-placeholder" for="firstName">First Name</label>
+									<span id="firstName-error" class="text-danger"></span>
+
 								</div>
 								<div class="form-group mt-3">
 									<input type="text" class="form-control" id="lastName" name="lastName" required>
 									<label class="form-control-placeholder" for="lastName">Last Name</label>
+									<span id="lastName-error" class="text-danger"></span>
+
 								</div>
 								<div class="form-group mt-3">
 									<input type="email" class="form-control" id="email" name="email" required>
 									<label class="form-control-placeholder" for="email">Email</label>
+									<span id="email-error" class="text-danger"></span>
+
 								</div>
 								<div class="form-group mt-3">
 									<input type="tel" class="form-control" id="mobileno" name="mobileno" required>
 									<label class="form-control-placeholder" for="mobileno">Mobile Number</label>
+									<span id="mobileno-error" class="text-danger"></span>
+
 								</div>
 								<div class="form-group">
 									<input id="password" type="password" class="form-control" name="password" required>
 									<label class="form-control-placeholder" for="password">Password</label>
 									<span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+									<span id="password-error" class="text-danger"></span>
+
 								</div>
 
 								<div class="form-group">
@@ -54,6 +64,8 @@
 										Password</label>
 									<span toggle="#passwordConfirm"
 										class="fa fa-fw fa-eye field-icon toggle-password"></span>
+									<span id="passwordConfirm-error" class="text-danger"></span>
+
 								</div>
 
 								<% if (typeof message !=='undefined' ) { %>
@@ -86,7 +98,69 @@
 		</div>
 	</section>
 
+	<script>
+		// register validation
 
+		function validateForm() {
+			const firstName = document.getElementById('firstName').value;
+			const lastName = document.getElementById('lastName').value;
+			const mobileno = document.getElementById('mobileno').value;
+			const email = document.getElementById('email').value;
+			const passwordConfirm = document.getElementById('passwordConfirm').value;
+			const password = document.getElementById('password').value;
+
+			document.getElementById('password-error').textContent = '';
+			document.getElementById('passwordConfirm-error').textContent = '';
+			document.getElementById('email-error').textContent = '';
+			document.getElementById('firstName-error').textContent = '';
+			document.getElementById('lastName-error').textContent = '';
+			document.getElementById('mobileno-error').textContent = '';
+
+			const passwordRegex = /^(?=.*[!@#$%^&*]).{6,}$/;
+
+			// Validate password
+			if (!password || !passwordRegex.test(password)) {
+				document.getElementById('password-error').textContent = 'Password must be at least 6 characters and contain a special character.';
+				return false;
+			}
+
+			// Validate password confirmation
+			if (!passwordConfirm || !passwordRegex.test(passwordConfirm) || password !== passwordConfirm) {
+				document.getElementById('passwordConfirm-error').textContent = 'Passwords must match and meet the criteria.';
+				return false;
+			}
+
+			// Validate email
+			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			if (!emailRegex.test(email)) {
+				document.getElementById('email-error').textContent = 'Please enter a valid email address.';
+				return false;
+			}
+
+			
+			// Validate first name and last name (should be alphabets)
+			const nameRegex = /^[A-Za-z]+$/;
+			if (!nameRegex.test(firstName)) {
+				document.getElementById('firstName-error').textContent = 'First name should only contain alphabets.';
+				return false;
+			}
+
+			if (!nameRegex.test(lastName)) {
+				document.getElementById('lastName-error').textContent = 'Last name should only contain alphabets.';
+				return false;
+			}
+
+			// Validate mobile number (optional, you can adjust the regex according to your needs)
+			const mobileRegex = /^[0-9]{10}$/;
+			if (!mobileRegex.test(mobileno)) {
+				document.getElementById('mobileno-error').textContent = 'Please enter a valid 10-digit mobile number.';
+				return false;
+			}
+
+			return true;
+		}
+
+	</script>
 
 
 	<%- include('./layouts/footer.ejs') %>

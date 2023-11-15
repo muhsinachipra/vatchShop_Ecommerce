@@ -208,12 +208,12 @@
 
 
 
-       
 
 
-             
-    </div>
-    <!-- <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
+
+
+        </div>
+        <!-- <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
         <div class="flex-w flex-m m-r-20 m-tb-5">
             <input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text" name="coupon" placeholder="Coupon Code">
             <div class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
@@ -224,52 +224,53 @@
             Update Cart
         </div>
     </div> -->
-</div>
-</div>
-</div>
-<div class="row">
-<div class="col-lg-12 m-lr-auto m-b-50">
-<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-63 m-lr-0-xl p-lr-15-sm">
-    <h4 class="mtext-109 cl2 p-b-30">
-        Cart Totals
-    </h4>
-    <div class="flex-w flex-t bor12 p-b-13">
-        <div class="size-208">
-            <span class="stext-110 cl2">
-                Subtotal:
-            </span>
         </div>
-        <div class="size-209" id="totalPrice">
-            <span class="mtext-110 cl2"></span>
         </div>
-    </div>
-    <div class="flex-w flex-t p-t-27 p-b-33">
-        <div class="size-208">
-            <span class="mtext-101 cl2">
-                Total:
-            </span>
         </div>
-        <div class="size-209 p-t-1" id="cartPrice">
-            <span class="mtext-110 cl2"></span>
+        <div class="row">
+            <div class="col-lg-12 m-lr-auto m-b-50">
+                <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-63 m-lr-0-xl p-lr-15-sm">
+                    <h4 class="mtext-109 cl2 p-b-30">
+                        Cart Totals
+                    </h4>
+                    <div class="flex-w flex-t bor12 p-b-13">
+                        <div class="size-208">
+                            <span class="stext-110 cl2">
+                                Subtotal:
+                            </span>
+                        </div>
+                        <div class="size-209" id="totalPrice">
+                            <span class="mtext-110 cl2"></span>
+                        </div>
+                    </div>
+                    <div class="flex-w flex-t p-t-27 p-b-33">
+                        <div class="size-208">
+                            <span class="mtext-101 cl2">
+                                Total:
+                            </span>
+                        </div>
+                        <div class="size-209 p-t-1" id="cartPrice">
+                            <span class="mtext-110 cl2"></span>
+                        </div>
+                    </div>
+                    <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"><a
+                            href="/checkout" style="color: aliceblue;">
+                            Proceed to Checkout</a>
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
-    <button  class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"><a href="/checkout" style="color: aliceblue;">
-        Proceed to Checkout</a>
-    </button>
-</div>
-</div>
-</div>
-</div>
-</form>
+        </div>
+        </form>
 
 
 
 
-<!-- checkout page virgin -->
+        <!-- checkout page virgin -->
 
-<%- include('./layouts/header.ejs') %>
-    <style>
-        /* .payment-option {
+        <%- include('./layouts/header.ejs') %>
+            <style>
+                /* .payment-option {
             background-color: #f3f3f9;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -282,8 +283,8 @@
             color: #fff;
         } */
 
-        /* Example custom CSS for the modal */
-        /* .modal-content {
+                /* Example custom CSS for the modal */
+                /* .modal-content {
             background-color: #e7e7e7;
             border: 2px solid #444444;
         }
@@ -301,71 +302,75 @@
             color: #fff;
         } */
 
-        /* to highlight the address */
-        /* .highlighted-address {
+                /* to highlight the address */
+                /* .highlighted-address {
             border: 2px solid #007bff;
             /* You can change the border style to match your design */
-            /* background-color: #f0f8ff; */
-            /* You can change the background color to match your design */
-        /* } */
-    </style>
+                /* background-color: #f0f8ff; */
+                /* You can change the background color to match your design */
+                /* } */
+            </style>
 
-    <form action="/checkout" method="post">
-        <div class="site-wrap m-t-75 bg0">
+            <form action="/checkout" method="post">
+                <div class="site-wrap m-t-75 bg0">
 
-            <div class="bg-light py-3">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 mb-0">
-                            <a href="/">Home</a> <span class="mx-2 mb-0">/</span> <a href="/cart">Cart</a>
-                            <span class="mx-2 mb-0">/</span> <strong class="text-black">Checkout</strong>
+                    <div class="bg-light py-3">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 mb-0">
+                                    <a href="/">Home</a> <span class="mx-2 mb-0">/</span> <a href="/cart">Cart</a>
+                                    <span class="mx-2 mb-0">/</span> <strong class="text-black">Checkout</strong>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="site-section" style="padding-top: 40px">
-                <div class="container">
-                    <div class="row">
-
-                        <!-- main two -->
-
-                        <div class="col-md-6 mb-5 mb-md-0">
-                            <h2 class="h3 mb-3 text-black">Billing Details</h2>
+                    <div class="site-section" style="padding-top: 40px">
+                        <div class="container">
                             <div class="row">
-                                <div class="col-md-12 col-12">
-                                    <p>Choose One Address</p>
-                                </div>
-                                <% if (address) { %>
-                                    <% for (let i=0; i < address.address.length; i++) { %>
+
+                                <!-- main two -->
+
+                                <div class="col-md-6 mb-5 mb-md-0">
+                                    <h2 class="h3 mb-3 text-black">Billing Details</h2>
+                                    <div class="row">
+                                        <div class="col-md-12 col-12">
+                                            <p>Choose One Address</p>
+                                        </div>
+                                        <% if (address) { %>
+                                            <% for (let i=0; i < address.address.length; i++) { %>
 
 
 
-                                        <div class="col-md-6 col-12 mb-3 mt-3 address-options"
-                                            id="address-card-<%= address.address[i]._id %>">
-                                            <div class="card p-2" style="background: #f3f3f9; border-radius: 10px">
-                                                <div class="card-body">
-                                                    <h6 class="card-title data-full-name " style="font-size: 15px">
-                                                        Name:
-                                                        <%= address.address[i].fullName %>
-                                                    </h6>
-                                                    <p class="card-text  data-mobile">Number: <%=
-                                                            address.address[i].mobile %>
-                                                    </p>
-                                                    <p class="card-text  data-district">District: <%=
-                                                            address.address[i].district %>
-                                                    </p>
-                                                    <p class="card-text  data-city">City:<%= address.address[i].city %>
-                                                    </p>
-                                                    <p class="card-text  data-state">State: <%= address.address[i].state
-                                                            %>
-                                                    </p>
-                                                    <p class="card-text">Pincode: <%= address.address[i].pincode %>
-                                                    </p>
+                                                <div class="col-md-6 col-12 mb-3 mt-3 address-options"
+                                                    id="address-card-<%= address.address[i]._id %>">
+                                                    <div class="card p-2"
+                                                        style="background: #f3f3f9; border-radius: 10px">
+                                                        <div class="card-body">
+                                                            <h6 class="card-title data-full-name "
+                                                                style="font-size: 15px">
+                                                                Name:
+                                                                <%= address.address[i].fullName %>
+                                                            </h6>
+                                                            <p class="card-text  data-mobile">Number: <%=
+                                                                    address.address[i].mobile %>
+                                                            </p>
+                                                            <p class="card-text  data-district">District: <%=
+                                                                    address.address[i].district %>
+                                                            </p>
+                                                            <p class="card-text  data-city">City:<%=
+                                                                    address.address[i].city %>
+                                                            </p>
+                                                            <p class="card-text  data-state">State: <%=
+                                                                    address.address[i].state %>
+                                                            </p>
+                                                            <p class="card-text">Pincode: <%= address.address[i].pincode
+                                                                    %>
+                                                            </p>
 
-                                                    <!-- <hr class="my-3" /> -->
+                                                            <!-- <hr class="my-3" /> -->
 
-                                                    <!-- <div class="d-flex justify-content-between">
+                                                            <!-- <div class="d-flex justify-content-between">
                                                     <button class="btn btn-outline-primary-2 edit-address-btn"
                                                         type="button" data-bs-toggle="modal"
                                                         data-bs-target="#editAddressModal"
@@ -382,112 +387,116 @@
                                                     </a>
                                                 </div> -->
 
+                                                        </div>
+                                                        <input type="radio" name="addressOption"
+                                                            value="<%= address.address[i]._id %>" required>
+                                                    </div>
+
+
                                                 </div>
-                                                <input type="radio" name="addressOption"
-                                                value="<%= address.address[i]._id %>" required>
-                                            </div>
 
-
-                                        </div>
-
-                                        <% } %>
-                                            <% } else { %>
                                                 <% } %>
-                            </div>
+                                                    <% } else { %>
+                                                        <% } %>
+                                    </div>
 
-                            <div>
-                                <a href="/address">
-                                    <button type="submit" class="btn btn-primary btn-sm">Add Another Address</button>
-                                </a>
-                            </div>
+                                    <div>
+                                        <a href="/address">
+                                            <button type="submit" class="btn btn-primary btn-sm">Add Another
+                                                Address</button>
+                                        </a>
+                                    </div>
 
-                            <br>
+                                    <br>
 
-                            <!-- <div class="form-group">
+                                    <!-- <div class="form-group">
                             <label for="c_order_notes" class="text-black">Order Notes</label>
                             <textarea name="c_order_notes" id="c_order_notes" cols="30" rows="5" class="form-control"
                                 placeholder="Write your notes here..."></textarea>
                         </div> -->
 
-                        </div>
+                                </div>
 
-                        <!-- main two -->
+                                <!-- main two -->
 
-                        <div class="col-md-6">
-                            <div class="row mb-5">
-                                <div class="col-md-12">
-                                    <h2 class="h3 mb-3 text-black">Coupon Code</h2>
-                                    <div class="p-3 p-lg-5 border">
-                                        <label for="c_code" class="text-black mb-3">Enter your coupon code if you have
-                                            one</label>
-                                        <div class="input-group w-75">
-                                            <input type="text" class="form-control" id="c_code"
-                                                placeholder="Coupon Code" aria-label="Coupon Code"
-                                                aria-describedby="button-addon2" />
-                                            <div class="input-group-append">
-                                                <button class="btn btn-primary btn-sm" type="button" id="button-addon2">
-                                                    Apply
-                                                </button>
+                                <div class="col-md-6">
+                                    <div class="row mb-5">
+                                        <div class="col-md-12">
+                                            <h2 class="h3 mb-3 text-black">Coupon Code</h2>
+                                            <div class="p-3 p-lg-5 border">
+                                                <label for="c_code" class="text-black mb-3">Enter your coupon code if
+                                                    you have
+                                                    one</label>
+                                                <div class="input-group w-75">
+                                                    <input type="text" class="form-control" id="c_code"
+                                                        placeholder="Coupon Code" aria-label="Coupon Code"
+                                                        aria-describedby="button-addon2" />
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary btn-sm" type="button"
+                                                            id="button-addon2">
+                                                            Apply
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div class="row mb-5">
-                                <div class="col-md-12">
-                                    <h2 class="h3 mb-3 text-black">Your Order</h2>
-                                    <div class="p-3 p-lg-5 border">
-                                        <table class="table site-block-order-table mb-5">
-                                            <thead>
-                                                <th>Product</th>
-                                                <th>Image</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                            </thead>
-                                            <tbody>
-                                                <% if (cart && cart.items && cart.items.length> 0) { %>
-                                                    <% cart.items.forEach((item)=> { %>
-                                                        <tr>
-
-                                                            <td>
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="product-details">
-                                                                        <h6 class="product-title">
-                                                                            <%= item.productId.productName %>
-                                                                        </h6>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-
-                                                            <td>
-                                                                <img src="/car/adminAssets/assets/images/products/<%= item.productId.productImage?.[0] %>"
-                                                                    alt="ProductImage"
-                                                                    style="max-width: 5rem; max-height: 5rem" />
-                                                            </td>
-
-                                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= item.quantity %>
-                                                            </td>
-
-                                                            <td>₹ <%= (item.productId.productPrice *
-                                                                    item.quantity).toFixed(2) %>
-                                                            </td>
-
-                                                        </tr>
-                                                        <% }); %>
-                                                            <% } else { %>
+                                    <div class="row mb-5">
+                                        <div class="col-md-12">
+                                            <h2 class="h3 mb-3 text-black">Your Order</h2>
+                                            <div class="p-3 p-lg-5 border">
+                                                <table class="table site-block-order-table mb-5">
+                                                    <thead>
+                                                        <th>Product</th>
+                                                        <th>Image</th>
+                                                        <th>Quantity</th>
+                                                        <th>Price</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% if (cart && cart.items && cart.items.length> 0) { %>
+                                                            <% cart.items.forEach((item)=> { %>
                                                                 <tr>
-                                                                    <td colspan="4">Your cart is empty.</td>
+
+                                                                    <td>
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div class="product-details">
+                                                                                <h6 class="product-title">
+                                                                                    <%= item.productId.productName %>
+                                                                                </h6>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <img src="/car/adminAssets/assets/images/products/<%= item.productId.productImage?.[0] %>"
+                                                                            alt="ProductImage"
+                                                                            style="max-width: 5rem; max-height: 5rem" />
+                                                                    </td>
+
+                                                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=
+                                                                            item.quantity %>
+                                                                    </td>
+
+                                                                    <td>₹ <%= (item.productId.productPrice *
+                                                                            item.quantity).toFixed(2) %>
+                                                                    </td>
+
                                                                 </tr>
-                                                                <% } %>
-                                            </tbody>
-                                        </table>
+                                                                <% }); %>
+                                                                    <% } else { %>
+                                                                        <tr>
+                                                                            <td colspan="4">Your cart is empty.</td>
+                                                                        </tr>
+                                                                        <% } %>
+                                                    </tbody>
+                                                </table>
 
 
-                                        <!-- edit modal -->
+                                                <!-- edit modal -->
 
 
-                                        <!-- <div class="modal fade" id="editAddressModal" tabindex="-1"
+                                                <!-- <div class="modal fade" id="editAddressModal" tabindex="-1"
                                         aria-labelledby="editAddressModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
@@ -549,7 +558,7 @@
 
 
 
-                                        <!-- <div class="mb-3 text-center ">
+                                                <!-- <div class="mb-3 text-center ">
                                         <button class="btn payment-option" data-payment="cash-on-delivery">Cash On
                                             Delivery</button>
                                     </div>
@@ -566,30 +575,35 @@
 
 
 
-                                        <div class="payment-options">
-                                            <h2>Select Payment Option</h2>
-                                            <label>
-                                                <input type="radio" name="paymentOption" value="COD" required> Cash On
-                                                Delivery
-                                            </label>
-                                            <br>
-                                            <label>
-                                                <input type="radio" name="paymentOption" value="Other" required> Cheque
-                                                Payment
-                                            </label>
-                                            <br>
-                                            <label>
-                                                <input type="radio" name="paymentOption" value="PayPal" required> Paypal
-                                            </label>
-                                        </div>
+                                                <div class="payment-options">
+                                                    <h2>Select Payment Option</h2>
+                                                    <label>
+                                                        <input type="radio" name="paymentOption" value="COD" required>
+                                                        Cash On
+                                                        Delivery
+                                                    </label>
+                                                    <br>
+                                                    <label>
+                                                        <input type="radio" name="paymentOption" value="Other" required>
+                                                        Cheque
+                                                        Payment
+                                                    </label>
+                                                    <br>
+                                                    <label>
+                                                        <input type="radio" name="paymentOption" value="PayPal"
+                                                            required> Paypal
+                                                    </label>
+                                                </div>
 
 
 
 
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-lg py-3 btn-block">
-                                                Place Order
-                                            </button>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary btn-lg py-3 btn-block">
+                                                        Place Order
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -597,11 +611,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </form>
+            </form>
 
-    <!-- <script>
+            <!-- <script>
         // Store the currently selected address ID
         let selectedAddressId = null;
 
@@ -633,8 +645,8 @@
 
 
 
-    <!-- payment button selection indicator -->
-    <!-- <script>
+            <!-- payment button selection indicator -->
+            <!-- <script>
         // Get all payment buttons
         const paymentButtons = document.querySelectorAll(".payment-option");
 
@@ -657,7 +669,7 @@
     </script> -->
 
 
-    <!-- <script>
+            <!-- <script>
         function removeAddress(addressId) {
             // Remove the address card from the DOM
             const addressCard = document.getElementById(`address-card-${addressId}`);
@@ -667,9 +679,9 @@
         }
     </script> -->
 
-    <!-- Event listener for Edit button click -->
+            <!-- Event listener for Edit button click -->
 
-    <!-- <script>
+            <!-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             const editAddressButtons = document.querySelectorAll(".edit-address-btn");
 
@@ -752,1015 +764,1081 @@
     </script> -->
 
 
-    <%- include('./layouts/footer.ejs') %>
+            <%- include('./layouts/footer.ejs') %>
 
-<!-- checkout page virgin -->
-
-
-
-<!-- old edit product controller -->
-<script>
-editProduct: async (req, res) => {
-    try {
-        const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand } = req.body;
-        const productImage = []
-        for (let i = 0; i < req.files.length; i++) {
-            productImage[i] = req.files[i].filename
-        }
-        await Product.findByIdAndUpdate(id, {
-            $set: { productName, productDescription, productCategory, productImage, productStock, productPrice, productBrand }
-        });
-        res.redirect('/admin/viewProduct');
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-</script>
-<!-- old edit product controller -->
+                <!-- checkout page virgin -->
 
 
 
-
-<!-- remove product function -->
-<script>
-
-function removeProduct(proId) {
-    // Display a confirmation dialog
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, remove it!'
-    }).then((result) => {
-      // Check if the user confirmed the action
-      if (result.isConfirmed) {
-        // User confirmed, proceed with removal
-        $.ajax({
-          url: '/remove-product',
-          method: 'post',
-          encoded: true,
-          data: {
-            product: proId,
-          },
-        }).done((data) => {
-          if (data.success) {
-            // Remove the corresponding row from the table
-            const rowToRemove = document.querySelector(`.cart-item[data-product-id="${proId}"]`);
-            if (rowToRemove) {
-              rowToRemove.remove();
-            }
-  
-            // Update the total on the page
-            updateTotal();
-  
-            // Check if the cart is empty and display the empty cart message
-            const cartItems = document.querySelectorAll('.cart-item');
-            const emptyCartMessage = document.querySelector('.empty-cart-message');
-  
-            if (cartItems.length === 0) {
-              // If there are no cart items, hide both the tbody and thead
-              const tbody = document.querySelector('tbody');
-              const thead = document.querySelector('thead');
-              if (tbody) {
-                tbody.style.display = 'none';
-              }
-              if (thead) {
-                thead.style.display = 'none';
-              }
-  
-              // Display the empty cart message
-              if (emptyCartMessage) {
-                emptyCartMessage.style.display = 'block';
-              }
-            }
-  
-            // Optionally, update other UI elements or take additional actions
-            Swal.fire(
-              'Removed!',
-              'Your product has been removed.',
-              'success'
-            );
-          } else {
-            // Handle unsuccessful removal
-            Swal.fire(
-              'Error!',
-              'Failed to remove the product.',
-              'error'
-            );
-          }
-        });
-      }
-      // If the user clicked "Cancel", do nothing
-    });
-  }
-
-    </script>
-<!-- remove product function -->
+                <!-- old edit product controller -->
+                <script>
+                    editProduct: async (req, res) => {
+                        try {
+                            const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand } = req.body;
+                            const productImage = []
+                            for (let i = 0; i < req.files.length; i++) {
+                                productImage[i] = req.files[i].filename
+                            }
+                            await Product.findByIdAndUpdate(id, {
+                                $set: { productName, productDescription, productCategory, productImage, productStock, productPrice, productBrand }
+                            });
+                            res.redirect('/admin/viewProduct');
+                        } catch (error) {
+                            console.log(error.message);
+                        }
+                    }
+                </script>
+                <!-- old edit product controller -->
 
 
-<table class="cart-items table" cellspacing="0">
-    <thead>
-        <tr>
-            <th class="product-thumbnail">Product</th>
-            <th class="product-price">Price</th>
-            <th class="product-quantity">Quantity</th>
-            <th class="product-subtotal">Subtotal</th>
-            <th class="product-remove">&nbsp;</th>
-        </tr>
-    </thead>
 
-    <tbody>
 
-        <% if (cart && cart.length> 0) { %>
-            <% cart.forEach((data, index)=> { %>
+                <!-- remove product function -->
+                <script>
 
-                <tr class="cart-item <%= data.quantity > data.productId.productStock ? 'out-of-stock' : '' %>"
-                    data-product-id="<%=data.productId._id%>">
-                    <td class="product-thumbnail">
-                        <a href="shop-details.html">
-                            <img src="/car/adminAssets/assets/images/products/<%=data.productId.productImage[0]%>"
-                                alt="IMG">
-                        </a>
-                        <div class="product-name">
-                            <%=data.productId.productName%>
-                        </div>
-                    </td>
-                    <td class="product-price">
-                        <%=data.productId.productPrice%>
-                    </td>
-                    <td class="product-quantity">
-                        <div class="quantity">
-                            <div class="column-4">
-                                <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn"
-                                    onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)">-</a>
-                                <span class="mtext-104 cl3 txt-center num-product p-2"
-                                    id="<%=data.productId._id%>"
-                                    data-price="<%=data.productId.productPrice%>">
-                                    <%=data.quantity%>
-                                </span>
-                                <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn "
-                                    onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)">+</a>
+                    function removeProduct(proId) {
+                        // Display a confirmation dialog
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'You won\'t be able to revert this!',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, remove it!'
+                        }).then((result) => {
+                            // Check if the user confirmed the action
+                            if (result.isConfirmed) {
+                                // User confirmed, proceed with removal
+                                $.ajax({
+                                    url: '/remove-product',
+                                    method: 'post',
+                                    encoded: true,
+                                    data: {
+                                        product: proId,
+                                    },
+                                }).done((data) => {
+                                    if (data.success) {
+                                        // Remove the corresponding row from the table
+                                        const rowToRemove = document.querySelector(`.cart-item[data-product-id="${proId}"]`);
+                                        if (rowToRemove) {
+                                            rowToRemove.remove();
+                                        }
+
+                                        // Update the total on the page
+                                        updateTotal();
+
+                                        // Check if the cart is empty and display the empty cart message
+                                        const cartItems = document.querySelectorAll('.cart-item');
+                                        const emptyCartMessage = document.querySelector('.empty-cart-message');
+
+                                        if (cartItems.length === 0) {
+                                            // If there are no cart items, hide both the tbody and thead
+                                            const tbody = document.querySelector('tbody');
+                                            const thead = document.querySelector('thead');
+                                            if (tbody) {
+                                                tbody.style.display = 'none';
+                                            }
+                                            if (thead) {
+                                                thead.style.display = 'none';
+                                            }
+
+                                            // Display the empty cart message
+                                            if (emptyCartMessage) {
+                                                emptyCartMessage.style.display = 'block';
+                                            }
+                                        }
+
+                                        // Optionally, update other UI elements or take additional actions
+                                        Swal.fire(
+                                            'Removed!',
+                                            'Your product has been removed.',
+                                            'success'
+                                        );
+                                    } else {
+                                        // Handle unsuccessful removal
+                                        Swal.fire(
+                                            'Error!',
+                                            'Failed to remove the product.',
+                                            'error'
+                                        );
+                                    }
+                                });
+                            }
+                            // If the user clicked "Cancel", do nothing
+                        });
+                    }
+
+                </script>
+                <!-- remove product function -->
+
+
+                <table class="cart-items table" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="product-thumbnail">Product</th>
+                            <th class="product-price">Price</th>
+                            <th class="product-quantity">Quantity</th>
+                            <th class="product-subtotal">Subtotal</th>
+                            <th class="product-remove">&nbsp;</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <% if (cart && cart.length> 0) { %>
+                            <% cart.forEach((data, index)=> { %>
+
+                                <tr class="cart-item <%= data.quantity > data.productId.productStock ? 'out-of-stock' : '' %>"
+                                    data-product-id="<%=data.productId._id%>">
+                                    <td class="product-thumbnail">
+                                        <a href="shop-details.html">
+                                            <img src="/car/adminAssets/assets/images/products/<%=data.productId.productImage[0]%>"
+                                                alt="IMG">
+                                        </a>
+                                        <div class="product-name">
+                                            <%=data.productId.productName%>
+                                        </div>
+                                    </td>
+                                    <td class="product-price">
+                                        <%=data.productId.productPrice%>
+                                    </td>
+                                    <td class="product-quantity">
+                                        <div class="quantity">
+                                            <div class="column-4">
+                                                <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn"
+                                                    onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)">-</a>
+                                                <span class="mtext-104 cl3 txt-center num-product p-2"
+                                                    id="<%=data.productId._id%>"
+                                                    data-price="<%=data.productId.productPrice%>">
+                                                    <%=data.quantity%>
+                                                </span>
+                                                <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn "
+                                                    onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)">+</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="product-subtotal" id="subtotal-<%=data.productId._id%>"
+                                        data-price="<%=data.productId.productPrice%>">
+                                        <span>&#8377; <span id="subtotal-<%=data.productId._id%>">
+                                                <%= (parseFloat(data.productId.productPrice) * data.quantity).toFixed(2)
+                                                    %>
+                                            </span></span>
+                                    </td>
+                                    <td><a href="" onclick="removeProduct('<%=data.productId._id%>'); return false;"
+                                            style="color: red;">remove</a></td>
+                                </tr>
+
+
+                                <% if (data.quantity> data.productId.productStock) { %>
+                                    <tr class="out-of-stock-message">
+                                        <td colspan="5">
+                                            <p class="text-danger">Out of stock: <%= data.productId.productName %>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                        <% }) %>
+                                            <% } else { %>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td colspan="5" style="color: red;">Cart is empty</td>
+
+
+
+
+                                                </tr>
+                                                <% } %>
+                    </tbody>
+
+                    <div class="empty-cart-message" style="display: none; text-align: center;">
+                        <p style="color: red;">Your cart is empty. Start shopping now!</p>
+
+                        <a href='/productView'
+                            style="background-color: rgb(17, 15, 15); color: rgb(227, 226, 226); padding: 10px 20px; border: none; cursor: pointer;">Continue
+                            Shopping</a>
+                    </div>
+                </table>
+
+
+                <!-- placeOrder -->
+                <script>
+                    placeOrder: async (req, res) => {
+                        try {
+                            // Get the user's ID from the authenticated user (assuming you have implemented user authentication)
+                            const userId = req.session.userId;
+
+                            // Retrieve the selected address ID from the request body
+                            const selectedAddressId = req.body.addressOption;
+
+                            // Get the user's cart data (assuming you have a cart system implemented)
+                            const cart = await Cart.findOne({ userId: userId }).populate('items.productId');
+
+                            // Calculate the total order amount based on the cart contents
+                            let totalAmount = 0;
+                            for (const item of cart.items) {
+                                totalAmount += item.productId.productPrice * item.quantity;
+                            }
+
+                            // Create the order document
+                            const order = new Order({
+                                user: userId,
+                                cart: {
+                                    user: userId,
+                                    products: cart.items,
+                                },
+                                deliveryAddress: selectedAddressId,
+                                paymentOption: req.body.paymentOption, // Get the selected payment option from the request
+                                totalAmount: totalAmount,
+                            });
+
+                            // Save the order to the database
+                            await order.save();
+
+                            // Clear the user's cart (you should implement a cart clearing mechanism)
+                            // For example, you can update the user's cart in the User model or a dedicated Cart model
+
+                            // Update the user's order history (you should implement this as needed)
+
+                            // Respond with a success message
+                            res.redirect('/thankyou')
+                        } catch (error) {
+                            console.log(error.message);
+                        }
+                    }
+                </script>
+                <!-- placeOrder -->
+
+
+
+
+
+                <!-- MY ORDERS -->
+
+
+                <div class="tab-pane fade" id="tab-order" role="tabpanel" aria-labelledby="tab-order-link">
+                    <!-- <div class="row mx-auto"> -->
+                    <div class="card col-md-5 col-10 m-2 shadow-sm" id="allorder"
+                        style="border-radius: 7px; background: #F3F3F9; cursor: pointer;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center mt-1 py-4">
+                                <i class="fa-solid fa-box-open mx-3" style="font-size: 35px;"></i>
+                                <h5 class="m-0 align-self-center" style="font-weight: 300;">All Orders
+                                </h5>
                             </div>
                         </div>
-                    </td>
-                    <td class="product-subtotal" id="subtotal-<%=data.productId._id%>"
-                        data-price="<%=data.productId.productPrice%>">
-                        <span>&#8377; <span id="subtotal-<%=data.productId._id%>">
-                                <%= (parseFloat(data.productId.productPrice) *
-                                    data.quantity).toFixed(2) %>
-                            </span></span>
-                    </td>
-                    <td><a href=""
-                            onclick="removeProduct('<%=data.productId._id%>'); return false;"
-                            style="color: red;">remove</a></td>
-                </tr>
+                    </div>
+
+                </div>
+
+                <!-- MY ORDERS -->
 
 
-                <% if (data.quantity> data.productId.productStock) { %>
-                    <tr class="out-of-stock-message">
-                        <td colspan="5">
-                            <p class="text-danger">Out of stock: <%=
-                                    data.productId.productName %>
-                            </p>
-                        </td>
-                    </tr>
-                    <% } %>
-                        <% }) %>
-                            <% } else { %>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td colspan="5" style="color: red;">Cart is empty</td>
+                <!-- MY ORDERS -->
+                <div class="tab-pane fade" id="tab-order" role="tabpanel" aria-labelledby="tab-order-link">
+                    <h6 class="text-center fs-1 font-monospace text-decoration-underline">My Orders</h6>
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Order Date</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loop through your orders and generate table rows -->
+                            <% if (orders && orders.length> 0) { %>
+                                <% orders.forEach(order=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= order.orderId %>
+                                        </td>
+                                        <td>
+                                            <%= order.orderDate %>
+                                        </td>
+                                        <td>
+                                            <%= order.totalAmount %>
+                                        </td>
+                                        <td>
+                                            <%= order.status %>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="4">No orders found.</td>
+                                            </tr>
+                                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <!-- order details page -->
+
+                <%- include('./layouts/header.ejs') %>
+
+                    <style>
+                        .gradient-custom {
+                            /* fallback for old browsers */
+                            background: #cd9cf2;
+
+                            /* Chrome 10-25, Safari 5.1-6 */
+                            background: -webkit-linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1));
+
+                            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                            background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1))
+                        }
+                    </style>
+
+                    <div class="mt-5">
+                        <section class="h-100 gradient-custom">
+                            <div class="container py-5 h-100">
+                                <div class="row d-flex justify-content-center align-items-center h-100">
+                                    <div class="col-lg-10 col-xl-8">
+                                        <div class="card" style="border-radius: 10px;">
+                                            <div class="card-header px-4 py-5">
+                                                <h5 class="text-muted mb-0">Thanks for your Order, <span
+                                                        style="color: #a8729a;">Anna</span>!</h5>
+                                            </div>
+                                            <div class="card-body p-4">
+                                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                                    <p class="lead fw-normal mb-0" style="color: #a8729a;">Receipt</p>
+                                                    <p class="small text-muted mb-0">Receipt Voucher : 1KAU9-84UIL</p>
+                                                </div>
+                                                <div class="card shadow-0 border mb-4">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/13.webp"
+                                                                    class="img-fluid" alt="Phone">
+                                                            </div>
+                                                            <div
+                                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                                <p class="text-muted mb-0">Samsung Galaxy</p>
+                                                            </div>
+                                                            <div
+                                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                                <p class="text-muted mb-0 small">White</p>
+                                                            </div>
+                                                            <div
+                                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                                <p class="text-muted mb-0 small">Capacity: 64GB</p>
+                                                            </div>
+                                                            <div
+                                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                                <p class="text-muted mb-0 small">Qty: 1</p>
+                                                            </div>
+                                                            <div
+                                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                                <p class="text-muted mb-0 small">$499</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
+                                                        <div class="row d-flex align-items-center">
+                                                            <div class="col-md-2">
+                                                                <p class="text-muted mb-0 small">Track Order</p>
+                                                            </div>
+                                                            <div class="col-md-10">
+                                                                <div class="progress"
+                                                                    style="height: 6px; border-radius: 16px;">
+                                                                    <div class="progress-bar" role="progressbar"
+                                                                        style="width: 65%; border-radius: 16px; background-color: #a8729a;"
+                                                                        aria-valuenow="65" aria-valuemin="0"
+                                                                        aria-valuemax="100"></div>
+                                                                </div>
+                                                                <div class="d-flex justify-content-around mb-1">
+                                                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Out
+                                                                        for delivary</p>
+                                                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">
+                                                                        Delivered</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card shadow-0 border mb-4">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/1.webp"
+                                                                    class="img-fluid" alt="Phone">
+                                                            </div>
+                                                            <div
+                                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                                <p class="text-muted mb-0">iPad</p>
+                                                            </div>
+                                                            <div
+                                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                                <p class="text-muted mb-0 small">Pink rose</p>
+                                                            </div>
+                                                            <div
+                                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                                <p class="text-muted mb-0 small">Capacity: 32GB</p>
+                                                            </div>
+                                                            <div
+                                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                                <p class="text-muted mb-0 small">Qty: 1</p>
+                                                            </div>
+                                                            <div
+                                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                                <p class="text-muted mb-0 small">$399</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
+                                                        <div class="row d-flex align-items-center">
+                                                            <div class="col-md-2">
+                                                                <p class="text-muted mb-0 small">Track Order</p>
+                                                            </div>
+                                                            <div class="col-md-10">
+                                                                <div class="progress"
+                                                                    style="height: 6px; border-radius: 16px;">
+                                                                    <div class="progress-bar" role="progressbar"
+                                                                        style="width: 20%; border-radius: 16px; background-color: #a8729a;"
+                                                                        aria-valuenow="20" aria-valuemin="0"
+                                                                        aria-valuemax="100"></div>
+                                                                </div>
+                                                                <div class="d-flex justify-content-around mb-1">
+                                                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Out
+                                                                        for delivary</p>
+                                                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">
+                                                                        Delivered</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between pt-2">
+                                                    <p class="fw-bold mb-0">Order Details</p>
+                                                    <p class="text-muted mb-0"><span class="fw-bold me-4">Total</span>
+                                                        $898.00</p>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between pt-2">
+                                                    <p class="text-muted mb-0">Invoice Number : 788152</p>
+                                                    <p class="text-muted mb-0"><span
+                                                            class="fw-bold me-4">Discount</span> $19.00</p>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-muted mb-0">Invoice Date : 22 Dec,2019</p>
+                                                    <p class="text-muted mb-0"><span class="fw-bold me-4">GST 18%</span>
+                                                        123</p>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between mb-5">
+                                                    <p class="text-muted mb-0">Recepits Voucher : 18KU-62IIK</p>
+                                                    <p class="text-muted mb-0"><span class="fw-bold me-4">Delivery
+                                                            Charges</span> Free
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer border-0 px-4 py-5"
+                                                style="background-color: #a8729a; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                                                <h5
+                                                    class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">
+                                                    Total
+                                                    paid: <span class="h2 mb-0 ms-2">$1040</span></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <%- include('./layouts/footer.ejs') %>
+
+                        <!-- order details page -->
+
+
+                        <script>
+                            loadOrder: async (req, res) => {
+                                try {
+                                    const userId = req.session.user_id
+                                    const userData = await userDb.findById({ _id: userId })
+                                    const id = req.query.id;
+                                    console.log(id);
+                                    const orderedProduct = await orderDb.findOne({ _id: id }).populate(
+                                        "products.productId"
+                                    );
+                                    const cart = await cartDb.findOne({ user: req.session.user_id });
+                                    let cartCount = 0;
+                                    if (cart) {
+                                        cartCount = cart.products.length;
+                                    }
+                                    res.render("orderDetails", {
+                                        user: userData,
+                                        orders: orderedProduct,
+                                        cartCount,
+                                    });
+                                } catch (error) {
+                                    console.log(error.message);
+                                }
+                            },
+                        </script>
+
+
+                        <script>
+                                loadOrderDetails: async (req, res) => {
+                                    try {
+                                        const userId = req.session.userId
+                                        const userData = await User.findById({ _id: userId })
+                                        const orderId = req.params.orderId
+                                        console.log(`order id = ${orderId}`)
+
+                                        const order = await Order.findOne({ _id: orderId }).populate(
+                                            "products.productId",
+                                            'deliveryAddress'
+                                        );
+
+                                        // Access the order details
+                                        const { deliveryAddress, paymentOption, totalAmount, orderDate, status } = order;
+
+
+                                        const cartData = await Cart.findOne({ userId: userId });
+
+                                        // let cartCount = 0;
+                                        // if (cartData) {
+                                        //     cartCount = cartData.items.length;
+                                        // }
+
+                                        res.render("orderDetails", {
+                                            user: userData,
+                                            order: {
+                                                _id: order._id,
+                                                user: order.user,
+                                                deliveryAddress,
+                                                paymentOption,
+                                                totalAmount,
+                                                orderDate,
+                                                status,
+                                            }
+                                        });
+                                    } catch (error) {
+                                        console.log(error.message);
+                                    }
+                                }
+                        </script>
+
+
+                        <!-- admin controller -->
+                        <script>
+
+                            const Admin = require('../models/adminModel');
+                            const User = require('../models/userModel');
+                            const Category = require('../models/categoryModel');
+                            const bcrypt = require('bcrypt');
+
+
+                            module.exports = {
+
+                                loadLogin: async (req, res) => {
+                                    try {
+                                        res.render('login')
+                                    } catch (error) {
+                                        console.log(error.message);
+                                    }
+                                },
+                                verifyLogin: async (req, res) => {
+                                    try {
+
+                                        const email = req.body.email
+                                        const password = req.body.password
+
+                                        const adminData = await Admin.findOne({ email: email })
+                                        if (adminData) {
+                                            const passwordMatch = await bcrypt.compare(password, adminData.password)
+                                            if (passwordMatch) {
+                                                if (adminData.isAdmin === 0) {
+                                                    res.render('login', { message: "email or password is incorrect" })
+                                                } else {
+                                                    req.session.admin_id = adminData._id;
+                                                    res.redirect("/admin/dashboard")
+                                                }
+                                            } else {
+                                                res.render('login', { message: "email or password is incorrect" })
+                                            }
+                                        }
+                                        else {
+                                            res.render('login', { message: "email or password is incorrect" })
+                                        }
+                                    } catch (error) {
+                                        console.log(error.message);
+                                    }
+                                },
+                                loadDashboard: async (req, res) => {
+                                    try {
+                                        res.render("dashboard")
+                                    } catch (error) {
+                                        console.log(error.message);
+                                    }
+                                },
+                                loadUsers: async (req, res) => {
+                                    try {
+                                        const user = await User.find({})
+                                        res.render("Users", { users: user })
+                                    } catch (error) {
+                                        console.log(error.message);
+                                    }
+                                },
+                                blockUser: async (req, res) => {
+                                    try {
+                                        //   const page = req.query.page || 1; // Get the current page from query parameters
+                                        //   const pageSize = 10; // Set your desired page size
+
+                                        const id = req.query.id;
+                                        //   const skip = (page - 1) * pageSize;
+                                        const user1 = await User.findById(id)
+
+                                        if (user1) {
+                                            user1.isBlocked = !user1.isBlocked
+                                            await user1.save();
+
+                                        }
+
+                                        //   const users2 = await User.find().skip(skip).limit(pageSize);
+                                        //   const totalUsers = await User.countDocuments();
+                                        //   const totalPages = Math.ceil(totalUsers / pageSize);
+
+                                        res.redirect('/admin/Users')
+
+                                    } catch (error) {
+                                        console.log(error);
+                                    }
+                                },
+                                loadAddCategory: async (req, res) => {
+                                    try {
+                                        res.render('addCategory')
+                                    } catch (error) {
+                                        console.log(error.message);
+                                    }
+                                },
+                                addCategory: async (req, res) => {
+                                    try {
+                                        const { categoryName } = req.body
+                                        const already = await Category.findOne({ categoryName: { $regex: categoryName, '$options': 'i' } })
+                                        if (already) {
+                                            res.render('addCategory', { message: "Category Already Created" })
+                                        } else {
+                                            //  const data=new Category({
+                                            //     categoryname:categoryname,
+                                            //     isListed:true
+                                            //  })
+
+                                            const category = await new Category({
+                                                ...req.body,
+                                                isListed: true
+                                            });
+
+                                            const result = await category.save()
+                                            res.redirect('/admin/addCategory')
+                                        }
+                                    } catch (error) {
+                                        console.log(error);
+                                    }
+                                },
+                                loadViewCategory: async (req, res) => {
+                                    try {
+                                        const category = await Category.find({})
+                                        res.render('viewCategory', { category: category })
+                                    } catch (error) {
+                                        console.log(error.message);
+                                    }
+                                },
+                                unlistCategory: async (req, res) => {
+                                    try {
+                                        const id = req.query.id;
+                                        const Category1 = await Category.findById(id);
+
+                                        if (Category1) {
+                                            Category1.isListed = !Category1.isListed;
+                                            await Category1.save();
+                                        }
+                                        res.redirect('/admin/viewCategory')
+                                    } catch (error) {
+                                        console.log(error);
+                                    }
+                                },
+                                loadEditCatogory: async (req, res) => {
+                                    try {
+                                        const id = req.query.id;
+                                        const categorydata = await Category.findById(id);
+
+                                        if (categorydata) {
+                                            res.render('editCategory', { category: categorydata });
+                                        } else {
+                                            res.redirect('/admin/viewCategory');
+                                        }
+                                    } catch (error) {
+                                        console.log(error.message);
+                                        res.status(500).send('Internal Server Error');
+                                    }
+                                },
+                                editCategory: async (req, res) => {
+                                    try {
+                                        const { id, categoryName, categoryDescription } = req.body;
+
+                                        const already = await Category.findOne({ categoryName: { $regex: categoryName, '$options': 'i' } })
+                                        if (already) {
+                                            res.render('editCategory', { message: "Category Already Created", category: { categoryName, categoryDescription } });
+                                        } else {
+                                            await Category.findByIdAndUpdate(id, { $set: { categoryName, categoryDescription } });
+                                            res.redirect('/admin/viewCategory');
+                                        }
+
+                                    } catch (error) {
+                                        console.log(error.message);
+                                    }
+                                }
+
+                            }
+
+                        </script>
+
+                        <!-- admin controller -->
+
+
+
+                        <!-- user controller -->
+                        <script>
+                            const User = require('../models/userModel');
+                            const Product = require('../models/productModel');
+                            const nodemailer = require('nodemailer');
+                            const bcrypt = require('bcrypt');
+                            const otpGenerator = require("otp-generator")
+
+                            const securePassword = async (password) => {
+                                try {
+                                    const passwordHash = await bcrypt.hash(password, 10);
+                                    return passwordHash;
+                                } catch (error) {
+                                    console.log(error.message);
+                                }
+                            }
+
+
+                            const loginLoad = async (req, res) => {
+                                try {
+                                    res.render('login')
+                                } catch (error) {
+                                    console.log(error.message);
+                                }
+                            }
+
+
+                            const loadRegister = async (req, res) => {
+                                try {
+
+                                    res.render('registration.ejs');
+
+                                } catch (error) {
+                                    console.log(error.message);
+                                }
+                            }
+
+
+                            const verifyLogin = async (req, res) => {
+                                try {
+                                    const email = req.body.email;
+                                    const password = req.body.password;
+
+                                    const userData = await User.findOne({ email: email });
+
+                                    if (userData) {
+                                        const passwordMatch = await bcrypt.compare(password, userData.password);
+
+                                        if (passwordMatch) {
+                                            if (userData.isBlocked) {
+                                                // If the user is blocked, display an error message or redirect to a blocked page.
+                                                res.render('login', { message: "Your account is blocked. Please contact support for assistance." });
+                                            } else {
+                                                // Set the session for a non-blocked user.
+                                                req.session.userId = userData._id;
+                                                res.render('userHome');
+                                            }
+                                        } else {
+                                            res.render('login', { message: "Incorrect email or password" });
+                                        }
+                                    } else {
+                                        res.render('login', { message: "Incorrect email or password" });
+                                    }
+                                } catch (error) {
+                                    console.log(error.message);
+                                }
+                            }
 
 
 
 
-                                </tr>
-                                <% } %>
-    </tbody>
-
-    <div class="empty-cart-message" style="display: none; text-align: center;">
-        <p style="color: red;">Your cart is empty. Start shopping now!</p>
-
-        <a href='/productView'
-            style="background-color: rgb(17, 15, 15); color: rgb(227, 226, 226); padding: 10px 20px; border: none; cursor: pointer;">Continue
-            Shopping</a>
-    </div>
-</table>
 
 
-<!-- placeOrder -->
-<script>
-placeOrder: async (req, res) => {
-    try {
-        // Get the user's ID from the authenticated user (assuming you have implemented user authentication)
-        const userId = req.session.userId;
+                            // const insertUser = async (req,res) =>{
 
-        // Retrieve the selected address ID from the request body
-        const selectedAddressId = req.body.addressOption;
+                            //     try {
+                            //         const spassword = await securePassword(req.body.password)
+                            //         const user = new User({
+                            //             firstName:req.body.firstName,
+                            //             lastName:req.body.lastName,
+                            //             email:req.body.email,
+                            //             password:spassword,
+                            //         });
 
-        // Get the user's cart data (assuming you have a cart system implemented)
-        const cart = await Cart.findOne({ userId: userId }).populate('items.productId');
+                            //     const userData = await user.save();
 
-        // Calculate the total order amount based on the cart contents
-        let totalAmount = 0;
-        for (const item of cart.items) {
-            totalAmount += item.productId.productPrice * item.quantity;
-        }
-
-        // Create the order document
-        const order = new Order({
-            user: userId,
-            cart: {
-                user: userId,
-                products: cart.items,
-            },
-            deliveryAddress: selectedAddressId,
-            paymentOption: req.body.paymentOption, // Get the selected payment option from the request
-            totalAmount: totalAmount,
-        });
-
-        // Save the order to the database
-        await order.save();
-
-        // Clear the user's cart (you should implement a cart clearing mechanism)
-        // For example, you can update the user's cart in the User model or a dedicated Cart model
-
-        // Update the user's order history (you should implement this as needed)
-
-        // Respond with a success message
-        res.redirect('/thankyou')
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-</script>
-<!-- placeOrder -->
+                            //         if(userData) {
+                            //             res.render('registration', {message: "Your registration has been successfully."});
+                            //         }
+                            //         else{
+                            //             res.render('registration', {message: "Your registration has been failed."});
+                            //         }
+                            //     } catch (error) {
+                            //         console.log(error.message);
+                            //     }
+                            // }
 
 
+                            const loadHome = async (req, res) => {
+                                try {
+                                    const pro = await Product.find()
+                                    res.render('userHome', { product: pro })
+                                } catch (error) {
+                                    console.log(error.message);
+                                }
+                            }
+
+
+                            const userLogout = async (req, res) => {
+                                try {
+                                    req.session.destroy()
+                                    res.redirect('/')
+                                } catch (error) {
+                                    console.log(error.message);
+                                }
+                            }
+
+                            const loadOtp = async (req, res) => {
+                                try {
+                                    res.render('otp')
+                                } catch (error) {
+                                    console.log(error.message);
+                                }
+                            }
+
+
+                            const otpSent = async (email, otp) => {
+                                try {
+                                    const transporter = nodemailer.createTransport({
+                                        host: 'smtp.gmail.com',
+                                        port: 587,
+                                        secure: false,
+                                        requireTLS: true,
+                                        auth: {
+                                            user: 'muhsinachipra@gmail.com',
+                                            pass: 'azen vizj yufk ekkt',
+                                        },
+                                    });
+
+                                    const mailOptions = {
+                                        from: 'muhsinachipra@gmail.com',
+                                        to: email,
+                                        subject: 'Verify Your Email',
+                                        html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
+                                    };
+
+                                    await transporter.sendMail(mailOptions);
+                                } catch (error) {
+                                    console.log(error.message);
+                                }
+                            }
+
+
+                            const insertUser = async (req, res) => {
+                                try {
+                                    // Generate OTP
+                                    const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
+
+                                    // Store OTP and its creation time in the session
+                                    const currentTime = new Date();
+                                    const otpCreationTime = currentTime.getMinutes()
+                                    req.session.otp = {
+                                        code: otp,
+                                        creationTime: otpCreationTime,
+                                    };
+
+                                    const { passwordConfirm, password, mobileno, email, lastName, firstName } = req.body
+                                    req.session.email = email
+                                    const userCheck = await User.findOne({ email });
+                                    if (userCheck) {
+                                        res.render('registration', { message: "Email already exists" });
+                                    } else {
+                                        const hashedPassword = await securePassword(password);
 
 
 
- <!-- MY ORDERS -->
+                                        if (firstName && email && lastName && mobileno) {
+                                            if (password === passwordConfirm) {
+                                                const user = new User({
+                                                    firstName,
+                                                    lastName,
+                                                    email,
+                                                    mobileno,
+                                                    password: hashedPassword
+                                                });
+                                                const result = await user.save();
 
- 
- <div class="tab-pane fade" id="tab-order" role="tabpanel"
- aria-labelledby="tab-order-link">
- <!-- <div class="row mx-auto"> -->
- <div class="card col-md-5 col-10 m-2 shadow-sm" id="allorder"
-     style="border-radius: 7px; background: #F3F3F9; cursor: pointer;">
-     <div class="card-body">
-         <div class="d-flex justify-content-center mt-1 py-4">
-             <i class="fa-solid fa-box-open mx-3" style="font-size: 35px;"></i>
-             <h5 class="m-0 align-self-center" style="font-weight: 300;">All Orders
-             </h5>
-         </div>
-     </div>
- </div>
-
-</div>
-
- <!-- MY ORDERS -->
-
-
-  <!-- MY ORDERS -->
-  <div class="tab-pane fade" id="tab-order" role="tabpanel"
-  aria-labelledby="tab-order-link">
-  <h6 class="text-center fs-1 font-monospace text-decoration-underline">My Orders</h6>
-
-  <table class="table table-bordered">
-      <thead>
-          <tr>
-              <th>Order ID</th>
-              <th>Order Date</th>
-              <th>Total Amount</th>
-              <th>Status</th>
-          </tr>
-      </thead>
-      <tbody>
-          <!-- Loop through your orders and generate table rows -->
-          <% if (orders && orders.length> 0) { %>
-              <% orders.forEach(order=> { %>
-                  <tr>
-                      <td>
-                          <%= order.orderId %>
-                      </td>
-                      <td>
-                          <%= order.orderDate %>
-                      </td>
-                      <td>
-                          <%= order.totalAmount %>
-                      </td>
-                      <td>
-                          <%= order.status %>
-                      </td>
-                  </tr>
-                  <% }); %>
-                      <% } else { %>
-                          <tr>
-                              <td colspan="4">No orders found.</td>
-                          </tr>
-                          <% } %>
-      </tbody>
-  </table>
-</div>
+                                                // Send OTP to the user's email
+                                                otpSent(email, req.session.otp.code);
+                                                res.render("otp");
+                                            } else {
+                                                res.render("registration", { message: "Password doesn't match" });
+                                            }
+                                        } else {
+                                            res.render("registration", { message: "Please enter all details" });
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.log(error.message);
+                                }
+                            };
 
 
-<!-- order details page -->
+
+                            const verifyOTP = async (req, res) => {
+                                try {
+                                    const enteredOTP = req.body.otp;
+                                    const storedOTP = req.session.otp.code;
+                                    const otpCreationTime = req.session.otp.creationTime;
+                                    const email = req.session.email
+                                    // Calculate the time difference in seconds
+                                    const currentTimeFull = new Date();
+                                    const currentTime = currentTimeFull.getMinutes()
+
+                                    const timeDiff = (currentTime - otpCreationTime);
+
+                                    if (enteredOTP === storedOTP && timeDiff <= 1) {
+                                        // OTP is valid and within the 1-minute window
+
+
+                                        const user = await User.findOne({ email: email });
+
+                                        if (user) {
+                                            // Update the user's document to set "isVerified" to true
+                                            user.isVerified = true;
+                                            const updatedUser = await user.save();
+
+                                            if (updatedUser) {
+                                                res.render('login', { message: "Registration successful" });
+                                            } else {
+                                                res.render('otp', { message: "Error updating user data" });
+                                            }
+                                        } else {
+                                            res.render('otp', { message: "User not found" });
+                                        }
+                                    } else {
+                                        res.render('otp', { message: "Invalid OTP or OTP has expired" });
+                                    }
+
+                                } catch (error) {
+                                    console.log(error.message);
+                                }
+                            };
+
+                            const resendOTP = async (req, res) => {
+                                try {
+                                    // Generate a new OTP and resend it to the user's email
+                                    const newOTP = otpGenerator.generate(6, { upperCase: false, specialChars: false });
+                                    req.session.otp.code = newOTP;
+                                    // Update the OTP creation time
+                                    const currentTime = new Date();
+                                    req.session.otp.creationTime = currentTime.getMinutes()
+                                    // Send the new OTP to the user's email
+                                    otpSent(req.session.email, req.session.otp.code);
+
+                                    res.render("otp", { message: "OTP resent successfully" });
+
+
+                                } catch (error) {
+                                    console.log(error.message);
+                                }
+                            }
+
+
+
+
+                            module.exports = {
+                                loginLoad,
+                                verifyLogin,
+                                insertUser,
+                                loadRegister,
+                                loadHome,
+                                userLogout,
+                                loadOtp,
+                                otpSent,
+                                verifyOTP,
+                                resendOTP
+                            }
+                        </script>
+                        <!-- user controller -->
+
+
 
 <%- include('./layouts/header.ejs') %>
 
-    <style>
-        .gradient-custom {
-            /* fallback for old browsers */
-            background: #cd9cf2;
 
-            /* Chrome 10-25, Safari 5.1-6 */
-            background: -webkit-linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1));
+    <section class="ftco-section bg2">
+        <div class="container">
 
-            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1))
-        }
-    </style>
+            <div class="row justify-content-center">
+                <div class="col-md-7 col-lg-5">
+                    <div class="wrap">
+                        <div class="login-wrap p-4 p-md-5">
+                            <div class="d-flex">
+                                <div class="w-100">
+                                    <h3 class="mb-4">Sign In</h3>
+                                </div>
 
-    <div class="mt-5">
-        <section class="h-100 gradient-custom">
-            <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-lg-10 col-xl-8">
-                        <div class="card" style="border-radius: 10px;">
-                            <div class="card-header px-4 py-5">
-                                <h5 class="text-muted mb-0">Thanks for your Order, <span
-                                        style="color: #a8729a;">Anna</span>!</h5>
                             </div>
-                            <div class="card-body p-4">
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <p class="lead fw-normal mb-0" style="color: #a8729a;">Receipt</p>
-                                    <p class="small text-muted mb-0">Receipt Voucher : 1KAU9-84UIL</p>
+                            <form action="/login" class="signin-form" method="post"
+                                onsubmit="return validateLoginForm()">
+                                <div class="form-group mt-3">
+                                    <input type="email" class="form-control" id="email"
+                                        name="email" required>
+                                    <label class="form-control-placeholder"
+                                        for="email">Email</label>
                                 </div>
-                                <div class="card shadow-0 border mb-4">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/13.webp"
-                                                    class="img-fluid" alt="Phone">
-                                            </div>
-                                            <div
-                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                                <p class="text-muted mb-0">Samsung Galaxy</p>
-                                            </div>
-                                            <div
-                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                                <p class="text-muted mb-0 small">White</p>
-                                            </div>
-                                            <div
-                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                                <p class="text-muted mb-0 small">Capacity: 64GB</p>
-                                            </div>
-                                            <div
-                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                                <p class="text-muted mb-0 small">Qty: 1</p>
-                                            </div>
-                                            <div
-                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                                <p class="text-muted mb-0 small">$499</p>
-                                            </div>
-                                        </div>
-                                        <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
-                                        <div class="row d-flex align-items-center">
-                                            <div class="col-md-2">
-                                                <p class="text-muted mb-0 small">Track Order</p>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <div class="progress" style="height: 6px; border-radius: 16px;">
-                                                    <div class="progress-bar" role="progressbar"
-                                                        style="width: 65%; border-radius: 16px; background-color: #a8729a;"
-                                                        aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <div class="d-flex justify-content-around mb-1">
-                                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Out for delivary</p>
-                                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Delivered</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <input id="password-field" type="password"
+                                        class="form-control" id="password" name="password"
+                                        required>
+                                    <label class="form-control-placeholder"
+                                        for="password">Password</label>
+                                    <span toggle="#password-field"
+                                        class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                 </div>
-                                <div class="card shadow-0 border mb-4">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/1.webp"
-                                                    class="img-fluid" alt="Phone">
-                                            </div>
-                                            <div
-                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                                <p class="text-muted mb-0">iPad</p>
-                                            </div>
-                                            <div
-                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                                <p class="text-muted mb-0 small">Pink rose</p>
-                                            </div>
-                                            <div
-                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                                <p class="text-muted mb-0 small">Capacity: 32GB</p>
-                                            </div>
-                                            <div
-                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                                <p class="text-muted mb-0 small">Qty: 1</p>
-                                            </div>
-                                            <div
-                                                class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                                <p class="text-muted mb-0 small">$399</p>
-                                            </div>
-                                        </div>
-                                        <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
-                                        <div class="row d-flex align-items-center">
-                                            <div class="col-md-2">
-                                                <p class="text-muted mb-0 small">Track Order</p>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <div class="progress" style="height: 6px; border-radius: 16px;">
-                                                    <div class="progress-bar" role="progressbar"
-                                                        style="width: 20%; border-radius: 16px; background-color: #a8729a;"
-                                                        aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <div class="d-flex justify-content-around mb-1">
-                                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Out for delivary</p>
-                                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Delivered</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between pt-2">
-                                    <p class="fw-bold mb-0">Order Details</p>
-                                    <p class="text-muted mb-0"><span class="fw-bold me-4">Total</span> $898.00</p>
-                                </div>
-
-                                <div class="d-flex justify-content-between pt-2">
-                                    <p class="text-muted mb-0">Invoice Number : 788152</p>
-                                    <p class="text-muted mb-0"><span class="fw-bold me-4">Discount</span> $19.00</p>
-                                </div>
-
-                                <div class="d-flex justify-content-between">
-                                    <p class="text-muted mb-0">Invoice Date : 22 Dec,2019</p>
-                                    <p class="text-muted mb-0"><span class="fw-bold me-4">GST 18%</span> 123</p>
-                                </div>
-
-                                <div class="d-flex justify-content-between mb-5">
-                                    <p class="text-muted mb-0">Recepits Voucher : 18KU-62IIK</p>
-                                    <p class="text-muted mb-0"><span class="fw-bold me-4">Delivery Charges</span> Free
+                                <% if (typeof message !=='undefined' ) { %>
+                                    <p class="successfully">
+                                        <%= message %>
                                     </p>
-                                </div>
-                            </div>
-                            <div class="card-footer border-0 px-4 py-5"
-                                style="background-color: #a8729a; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-                                <h5
-                                    class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">
-                                    Total
-                                    paid: <span class="h2 mb-0 ms-2">$1040</span></h5>
-                            </div>
+                                    <% } %>
+                                        <div class="form-group">
+                                            <button type="submit"
+                                                class="form-control btn btn-primary rounded submit px-3">Sign
+                                                In</button>
+                                        </div>
+
+                            </form>
+                            <p class="text-center">Not a member? <a href="/register">Sign Up</a>
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
     <%- include('./layouts/footer.ejs') %>
-
-<!-- order details page -->
-
-
-<script>
-    loadOrder: async (req, res) => {
-        try {
-            const userId = req.session.user_id
-            const userData = await userDb.findById({ _id: userId })
-            const id = req.query.id;
-            console.log(id);
-            const orderedProduct = await orderDb.findOne({ _id: id }).populate(
-                "products.productId"
-            );
-            const cart = await cartDb.findOne({ user: req.session.user_id });
-            let cartCount = 0;
-            if (cart) {
-                cartCount = cart.products.length;
-            }
-            res.render("orderDetails", {
-                user: userData,
-                orders: orderedProduct,
-                cartCount,
-            });
-        } catch (error) {
-            console.log(error.message);
-        }
-    },
-</script>
-
-
-<script>
-    loadOrderDetails: async (req, res) => {
-        try {
-            const userId = req.session.userId
-            const userData = await User.findById({ _id: userId })
-            const orderId = req.params.orderId
-            console.log(`order id = ${orderId}`)
-
-            const order = await Order.findOne({ _id: orderId }).populate(
-                "products.productId",
-                'deliveryAddress'
-            );
-
-            // Access the order details
-            const { deliveryAddress, paymentOption, totalAmount, orderDate, status } = order;
-
-
-            const cartData = await Cart.findOne({ userId: userId });
-
-            // let cartCount = 0;
-            // if (cartData) {
-            //     cartCount = cartData.items.length;
-            // }
-
-            res.render("orderDetails", {
-                user: userData,
-                order: { 
-                    _id: order._id,
-                    user: order.user,
-                    deliveryAddress,
-                    paymentOption,
-                    totalAmount,
-                    orderDate,
-                    status,
-                  }
-            });
-        } catch (error) {
-            console.log(error.message);
-        }
-    }
-</script>
-
-
-<!-- admin controller -->
-<script>
-
-    const Admin = require('../models/adminModel');
-const User = require('../models/userModel');
-const Category = require('../models/categoryModel');
-const bcrypt = require('bcrypt');
-
-
-module.exports = {
-
-    loadLogin: async (req, res) => {
-        try {
-            res.render('login')
-        } catch (error) {
-            console.log(error.message);
-        }
-    },
-    verifyLogin: async (req, res) => {
-        try {
-
-            const email = req.body.email
-            const password = req.body.password
-
-            const adminData = await Admin.findOne({ email: email })
-            if (adminData) {
-                const passwordMatch = await bcrypt.compare(password, adminData.password)
-                if (passwordMatch) {
-                    if (adminData.isAdmin === 0) {
-                        res.render('login', { message: "email or password is incorrect" })
-                    } else {
-                        req.session.admin_id = adminData._id;
-                        res.redirect("/admin/dashboard")
-                    }
-                } else {
-                    res.render('login', { message: "email or password is incorrect" })
-                }
-            }
-            else {
-                res.render('login', { message: "email or password is incorrect" })
-            }
-        } catch (error) {
-            console.log(error.message);
-        }
-    },
-    loadDashboard: async (req, res) => {
-        try {
-            res.render("dashboard")
-        } catch (error) {
-            console.log(error.message);
-        }
-    },
-    loadUsers: async (req, res) => {
-        try {
-            const user = await User.find({})
-            res.render("Users", { users: user })
-        } catch (error) {
-            console.log(error.message);
-        }
-    },
-    blockUser: async (req, res) => {
-        try {
-            //   const page = req.query.page || 1; // Get the current page from query parameters
-            //   const pageSize = 10; // Set your desired page size
-
-            const id = req.query.id;
-            //   const skip = (page - 1) * pageSize;
-            const user1 = await User.findById(id)
-
-            if (user1) {
-                user1.isBlocked = !user1.isBlocked
-                await user1.save();
-
-            }
-
-            //   const users2 = await User.find().skip(skip).limit(pageSize);
-            //   const totalUsers = await User.countDocuments();
-            //   const totalPages = Math.ceil(totalUsers / pageSize);
-
-            res.redirect('/admin/Users')
-
-        } catch (error) {
-            console.log(error);
-        }
-    },
-    loadAddCategory: async (req, res) => {
-        try {
-            res.render('addCategory')
-        } catch (error) {
-            console.log(error.message);
-        }
-    },
-    addCategory: async (req, res) => {
-        try {
-            const { categoryName } = req.body
-            const already = await Category.findOne({ categoryName: { $regex: categoryName, '$options': 'i' } })
-            if (already) {
-                res.render('addCategory', { message: "Category Already Created" })
-            } else {
-                //  const data=new Category({
-                //     categoryname:categoryname,
-                //     isListed:true
-                //  })
-
-                const category = await new Category({
-                    ...req.body,
-                    isListed: true
-                });
-
-                const result = await category.save()
-                res.redirect('/admin/addCategory')
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    },
-    loadViewCategory: async (req, res) => {
-        try {
-            const category = await Category.find({})
-            res.render('viewCategory', { category: category })
-        } catch (error) {
-            console.log(error.message);
-        }
-    },
-    unlistCategory: async (req, res) => {
-        try {
-            const id = req.query.id;
-            const Category1 = await Category.findById(id);
-
-            if (Category1) {
-                Category1.isListed = !Category1.isListed;
-                await Category1.save();
-            }
-            res.redirect('/admin/viewCategory')
-        } catch (error) {
-            console.log(error);
-        }
-    },
-    loadEditCatogory: async (req, res) => {
-        try {
-            const id = req.query.id;
-            const categorydata = await Category.findById(id);
-
-            if (categorydata) {
-                res.render('editCategory', { category: categorydata });
-            } else {
-                res.redirect('/admin/viewCategory');
-            }
-        } catch (error) {
-            console.log(error.message);
-            res.status(500).send('Internal Server Error');
-        }
-    },
-    editCategory: async (req, res) => {
-        try {
-            const { id, categoryName, categoryDescription } = req.body;
-
-            const already = await Category.findOne({ categoryName: { $regex: categoryName, '$options': 'i' } })
-            if (already) {
-                res.render('editCategory', { message: "Category Already Created", category: { categoryName, categoryDescription } });
-            } else {
-                await Category.findByIdAndUpdate(id, { $set: { categoryName, categoryDescription } });
-                res.redirect('/admin/viewCategory');
-            }
-
-        } catch (error) {
-            console.log(error.message);
-        }
-    }
-
-}
-
-</script>
-
-<!-- admin controller -->
-
-
-
-<!-- user controller -->
-<script>
-const User = require('../models/userModel');
-const Product = require('../models/productModel');
-const nodemailer = require('nodemailer');
-const bcrypt = require('bcrypt');
-const otpGenerator = require("otp-generator")
-
-const securePassword = async (password) => {
-    try {
-        const passwordHash = await bcrypt.hash(password, 10);
-        return passwordHash;
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-const loginLoad = async (req, res) => {
-    try {
-        res.render('login')
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-const loadRegister = async (req, res) => {
-    try {
-
-        res.render('registration.ejs');
-
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-const verifyLogin = async (req, res) => {
-    try {
-        const email = req.body.email;
-        const password = req.body.password;
-
-        const userData = await User.findOne({ email: email });
-
-        if (userData) {
-            const passwordMatch = await bcrypt.compare(password, userData.password);
-
-            if (passwordMatch) {
-                if (userData.isBlocked) {
-                    // If the user is blocked, display an error message or redirect to a blocked page.
-                    res.render('login', { message: "Your account is blocked. Please contact support for assistance." });
-                } else {
-                    // Set the session for a non-blocked user.
-                    req.session.userId = userData._id;
-                    res.render('userHome');
-                }
-            } else {
-                res.render('login', { message: "Incorrect email or password" });
-            }
-        } else {
-            res.render('login', { message: "Incorrect email or password" });
-        }
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-
-
-
-
-// const insertUser = async (req,res) =>{
-
-//     try {
-//         const spassword = await securePassword(req.body.password)
-//         const user = new User({
-//             firstName:req.body.firstName,
-//             lastName:req.body.lastName,
-//             email:req.body.email,
-//             password:spassword,
-//         });
-
-//     const userData = await user.save();
-
-//         if(userData) {
-//             res.render('registration', {message: "Your registration has been successfully."});
-//         }
-//         else{
-//             res.render('registration', {message: "Your registration has been failed."});
-//         }
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// }
-
-
-const loadHome = async (req, res) => {
-    try {
-        const pro = await Product.find()
-        res.render('userHome', { product: pro })
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-const userLogout = async (req, res) => {
-    try {
-        req.session.destroy()
-        res.redirect('/')
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-const loadOtp = async (req, res) => {
-    try {
-        res.render('otp')
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-const otpSent = async (email, otp) => {
-    try {
-        const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 587,
-            secure: false,
-            requireTLS: true,
-            auth: {
-                user: 'muhsinachipra@gmail.com',
-                pass: 'azen vizj yufk ekkt',
-            },
-        });
-
-        const mailOptions = {
-            from: 'muhsinachipra@gmail.com',
-            to: email,
-            subject: 'Verify Your Email',
-            html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
-        };
-
-        await transporter.sendMail(mailOptions);
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-const insertUser = async (req, res) => {
-    try {
-        // Generate OTP
-        const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
-
-        // Store OTP and its creation time in the session
-        const currentTime = new Date();
-        const otpCreationTime = currentTime.getMinutes()
-        req.session.otp = {
-            code: otp,
-            creationTime: otpCreationTime,
-        };
-
-        const { passwordConfirm, password, mobileno, email, lastName, firstName } = req.body
-        req.session.email = email
-        const userCheck = await User.findOne({ email });
-        if (userCheck) {
-            res.render('registration', { message: "Email already exists" });
-        } else {
-            const hashedPassword = await securePassword(password);
-
-
-
-            if (firstName && email && lastName && mobileno) {
-                if (password === passwordConfirm) {
-                    const user = new User({
-                        firstName,
-                        lastName,
-                        email,
-                        mobileno,
-                        password: hashedPassword
-                    });
-                    const result = await user.save();
-
-                    // Send OTP to the user's email
-                    otpSent(email, req.session.otp.code);
-                    res.render("otp");
-                } else {
-                    res.render("registration", { message: "Password doesn't match" });
-                }
-            } else {
-                res.render("registration", { message: "Please enter all details" });
-            }
-        }
-    } catch (error) {
-        console.log(error.message);
-    }
-};
-
-
-
-const verifyOTP = async (req, res) => {
-    try {
-        const enteredOTP = req.body.otp;
-        const storedOTP = req.session.otp.code;
-        const otpCreationTime = req.session.otp.creationTime;
-        const email = req.session.email
-        // Calculate the time difference in seconds
-        const currentTimeFull = new Date();
-        const currentTime = currentTimeFull.getMinutes()
-
-        const timeDiff = (currentTime - otpCreationTime);
-
-        if (enteredOTP === storedOTP && timeDiff <= 1) {
-            // OTP is valid and within the 1-minute window
-
-
-            const user = await User.findOne({ email: email });
-
-            if (user) {
-                // Update the user's document to set "isVerified" to true
-                user.isVerified = true;
-                const updatedUser = await user.save();
-
-                if (updatedUser) {
-                    res.render('login', { message: "Registration successful" });
-                } else {
-                    res.render('otp', { message: "Error updating user data" });
-                }
-            } else {
-                res.render('otp', { message: "User not found" });
-            }
-        } else {
-            res.render('otp', { message: "Invalid OTP or OTP has expired" });
-        }
-
-    } catch (error) {
-        console.log(error.message);
-    }
-};
-
-const resendOTP = async (req, res) => {
-    try {
-        // Generate a new OTP and resend it to the user's email
-        const newOTP = otpGenerator.generate(6, { upperCase: false, specialChars: false });
-        req.session.otp.code = newOTP;
-        // Update the OTP creation time
-        const currentTime = new Date();
-        req.session.otp.creationTime = currentTime.getMinutes()
-        // Send the new OTP to the user's email
-        otpSent(req.session.email, req.session.otp.code);
-
-        res.render("otp", { message: "OTP resent successfully" });
-
-
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-
-
-
-module.exports = {
-    loginLoad,
-    verifyLogin,
-    insertUser,
-    loadRegister,
-    loadHome,
-    userLogout,
-    loadOtp,
-    otpSent,
-    verifyOTP,
-    resendOTP
-}
-</script>
-<!-- user controller -->
