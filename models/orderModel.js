@@ -28,7 +28,7 @@ const orderSchema = new mongoose.Schema({
         }
     }],
     deliveryAddress: {
-        
+
         fullName: {
             type: String,
             required: true,
@@ -56,7 +56,7 @@ const orderSchema = new mongoose.Schema({
     },
     paymentOption: {
         type: String,
-        enum: ['COD', 'PayPal', 'Other'],
+        enum: ['COD', 'PayPal', 'Razorpay', 'Wallet'],
         required: true,
     },
     totalAmount: {
