@@ -1,174 +1,175 @@
 <%- include('./layouts/header.ejs') %>
 
-    <form id="checkoutForm" action="/checkout" method="post" onsubmit="return validateCheckoutForm();">
-        <div class="site-wrap m-t-75 bg0">
-            <div class="bg-light py-3">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 mb-0">
-                            <a href="/">Home</a> <span class="mx-2 mb-0">/</span>
-                            <a href="/cart">Cart</a> <span class="mx-2 mb-0">/</span>
-                            <strong class="text-black">Checkout</strong>
-                        </div>
+    <!-- <form id="checkoutForm" action="/checkout" method="post" onsubmit="return validateCheckoutForm();"> -->
+    <div class="site-wrap m-t-75 bg0">
+        <div class="bg-light py-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 mb-0">
+                        <a href="/">Home</a> <span class="mx-2 mb-0">/</span>
+                        <a href="/cart">Cart</a> <span class="mx-2 mb-0">/</span>
+                        <strong class="text-black">Checkout</strong>
                     </div>
                 </div>
             </div>
-            <div class="site-section" style="padding-top: 40px">
-                <div class="container">
-                    <div class="row">
-                        <!-- main two -->
+        </div>
+        <div class="site-section" style="padding-top: 40px">
+            <div class="container">
+                <div class="row">
+                    <!-- main two -->
 
-                        <div class="col-md-6 mb-5 mb-md-0">
-                            <h2 class="h3 mb-3 text-black">Billing Details</h2>
-                            <div class="row">
-                                <div class="col-md-12 col-12">
-                                    <p>Choose One Address</p>
-                                </div>
-                                <% if (address) { %>
-                                    <% for (let i=0; i < address.address.length; i++) { %>
-                                        <div class="col-md-6 col-12 mb-3 mt-3 address-options"
-                                            id="address-card-<%= address.address[i]._id %>">
-                                            <div class="card p-2" style="background: #f3f3f9; border-radius: 10px">
-                                                <div class="card-body">
-                                                    <h6 class="card-title data-full-name" style="font-size: 15px">
-                                                        Name: <%= address.address[i].fullName %>
-                                                    </h6>
-                                                    <p class="card-text data-mobile">
-                                                        Number: <%= address.address[i].mobile %>
-                                                    </p>
-                                                    <p class="card-text data-district">
-                                                        District: <%= address.address[i].district %>
-                                                    </p>
-                                                    <p class="card-text data-city">
-                                                        City:<%= address.address[i].city %>
-                                                    </p>
-                                                    <p class="card-text data-state">
-                                                        State: <%= address.address[i].state %>
-                                                    </p>
-                                                    <p class="card-text">
-                                                        Pincode: <%= address.address[i].pincode %>
-                                                    </p>
-                                                </div>
-                                                <input type="radio" name="addressOption"
-                                                    value="<%= address.address[i]._id %>" required />
+                    <div class="col-md-6 mb-5 mb-md-0">
+                        <h2 class="h3 mb-3 text-black">Billing Details</h2>
+                        <div class="row">
+                            <div class="col-md-12 col-12">
+                                <p>Choose One Address</p>
+                            </div>
+                            <% if (address) { %>
+                                <% for (let i=0; i < address.address.length; i++) { %>
+                                    <div class="col-md-6 col-12 mb-3 mt-3 address-options"
+                                        id="address-card-<%= address.address[i]._id %>">
+                                        <div class="card p-2" style="background: #f3f3f9; border-radius: 10px">
+                                            <div class="card-body">
+                                                <h6 class="card-title data-full-name" style="font-size: 15px">
+                                                    Name: <%= address.address[i].fullName %>
+                                                </h6>
+                                                <p class="card-text data-mobile">
+                                                    Number: <%= address.address[i].mobile %>
+                                                </p>
+                                                <p class="card-text data-district">
+                                                    District: <%= address.address[i].district %>
+                                                </p>
+                                                <p class="card-text data-city">
+                                                    City:<%= address.address[i].city %>
+                                                </p>
+                                                <p class="card-text data-state">
+                                                    State: <%= address.address[i].state %>
+                                                </p>
+                                                <p class="card-text">
+                                                    Pincode: <%= address.address[i].pincode %>
+                                                </p>
                                             </div>
+                                            <input type="radio" name="addressOption"
+                                                value="<%= address.address[i]._id %>" required <%=i===0 ? 'checked' : ''
+                                                %> />
                                         </div>
+                                    </div>
 
-                                        <% } %>
-                                            <% } else { %>
-                                                <% } %>
+                                    <% } %>
+                                        <% } else { %>
+                                            <% } %>
 
 
-                            </div>
-
-                            <div>
-                                <a href="/checkoutAddress">
-                                    <button id="addAddressButton" class="btn btn-primary btn-sm">Add Address</button>
-                                </a>
-                            </div>
-                            <br />
                         </div>
 
-                        <!-- main two -->
+                        <div>
+                            <a href="/checkoutAddress">
+                                <button id="addAddressButton" class="btn btn-primary btn-sm">Add Address</button>
+                            </a>
+                        </div>
+                        <br />
+                    </div>
 
-                        <div class="col-md-6">
-                            <div class="row mb-5">
-                                <div class="col-md-12">
-                                    <h2 class="h3 mb-3 text-black">Coupon Code</h2>
-                                    <div class="p-3 p-lg-5 border">
-                                        <label for="c_code" class="text-black mb-3">Enter your coupon code if you have
-                                            one</label>
-                                        <div class="input-group w-75">
-                                            <input type="text" class="form-control" id="c_code"
-                                                placeholder="Coupon Code" aria-label="Coupon Code"
-                                                aria-describedby="button-addon2" />
-                                            <div class="input-group-append">
-                                                <button class="btn btn-primary btn-sm" type="button" id="button-addon2">
-                                                    Apply
-                                                </button>
-                                            </div>
+                    <!-- main two -->
+
+                    <div class="col-md-6">
+                        <div class="row mb-5">
+                            <div class="col-md-12">
+                                <h2 class="h3 mb-3 text-black">Coupon Code</h2>
+                                <div class="p-3 p-lg-5 border">
+                                    <label for="c_code" class="text-black mb-3">Enter your coupon code if you have
+                                        one</label>
+                                    <div class="input-group w-75">
+                                        <input type="text" class="form-control" id="c_code" placeholder="Coupon Code"
+                                            aria-label="Coupon Code" aria-describedby="button-addon2" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary btn-sm" type="button" id="button-addon2">
+                                                Apply
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="row mb-5">
-                                <div class="col-md-12">
-                                    <h2 class="h3 mb-3 text-black">Your Order</h2>
-                                    <div class="p-3 p-lg-5 border">
-                                        <table class="table site-block-order-table mb-5">
-                                            <thead>
-                                                <th>Product</th>
-                                                <th>Image</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                            </thead>
-                                            <tbody>
-                                                <% if (cart && cart.items && cart.items.length> 0) { %> <%
-                                                        cart.items.forEach((item)=> { %>
-                                                        <tr>
-                                                            <td>
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="product-details">
-                                                                        <h6 class="product-title">
-                                                                            <%= item.productId.productName %>
-                                                                        </h6>
-                                                                    </div>
+                        <div class="row mb-5">
+                            <div class="col-md-12">
+                                <h2 class="h3 mb-3 text-black">Your Order</h2>
+                                <div class="p-3 p-lg-5 border">
+                                    <table class="table site-block-order-table mb-5">
+                                        <thead>
+                                            <th>Product</th>
+                                            <th>Image</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                        </thead>
+                                        <tbody>
+                                            <% if (cart && cart.items && cart.items.length> 0) { %>
+                                                <% cart.items.forEach((item)=> { %>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="product-details">
+                                                                    <h6 class="product-title">
+                                                                        <%= item.productId.productName %>
+                                                                    </h6>
                                                                 </div>
-                                                            </td>
+                                                            </div>
+                                                        </td>
 
-                                                            <td>
-                                                                <img src="/car/adminAssets/assets/images/products/<%= item.productId.productImage?.[0] %>"
-                                                                    alt="ProductImage"
-                                                                    style="max-width: 5rem; max-height: 5rem" />
-                                                            </td>
+                                                        <td>
+                                                            <img src="/car/adminAssets/assets/images/products/<%= item.productId.productImage?.[0] %>"
+                                                                alt="ProductImage"
+                                                                style="max-width: 5rem; max-height: 5rem" />
+                                                        </td>
 
-                                                            <td>
-                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= item.quantity %>
-                                                            </td>
+                                                        <td>
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= item.quantity %>
+                                                        </td>
 
-                                                            <td>
-                                                                ₹ <%= (item.productId.productPrice *
-                                                                    item.quantity).toFixed(2) %>
-                                                            </td>
-                                                        </tr>
-                                                        <% }); %>
-                                                            <% } else { %>
-                                                                <tr>
-                                                                    <td colspan="4">Your cart is empty.</td>
-                                                                </tr>
-                                                                <% } %>
-                                            </tbody>
-                                        </table>
+                                                        <td>
+                                                            ₹ <%= (item.productId.productPrice *
+                                                                item.quantity).toFixed(2) %>
+                                                        </td>
+                                                    </tr>
+                                                    <% }); %>
+                                                        <% } else { %>
+                                                            <tr>
+                                                                <td colspan="4">Your cart is empty.</td>
+                                                            </tr>
+                                                            <% } %>
 
-                                        <div class="payment-options">
-                                            <h3>Select Payment Option</h3>
-                                            <label>
-                                                <input type="radio" name="paymentOption" value="COD" required />
-                                                Cash On Delivery
-                                            </label>
-                                            <br />
-                                            <label>
-                                                <input type="radio" name="paymentOption" value="PayPal" required />
-                                                Paypal
-                                            </label>
-                                            <br />
-                                            <label>
-                                                <input type="radio" name="paymentOption" value="Razorpay" required />
-                                                Razorpay
-                                            </label>
-                                            <br />
-                                            <label>
-                                                <input type="radio" name="paymentOption" value="Wallet" required />
-                                                Wallet
-                                            </label>
-                                        </div>
+                                        </tbody>
+                                    </table>
 
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-lg py-3 btn-block">
-                                                Place Order
-                                            </button>
-                                        </div>
+                                    <div class="payment-options">
+                                        <h3>Select Payment Option</h3>
+                                        <label>
+                                            <input type="radio" name="paymentOption" value="COD" required />
+                                            Cash On Delivery
+                                        </label>
+                                        <br />
+                                        <label>
+                                            <input type="radio" name="paymentOption" value="PayPal" required />
+                                            Paypal
+                                        </label>
+                                        <br />
+                                        <label>
+                                            <input type="radio" name="paymentOption" value="Razorpay" required />
+                                            Razorpay
+                                        </label>
+                                        <br />
+                                        <label>
+                                            <input type="radio" name="paymentOption" value="Wallet" required />
+                                            Wallet
+                                        </label>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary btn-lg py-3 btn-block"
+                                            id="placeOrderButton">
+                                            Place Order
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -177,7 +178,160 @@
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+    <!-- </form> -->
+
+
+
+    <script>
+
+        function placeOrder() {
+
+            const placeOrderBtn = document.getElementById('placeOrderButton');
+            console.log('placeOrderBtn:', placeOrderBtn);
+
+            placeOrderBtn.addEventListener('click', async function (event) {
+                event.preventDefault();
+
+                try {
+                    console.log('Place Order button clicked');
+
+                    const selectedAddress = document.querySelector('input[name="addressOption"]:checked');
+                    console.log('selectedAddress:', selectedAddress);
+
+                    // if (!selectedAddress) {
+                    //     Swal.fire('Please add an address');
+                    // }
+
+
+                    const paymentMethodRadio = document.querySelector('input[name="paymentOption"]:checked');
+                    console.log('paymentMethodRadio:', paymentMethodRadio);
+
+                    if (!selectedAddress || !paymentMethodRadio) {
+                        throw new Error('Either address or payment method is not selected');
+                    }
+
+                    const addressId = selectedAddress.value;
+                    const paymentMethod = paymentMethodRadio.value;
+
+                    console.log('Selected Address:', addressId);
+                    console.log('Payment Method:', paymentMethod);
+
+                    const data = {
+                        addressOption: addressId,
+                        paymentOption: paymentMethod
+                    };
+
+                    console.log('Sending request to /placeOrder with data:', data);
+
+                    const response = await fetch('/placeOrder', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    console.log('response', response);
+
+                    if (response.ok) {
+                        const contentType = response.headers.get('content-type');
+                        if (contentType && contentType.includes('application/json')) {
+                            const responseData = await response.json();
+                            console.log('Response Data:', responseData);
+                            window.location.href = "/thankyou";
+                        } else {
+                            throw new Error('Response was not in JSON format');
+                        }
+                    } else {
+                        const responseData = await response.json();
+                        razorPayment(responseData.order);
+
+                        if (paymentMethod !== 'Razorpay') {
+                            window.location.href = '/otherPaymentPage';
+                        }
+                    }
+
+                } catch (error) {
+                    console.error('There was an error:', error);
+                    Swal.fire('Insufficient wallet balance');
+                }
+            });
+        }
+
+
+        placeOrder();
+        
+
+        // Add razorPayment here within the same script tag
+        function razorPayment(order) {
+            console.log('Razorpay Order:', order);
+
+            var options = {
+                key: process.env.RAZORPAY_KEY_ID,
+                amount: order.amount,
+                currency: "INR",
+                name: "Shopify",
+                description: "Test Transaction",
+                image: "/user/images/icons/",
+                order_id: order.id,
+                handler: function (response) {
+                    console.log('Razorpay Response:', response);
+                    verifyPayment(response, order);
+                },
+                prefill: {
+                    name: "Gaurav Kumar",
+                    email: "gaurav.kumar@example.com",
+                    contact: "9000090000"
+                },
+                notes: {
+                    address: "Razorpay Corporate Office",
+                },
+                theme: {
+                    color: "#3399cc"
+                },
+            };
+
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        }
+
+        
+        // Rest of your script...
+
+        function verifyPayment(payment, order) {
+            console.log('h');
+            //   const amount2 = document.getElementById("total1").innerHTML;
+            $.ajax({
+                url: "/verifyPayment",
+                method: "post",
+                data: {
+                    payment: payment,
+                    //   amount2: amount2,
+                    order: order,
+                },
+                success: (response) => {
+                    console.log('Verification Response:', response);
+                    if (response.codsuccess == true) {
+                        window.location.href = "/orderplaced";
+
+                    } else {
+                        swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "Payment failed",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                    }
+                }
+            });
+        }
+
+    </script>
+
+
+
 
     <script>
         document

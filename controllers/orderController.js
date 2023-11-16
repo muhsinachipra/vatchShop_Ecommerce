@@ -101,19 +101,19 @@ module.exports = {
             //     });
             // }
             
-            const invalidProduct = order.products.find(product => product._id.toString() === productId.toString() && (product.status !== 'Placed' && product.status !== 'Shipped'));
+            const invalidProduct = order.products.find(product => product._id.toString() === productId.toString() && (product.orderStatus !== 'Placed' && product.orderStatus !== 'Shipped'));
 
             if (invalidProduct) {
                 return res.status(400).json({
                     success: false,
-                    message: `Order cannot be canceled at this stage due to product "${invalidProduct.productId.productName}" with status "${invalidProduct.status}"`,
+                    message: `Order cannot be canceled at this stage due to product "${invalidProduct.productId.productName}" with status "${invalidProduct.orderStatus}"`,
                 });
             }
             
 
             order.products.forEach(product => {
                 if (product._id.toString() === productId.toString()) {
-                    product.status = 'Cancelled';
+                    product.orderStatus = 'Cancelled';
                 }
             });
             
@@ -189,7 +189,7 @@ module.exports = {
             // Find the product within the order and update its status
             const product = order.products.find(product => product._id.toString() === productId);
             if (product) {
-                product.status = newStatus;
+                product.orderStatus = newStatus;
 
                 // Update statusLevel based on newStatus
                 // switch (newStatus) {

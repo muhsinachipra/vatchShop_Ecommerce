@@ -21,10 +21,18 @@ const orderSchema = new mongoose.Schema({
             type: Number,
             default: 0,
         },
-        status: {
+        orderStatus: {
             type: String,
             enum: ['Placed', 'Shipped', 'Delivered', 'Cancelled', 'Out for delivery'],
             default: 'Placed',
+        },
+        returnOrder: {
+            status: {
+                type: String
+            },
+            reason: {
+                type: String
+            }
         }
     }],
     deliveryAddress: {
@@ -34,7 +42,7 @@ const orderSchema = new mongoose.Schema({
             required: true,
         },
         mobile: {
-            type: Number,
+            type: String,
             required: true,
         },
         pincode: {

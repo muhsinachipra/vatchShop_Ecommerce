@@ -60,7 +60,7 @@ user_route.post('/editAddress',auth.isUserLogin,profileController.editAddress);
 user_route.delete('/deleteAddress',profileController.deleteAddress);
 
 user_route.get("/checkout",auth.isUserLogin, checkoutController.loadCheckout);
-user_route.post("/checkout",auth.isUserLogin, checkoutController.placeOrder);
+user_route.post("/placeOrder",auth.isUserLogin, checkoutController.placeOrder);
 user_route.get('/checkoutAddress',auth.isUserLogin,checkoutController.checkoutLoadAddress);
 user_route.post('/checkoutAddAddress',auth.isUserLogin,checkoutController.checkoutAddAddress);
 user_route.get("/thankyou",auth.isUserLogin, checkoutController.loadThankyou);

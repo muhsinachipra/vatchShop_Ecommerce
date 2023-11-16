@@ -97,8 +97,16 @@ module.exports = {
     },
     placeOrder: async (req, res) => {
         try {
+            console.log('Request Body:', req.body);
+
             const { addressOption, paymentOption } = req.body;
             const userId = req.session.userId;
+
+            // Check if addressId and paymentType are provided
+            if (!addressOption || !paymentOption) {
+                console.log('Invalid address or payment type');
+                return res.status(400).json({ error: "Invalid address or payment type" });
+            }
 
             // Fetch cart items
             const cartItems = await Cart.findOne({ userId: userId }).populate('items.productId');
@@ -123,10 +131,21 @@ module.exports = {
             // Parse totalAmount as a number
             const numericTotal = parseFloat(totalAmount);
 
-            // Include address details in the order
-            const addressDetails = await Address.findOne({
-                'address._id': addressOption,
+            const userAddrs = await Address.findOne({ userId: userId });
+
+            if (!userAddrs || !userAddrs.address || userAddrs.address.length === 0) {
+                console.log('User addresses not found');
+                return res.status(400).json({ error: "User addresses not found" });
+            }
+
+            const shipAddress = userAddrs.address.find((address) => {
+                return address._id.toString() === addressOption.toString();
             });
+
+            if (!shipAddress) {
+                console.log('Address not found');
+                return res.status(400).json({ error: "Address not found" });
+            }
 
 
             // Calculate the expected delivery date (7 days from now)
@@ -141,28 +160,11 @@ module.exports = {
 
 
 
-            if (!addressDetails || !ObjectId.isValid(addressOption)) {
-                console.log('Invalid or not found address ID.');
-                return res.status(400).json({
-                    success: false,
-                    message: 'Invalid or not found address ID. Unable to place an order.',
-                });
-            }
+            
 
-            // Assuming 'address' is an array, find the specific address within the array
-            const selectedAddress = addressDetails.address.find(
-                (address) => address._id.toString() === addressOption
-            );
 
-            if (!selectedAddress) {
-                console.log('Invalid or not found address ID.');
-                return res.status(400).json({
-                    success: false,
-                    message: 'Invalid or not found address ID. Unable to place an order.',
-                });
-            }
 
-            const { fullName, mobile, state, district, city, pincode } = selectedAddress;
+            const { fullName, mobile, state, district, city, pincode } = shipAddress;
             // Create a new order with status 'Placed' and set product statuses
             const newOrder = new Order({
                 user: userId,
@@ -170,7 +172,11 @@ module.exports = {
                     productId: item.productId._id,
                     quantity: item.quantity,
                     price: item.productId.productPrice,
-                    status: 'Placed', // Set the initial status for each product as 'Placed'
+                    orderStatus: 'Placed', // Set the initial status for each product as 'Placed'
+                    returnOrder: {
+                        status: "none",
+                        reason: "none",
+                    }
                 })),
                 "deliveryAddress.fullName": fullName,
                 "deliveryAddress.mobile": mobile,
@@ -184,11 +190,14 @@ module.exports = {
                 expectedDelivery: new Date(deliveryYear, deliveryMonth, deliveryDay) // Set the expected delivery date with only date, month, and year
             });
 
-            // Save the order to the database
-            await newOrder.save();
+            let placeOrder;
 
-            // Update product stock (for COD payments)
+
             if (paymentOption === 'COD') {
+
+                // Save the order to the database
+                placeOrder = await newOrder.save();
+
                 // Use bulkWrite to update stock atomically
                 const stockUpdateOperations = cartItems.items.map((item) => {
                     const productId = item.productId._id;
@@ -214,13 +223,70 @@ module.exports = {
                         message: 'Failed to update stock for some products',
                     });
                 }
+            } else if (paymentOption === 'Razorpay') {
+
+                console.log('Entered Razorpay block');
+
+                placeOrder = await newOrder.save();
+                const orderId = placeOrder._id;
+
+                const options = {
+                    amount: numericTotal * 100,
+                    currency: "INR",
+                    receipt: "" + orderId,
+                };
+
+                instance.orders.create(options, async function (err, order) {
+                    if (err) {
+                        console.error('Razorpay order creation failed:', err);
+                        return razorPaymentFailed(res, "Razorpay order creation failed");
+                    }
+
+
+                    console.log('Razorpay Order:', order);
+
+                    /////////////////////////update stock///////////////////////////////////////
+                    // Use bulkWrite to update stock atomically
+                    const stockUpdateOperations = cartItems.items.map((item) => {
+                        const productId = item.productId._id;
+                        const quantity = parseInt(item.quantity, 10);
+
+                        return {
+                            updateOne: {
+                                filter: { _id: productId, productStock: { $gte: quantity } }, // Ensure enough stock
+                                update: { $inc: { productStock: -quantity } },
+                            },
+                        };
+                    });
+
+                    // Execute the bulkWrite operation
+                    const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
+
+                    // Check if any stock update failed
+                    if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
+                        console.log('Failed to update stock for some products');
+                        // Handle the case where the stock update failed, e.g., redirect to an error page
+                        return res.status(500).json({
+                            success: false,
+                            message: 'Failed to update stock for some products',
+                        });
+                    }
+                    /////////////////////////update stock///////////////////////////////////////
+
+
+                    // Handle the Razorpay order response here
+                    res.status(200).json({ order });
+                });
+
+
             }
+
 
             // Clear the user's cart
             await Cart.findOneAndUpdate({ userId: userId }, { $set: { items: [] } });
 
-            // Redirect to the orderplaced route
-            res.redirect('/thankyou');
+            // // Redirect to the orderplaced route
+            // res.redirect('/thankyou');
         } catch (error) {
             console.error(error);
             res.status(500).json({ success: false, message: 'Failed to place the order' });
@@ -230,7 +296,7 @@ module.exports = {
         try {
             const userId = req.session.userId
             const order = await Order.findOne({ user: userId })
-            res.render('thankyou', { user: userId , order})
+            res.render('thankyou', { user: userId, order })
         } catch (error) {
             console.log(error.message);
         }

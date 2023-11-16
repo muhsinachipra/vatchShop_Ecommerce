@@ -322,16 +322,12 @@
     </div>
 </div>
 
-
 <!-- Add the Razorpay script at the end of the body -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <!-- Add the Razorpay script at the end of the body -->
 
-
-<!--===============================================================================================-->
-<script src="/car/userAssets/vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
 <script src="/car/userAssets/vendor/animsition/js/animsition.min.js"></script>
 <!--===============================================================================================-->
@@ -361,9 +357,9 @@
 <!--===============================================================================================-->
 <script src="/car/userAssets/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <script>
-    $('.gallery-lb').each(function () { // the containers for all your galleries
+    $('.gallery-lb').each(function () {
         $(this).magnificPopup({
-            delegate: 'a', // the selector for gallery item
+            delegate: 'a',
             type: 'image',
             gallery: {
                 enabled: true
@@ -385,7 +381,6 @@
         var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
         $(this).on('click', function () {
             swal(nameProduct, "is added to wishlist !", "success");
-
             $(this).addClass('js-addedwish-b2');
             $(this).off('click');
         });
@@ -393,16 +388,12 @@
 
     $('.js-addwish-detail').each(function () {
         var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
-
         $(this).on('click', function () {
             swal(nameProduct, "is added to wishlist !", "success");
-
             $(this).addClass('js-addedwish-detail');
             $(this).off('click');
         });
     });
-
-    /*---------------------------------------------*/
 
     $('.js-addcart-detail').each(function () {
         var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
@@ -410,7 +401,6 @@
             swal(nameProduct, "is added to cart !", "success");
         });
     });
-
 </script>
 <!--===============================================================================================-->
 <script src="/car/userAssets/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
@@ -423,7 +413,6 @@
             scrollingThreshold: 1000,
             wheelPropagation: false,
         });
-
         $(window).on('resize', function () {
             ps.update();
         })
@@ -433,22 +422,17 @@
 <script src="/car/userAssets/js/main.js"></script>
 
 <!-- login page style -->
-
 <script src="/car/userAssets/login/js/jquery.min.js"></script>
 <script src="/car/userAssets/login/js/popper.js"></script>
 <script src="/car/userAssets/login/js/bootstrap.min.js"></script>
 <script src="/car/userAssets/login/js/main.js"></script>
-
 <!-- login page style -->
 
 <!-- userProfile page script -->
-
 <script src="/car/userAssets/validation/editAddress.js"></script>
 <script src="/car/userAssets/validation/validAddress.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <!-- userProfile page script -->
-
 
 <!--  Bootstrap JS library -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -458,7 +442,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
 <!-- Bootstrap JS library -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
 
 </body>
 

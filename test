@@ -1842,3 +1842,42 @@
     </section>
 
     <%- include('./layouts/footer.ejs') %>
+
+
+
+
+                                                <% if (cart && cart.items && cart.items.length> 0) { %> <%
+                                                        cart.items.forEach((item)=> { %>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="product-details">
+                                                                        <h6 class="product-title">
+                                                                            <%= item.productId.productName %>
+                                                                        </h6>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+
+                                                            <td>
+                                                                <img src="/car/adminAssets/assets/images/products/<%= item.productId.productImage?.[0] %>"
+                                                                    alt="ProductImage"
+                                                                    style="max-width: 5rem; max-height: 5rem" />
+                                                            </td>
+
+                                                            <td>
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= item.quantity %>
+                                                            </td>
+
+                                                            <td>
+                                                                ₹ <%= (item.productId.productPrice *
+                                                                    item.quantity).toFixed(2) %>
+                                                            </td>
+                                                        </tr>
+                                                        <% }); %>
+                                                            <% } else { %>
+                                                                <tr>
+                                                                    <td colspan="4">Your cart is empty.</td>
+                                                                </tr>
+                                                                <% } %>
+                                          

@@ -52,18 +52,18 @@
                                                         <form action="/admin/updateOrderStatus/<%= product._id %>"
                                                             method="post">
                                                             <select name="status" id="status">
-                                                                <option value="Placed" <%=product.status==='Placed'
+                                                                <option value="Placed" <%=product.orderStatus==='Placed'
                                                                     ? 'selected' : '' %>>Placed</option>
-                                                                <option value="Shipped" <%=product.status==='Shipped'
+                                                                <option value="Shipped" <%=product.orderStatus==='Shipped'
                                                                     ? 'selected' : '' %>>Shipped</option>
                                                                 <option value="Out for delivery"
-                                                                    <%=product.status==='Out for delivery' ? 'selected'
+                                                                    <%=product.orderStatus==='Out for delivery' ? 'selected'
                                                                     : '' %>>Out for delivery</option>
                                                                 <option value="Delivered"
-                                                                    <%=product.status==='Delivered' ? 'selected' : '' %>
+                                                                    <%=product.orderStatus==='Delivered' ? 'selected' : '' %>
                                                                     >Delivered</option>
                                                                 <option value="Cancelled"
-                                                                    <%=product.status==='Cancelled' ? 'selected' : '' %>
+                                                                    <%=product.orderStatus==='Cancelled' ? 'selected' : '' %>
                                                                     >Cancelled</option>
                                                             </select>
                                                             <button type="submit">Update Status</button>
