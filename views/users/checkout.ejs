@@ -250,6 +250,7 @@
                                 if (paymentMethod === 'Razorpay') {
                                     razorPayment(responseData.order);
                                 } else {
+                                    console.log("came here");
                                     window.location.href = "/thankyou";
                                 }
                             } else {
@@ -296,14 +297,13 @@
         function razorPayment(order) {
             console.log('Razorpay Order:', order);
 
-
             var options = {
                 key: 'rzp_test_Kdpx3v778r8haC',
                 amount: order.amount,
                 currency: "INR",
                 name: "Shopify",
                 description: "Test Transaction",
-                image: "/user/images/icons/",
+                image: "https://cdn.shopify.com/app-store/listing_images/a53cf2ce9b5dabf5dd222b3615c29569/icon/CPXdk7L0lu8CEAE=.png",
                 order_id: order.id,
                 handler: function (response) {
                     console.log('Razorpay Response:', response);

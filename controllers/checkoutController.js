@@ -193,8 +193,6 @@ module.exports = {
 
                 console.log('Entered COD');
 
-                
-
                 // Use bulkWrite to update stock atomically
                 const stockUpdateOperations = cartItems.items.map((item) => {
                     const productId = item.productId._id;
@@ -222,10 +220,10 @@ module.exports = {
                 }
 
                 console.log('Order placed successfully');
-                order.status=true
+                order.status = true
                 // Save the order to the database
                 placeOrder = await order.save();
-
+                
             } else if (paymentOption === 'Razorpay') {
 
                 console.log('Entered Razorpay block');
