@@ -54,6 +54,7 @@ module.exports = {
     checkoutLoadAddress: async (req, res) => {
         try {
             const userId = req.session.userId
+
             res.render('checkoutAddress', { user: userId })
         } catch (error) {
             console.log(error.message);
@@ -102,7 +103,7 @@ module.exports = {
             const { addressOption, paymentOption } = req.body;
             const userId = req.session.userId;
 
-            // Check if addressId and paymentType are provided
+            // Check if addressOption and paymentOption are provided
             if (!addressOption || !paymentOption) {
                 console.log('Invalid address or payment type');
                 return res.status(400).json({ error: "Invalid address or payment type" });
@@ -159,14 +160,9 @@ module.exports = {
             const deliveryYear = deliveryDate.getFullYear();
 
 
-
-            
-
-
-
             const { fullName, mobile, state, district, city, pincode } = shipAddress;
             // Create a new order with status 'Placed' and set product statuses
-            const newOrder = new Order({
+            const order = new Order({
                 user: userId,
                 products: cartItems.items.map(item => ({
                     productId: item.productId._id,
@@ -195,8 +191,9 @@ module.exports = {
 
             if (paymentOption === 'COD') {
 
-                // Save the order to the database
-                placeOrder = await newOrder.save();
+                console.log('Entered COD');
+
+                
 
                 // Use bulkWrite to update stock atomically
                 const stockUpdateOperations = cartItems.items.map((item) => {
@@ -223,11 +220,17 @@ module.exports = {
                         message: 'Failed to update stock for some products',
                     });
                 }
+
+                console.log('Order placed successfully');
+                order.status=true
+                // Save the order to the database
+                placeOrder = await order.save();
+
             } else if (paymentOption === 'Razorpay') {
 
                 console.log('Entered Razorpay block');
 
-                placeOrder = await newOrder.save();
+                placeOrder = await order.save();
                 const orderId = placeOrder._id;
 
                 const options = {
@@ -281,12 +284,10 @@ module.exports = {
 
             }
 
-
             // Clear the user's cart
             await Cart.findOneAndUpdate({ userId: userId }, { $set: { items: [] } });
 
-            // // Redirect to the orderplaced route
-            // res.redirect('/thankyou');
+
         } catch (error) {
             console.error(error);
             res.status(500).json({ success: false, message: 'Failed to place the order' });

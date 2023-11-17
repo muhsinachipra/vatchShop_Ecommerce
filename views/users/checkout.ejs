@@ -207,8 +207,12 @@
                     const paymentMethodRadio = document.querySelector('input[name="paymentOption"]:checked');
                     console.log('paymentMethodRadio:', paymentMethodRadio);
 
-                    if (!selectedAddress || !paymentMethodRadio) {
-                        throw new Error('Either address or payment method is not selected');
+                    if (!selectedAddress) {
+                        throw new Error('Address not selected');
+                    }
+
+                    if (!paymentMethodRadio) {
+                        throw new Error('Payment method not selected');
                     }
 
                     const addressId = selectedAddress.value;
@@ -234,41 +238,67 @@
 
                     console.log('response', response);
 
-                    if (response.ok) {
-                        const contentType = response.headers.get('content-type');
-                        if (contentType && contentType.includes('application/json')) {
-                            const responseData = await response.json();
-                            console.log('Response Data:', responseData);
-                            window.location.href = "/thankyou";
-                        } else {
-                            throw new Error('Response was not in JSON format');
-                        }
-                    } else {
-                        const responseData = await response.json();
-                        razorPayment(responseData.order);
+                    let responseData; // Declare a variable to store response data
 
-                        if (paymentMethod !== 'Razorpay') {
-                            window.location.href = '/otherPaymentPage';
+                    try {
+                        if (response.ok) {
+                            const contentType = response.headers.get('content-type');
+                            if (contentType && contentType.includes('application/json')) {
+                                responseData = await response.json();
+                                console.log('Response Data:', responseData);
+
+                                if (paymentMethod === 'Razorpay') {
+                                    razorPayment(responseData.order);
+                                } else {
+                                    window.location.href = "/thankyou";
+                                }
+                            } else {
+                                throw new Error('Response was not in JSON format');
+                            }
+                        } else {
+                            responseData = await response.json();
+                            console.log('Response Data (Error):', responseData);
+
+                            if (responseData.error === 'Insufficient wallet balance') {
+                                throw new Error('Insufficient wallet balance');
+                            } else {
+                                razorPayment(responseData.order);
+
+                                if (paymentMethod !== 'Razorpay') {
+                                    window.location.href = '/otherPaymentPage';
+                                }
+                            }
+                        }
+
+                    } catch (error) {
+                        console.error('There was an error:', error);
+                        if (error.message === 'Address not selected') {
+                            Swal.fire('Error', 'Please add an address', 'error');
+                        } else if (error.message === 'Payment method not selected') {
+                            Swal.fire('Error', 'Please select a payment method', 'error');
+                        } else if (error.message === 'Insufficient wallet balance') {
+                            Swal.fire('Error', 'Insufficient wallet balance', 'error');
+                        } else {
+                            Swal.fire('Order Placement Error', 'An error occurred during order placement', 'error');
                         }
                     }
-
                 } catch (error) {
-                    console.error('There was an error:', error);
-                    Swal.fire('Insufficient wallet balance');
+                    console.error('Unexpected error:', error);
                 }
             });
         }
 
 
         placeOrder();
-        
+
 
         // Add razorPayment here within the same script tag
         function razorPayment(order) {
             console.log('Razorpay Order:', order);
 
+
             var options = {
-                key: process.env.RAZORPAY_KEY_ID,
+                key: 'rzp_test_Kdpx3v778r8haC',
                 amount: order.amount,
                 currency: "INR",
                 name: "Shopify",
@@ -294,26 +324,24 @@
 
             var rzp1 = new Razorpay(options);
             rzp1.open();
+
         }
 
-        
-        // Rest of your script...
+
 
         function verifyPayment(payment, order) {
             console.log('h');
-            //   const amount2 = document.getElementById("total1").innerHTML;
             $.ajax({
                 url: "/verifyPayment",
                 method: "post",
                 data: {
                     payment: payment,
-                    //   amount2: amount2,
                     order: order,
                 },
                 success: (response) => {
                     console.log('Verification Response:', response);
                     if (response.codsuccess == true) {
-                        window.location.href = "/orderplaced";
+                        window.location.href = "/thankyou";
 
                     } else {
                         swal.fire({
