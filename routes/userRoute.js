@@ -50,19 +50,20 @@ user_route.post('/remove-product',cartController.removeProduct)
 
 user_route.get('/userProfile',auth.isUserLogin,profileController.loadProfile)
 user_route.get('/logout',profileController.userLogout)
-user_route.post('/updateUser',auth.isUserLogin,profileController.updateUser);
-user_route.post('/resetPassword',auth.isUserLogin,profileController.resetPassword);
+user_route.post('/updateUser', profileController.updateUser);
+user_route.post('/resetPassword', profileController.resetPassword);
 
 user_route.get('/address',auth.isUserLogin,profileController.loadAddress);
-user_route.post('/addAddress',auth.isUserLogin,profileController.addAddress);
+user_route.post('/addAddress', profileController.addAddress);
 user_route.get('/editAddress',auth.isUserLogin,profileController.loadEditAddress);
-user_route.post('/editAddress',auth.isUserLogin,profileController.editAddress);
+user_route.post('/editAddress', profileController.editAddress);
 user_route.delete('/deleteAddress',profileController.deleteAddress);
 
 user_route.get("/checkout",auth.isUserLogin, checkoutController.loadCheckout);
-user_route.post("/placeOrder",auth.isUserLogin, checkoutController.placeOrder);
+user_route.post("/placeOrder", checkoutController.placeOrder);
+user_route.post("/verifyPayment", checkoutController.verifyPayment);
 user_route.get('/checkoutAddress',auth.isUserLogin,checkoutController.checkoutLoadAddress);
-user_route.post('/checkoutAddAddress',auth.isUserLogin,checkoutController.checkoutAddAddress);
+user_route.post('/checkoutAddAddress', checkoutController.checkoutAddAddress);
 user_route.get("/thankyou",auth.isUserLogin, checkoutController.loadThankyou);
 
 user_route.get('/orderdetails/:orderId',auth.isUserLogin,orderController.loadOrderDetails);

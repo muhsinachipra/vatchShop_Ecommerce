@@ -15,6 +15,7 @@ const { name } = require('ejs');
 const path = require("path")
 
 const Razorpay = require('razorpay')
+const crypto = require("crypto")
 
 const instance = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -98,7 +99,7 @@ module.exports = {
     },
     placeOrder: async (req, res) => {
         try {
-            console.log('Request Body:', req.body);
+            console.log('Request Body from place Order:', req.body);
 
             const { addressOption, paymentOption } = req.body;
             const userId = req.session.userId;
@@ -220,9 +221,15 @@ module.exports = {
                 }
 
                 console.log('Order placed successfully');
+
                 order.status = true
+
                 // Save the order to the database
                 placeOrder = await order.save();
+                res.status(200).json({ placeOrder, message: "Order placed successfully" });
+
+                // Clear the user's cart
+                await Cart.deleteOne({ userId: req.session.userId });
                 
             } else if (paymentOption === 'Razorpay') {
 
@@ -282,13 +289,63 @@ module.exports = {
 
             }
 
-            // Clear the user's cart
-            await Cart.findOneAndUpdate({ userId: userId }, { $set: { items: [] } });
+
 
 
         } catch (error) {
             console.error(error);
             res.status(500).json({ success: false, message: 'Failed to place the order' });
+        }
+    },
+    verifyPayment: async (req, res) => {
+        try {
+            console.log("Received payment verification request");
+            console.log("Request Body from verify payment:", req.body);
+
+            const cartData = await Cart.findOne({ userId: req.session.userId });
+            const details = req.body;
+
+            // Verify the Razorpay signature
+            const hmac = crypto.createHmac("sha256", instance.key_secret);
+            hmac.update(details.payment.razorpay_order_id + "|" + details.payment.razorpay_payment_id);
+            const hmacValue = hmac.digest("hex");
+
+            if (hmacValue !== details.payment.razorpay_signature) {
+                // Signature verification failed
+                console.log("Signature verification failed");
+                await Order.findByIdAndRemove({ _id: details.order.receipt });
+                return res.json({ success: false, message: "Signature verification failed" });
+            }
+
+            // Signature verification successful
+            console.log("Signature verification successful");
+
+            // Update product quantities
+            for (const product of cartData.items) {
+                await Product.findByIdAndUpdate(
+                    { _id: product.productId },
+                    { $inc: { quantity: -product.quantity } }
+                );
+            }
+
+            // Update order payment status and payment ID
+            const orderId = details.order.receipt;
+            await Order.findByIdAndUpdate(
+                orderId,
+                { $set: { 'products.$[].paymentStatus': 'Success', paymentId: details.payment.razorpay_payment_id } }
+            );
+
+            // Clear the user's cart
+            await Cart.deleteOne({ user: req.session.user_id });
+
+            // Set the order status to true for successful payment
+            await Order.findByIdAndUpdate(orderId, { $set: { status: true } });
+
+            console.log("Payment successful");
+            res.json({ codsuccess: true, orderid: orderId });
+        } catch (error) {
+            console.log("Error:", error);
+            res.status(500).json({ error });
         }
     },
     loadThankyou: async (req, res) => {

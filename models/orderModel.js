@@ -78,6 +78,10 @@ const orderSchema = new mongoose.Schema({
     expectedDelivery: {
         type: Date,
         required: true
+    },
+    status: {
+      type: Boolean,
+      default: false, // Set the default value to false
     }
 });
 
