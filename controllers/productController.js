@@ -46,8 +46,17 @@ module.exports = {
     loadViewProducts: async (req, res) => {
 
         try {
-            const products = await Product.find().populate('productCategory');
-            res.render('viewProduct', { data: products });
+            const page = req.query.page || 1; // Get the current page from query parameters
+            const pageSize = 4; // Set your desired page size
+
+            const skip = (page - 1) * pageSize;
+
+            const totalProducts = await Product.countDocuments();
+            const totalPages = Math.ceil(totalProducts / pageSize);
+
+
+            const products = await Product.find().populate('productCategory').skip(skip).limit(pageSize);
+            res.render('viewProduct', { data: products, currentPage: page, totalPages: totalPages });
         } catch (error) {
             console.error(error);
             res.status(500).send('Internal Server Error');
@@ -84,13 +93,13 @@ module.exports = {
     editProduct: async (req, res) => {
         try {
             const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand } = req.body;
-    
+
             // Retrieve the existing product data
             const existingProduct = await Product.findById(id);
-    
+
             // Create an array to store the updated product images
             const updatedProductImages = [];
-    
+
             // Iterate over the product images and check if they are updated
             for (let i = 0; i < existingProduct.productImage.length; i++) {
                 if (req.files[i]) {
@@ -101,7 +110,7 @@ module.exports = {
                     updatedProductImages.push(existingProduct.productImage[i]);
                 }
             }
-    
+
             await Product.findByIdAndUpdate(id, {
                 $set: {
                     productName,
@@ -118,7 +127,7 @@ module.exports = {
             console.log(error.message);
         }
     },
-    
+
 
     loadUserProducts: async (req, res) => {
 

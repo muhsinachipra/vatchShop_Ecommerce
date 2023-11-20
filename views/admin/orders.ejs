@@ -67,6 +67,17 @@
 
                                     </table>
                                 </div>
+
+                                <div class="pagination mt-3" style="display: flex; justify-content: center;">
+                                    <% for (let i=1; i <=totalPages; i++) { %>
+                                        <a href="?page=<%= i %>">
+                                            <button type="button" class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                <%= i %>
+                                            </button>
+                                        </a>
+                                    <% } %>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>

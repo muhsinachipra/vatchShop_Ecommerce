@@ -1,0 +1,108 @@
+<%- include('./layouts/header.ejs') %>
+<%- include('./layouts/sideBar.ejs') %>
+<%- include('./layouts/navBar.ejs') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add New Coupon</h4>
+                    <hr class="white-line">
+                    <form id="couponForm" class="forms-sample" action="/admin/addCoupon" method="post" onsubmit="return validation();">
+                        <div class="form-group row">
+                            <div class="col-12 col-md-9 mt-2">
+                                <label for="couponCode">Coupon Code</label>
+                                <input type="text" class="form-control text-light mb-3" name="code" id="couponCode" placeholder="Coupon Code" required>
+                                <p id="couponCode-error" style="color: red;"></p>
+
+                                <label for="discountPercentage">Discount Percentage</label>
+                                <input type="number" class="form-control text-light mb-3" name="discountPercentage" id="discountPercentage" placeholder="Percentage" required>
+                                <p id="discountPercentage-error" style="color: red;"></p>
+
+                                <label for="startDate">Start Date</label>
+                                <input type="date" class="form-control text-light mb-3" name="startDate" id="startDate" required>
+                                <p id="startDate-error" style="color: red;"></p>
+
+                                <label for="expiryDate">Expiry Date</label>
+                                <input type="date" class="form-control text-light mb-3" name="expiryDate" id="expiryDate" required>
+                                <p id="expiryDate-error" style="color: red;"></p>
+
+                                <button type="submit" class="btn btn-lg btn-inverse-primary mr-2 mt-5">Add Coupon</button>
+                            </div>
+                        </div>
+
+                        <% if (typeof message !== 'undefined') { %>
+                        <p class="successfully">
+                            <%= message %>
+                        </p>
+                        <% } %>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const couponForm = document.getElementById('couponForm');
+
+        couponForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            if (validateForm()) {
+                this.submit();
+            }
+        });
+
+        function validateForm() {
+            const couponCodeInput = document.getElementById('couponCode');
+            const discountPercentageInput = document.getElementById('discountPercentage');
+            const startDateInput = document.getElementById('startDate');
+            const expiryDateInput = document.getElementById('expiryDate');
+
+            const couponCodeError = document.getElementById('couponCode-error');
+            const discountPercentageError = document.getElementById('discountPercentage-error');
+            const startDateError = document.getElementById('startDate-error');
+            const expiryDateError = document.getElementById('expiryDate-error');
+
+            couponCodeError.textContent = '';
+            discountPercentageError.textContent = '';
+            startDateError.textContent = '';
+            expiryDateError.textContent = '';
+
+            let isValid = true;
+
+            if (couponCodeInput.value.trim() === '') {
+                couponCodeError.textContent = 'Coupon Code is required';
+                isValid = false;
+            } else {
+                const couponCodeRegex = /^[a-zA-Z0-9]+$/;
+                if (!couponCodeRegex.test(couponCodeInput.value)) {
+                    couponCodeError.textContent = 'Coupon Code should contain only alphanumeric characters';
+                    isValid = false;
+                }
+            }
+
+            if (discountPercentageInput.value === '' || discountPercentageInput.value < 0 || discountPercentageInput.value > 100) {
+                discountPercentageError.textContent = 'Discount Percentage should be a positive integer between 0 and 100';
+                isValid = false;
+            }
+
+            if (startDateInput.value.trim() === '') {
+                startDateError.textContent = 'Start Date is required';
+                isValid = false;
+            }
+
+            if (expiryDateInput.value.trim() === '') {
+                expiryDateError.textContent = 'Expiry Date is required';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    });
+</script>
+
+<%- include('./layouts/footer.ejs') %>

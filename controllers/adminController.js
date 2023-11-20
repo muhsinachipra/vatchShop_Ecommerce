@@ -51,8 +51,17 @@ module.exports = {
 
     loadUsers: async (req, res) => {
         try {
-            const users = await User.find({});
-            res.render('Users', { users });
+            const page = req.query.page || 1; // Get the current page from query parameters
+            const pageSize = 4; // Set your desired page size
+
+            const skip = (page - 1) * pageSize;
+
+            const totalUsers = await User.countDocuments();
+            const totalPages = Math.ceil(totalUsers / pageSize);
+
+            const users = await User.find({}).skip(skip).limit(pageSize);
+            res.render('Users', { users, currentPage: page, totalPages: totalPages });
+
         } catch (error) {
             handleDatabaseError(res, error);
         }

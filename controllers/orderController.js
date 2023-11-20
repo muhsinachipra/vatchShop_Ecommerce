@@ -100,7 +100,7 @@ module.exports = {
             //         message: 'Order cannot be canceled at this stage',
             //     });
             // }
-            
+
             const invalidProduct = order.products.find(product => product._id.toString() === productId.toString() && (product.orderStatus !== 'Placed' && product.orderStatus !== 'Shipped'));
 
             if (invalidProduct) {
@@ -109,14 +109,14 @@ module.exports = {
                     message: `Order cannot be canceled at this stage due to product "${invalidProduct.productId.productName}" with status "${invalidProduct.orderStatus}"`,
                 });
             }
-            
+
 
             order.products.forEach(product => {
                 if (product._id.toString() === productId.toString()) {
                     product.orderStatus = 'Cancelled';
                 }
             });
-            
+
 
             // Save the updated order
             await order.save();
@@ -130,6 +130,12 @@ module.exports = {
     },
     loadAdminOrder: async (req, res) => {
         try {
+
+            const page = req.query.page || 1; // Get the current page from query parameters
+            const pageSize = 4; // Set your desired page size
+
+            const skip = (page - 1) * pageSize;
+
             // Fetch all orders with user information
             const orders = await Order.find({})
                 .sort({ orderDate: -1 })
@@ -137,12 +143,17 @@ module.exports = {
                     path: 'user',
                     model: 'User',
                     select: 'firstName lastName' // Select the fields you want to populate
-                });
+                }).skip(skip).limit(pageSize);
+
+
+
+            const totalOrders = await Order.countDocuments();
+            const totalPages = Math.ceil(totalOrders / pageSize);
 
 
             // Check if orders data is not null or undefined
             if (orders) {
-                res.render('orders', { orders });
+                res.render('orders', { orders, currentPage: page, totalPages: totalPages });
             } else {
                 console.log('Orders Data is null or undefined');
                 res.render('orders', { orders: [] });

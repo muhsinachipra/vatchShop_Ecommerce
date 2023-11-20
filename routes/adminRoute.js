@@ -35,18 +35,26 @@ admin_route.set('views', './views/admin')
 const adminController = require('../controllers/adminController')
 const productController = require('../controllers/productController')
 const orderController = require('../controllers/orderController')
+const couponController = require('../controllers/couponController')
+
+
 
 admin_route.get('/', auth.isAdminLogout, adminController.loadLogin)
 admin_route.post('/', adminController.verifyLogin)
 admin_route.get('/dashboard', auth.isAdminLogin, adminController.loadDashboard)
 admin_route.get('/Users', auth.isAdminLogin, adminController.loadUsers)
 admin_route.get('/block_users', auth.isAdminLogin, adminController.blockUser)
+
+//==================== category related ======================================//
+
 admin_route.get('/addCategory', auth.isAdminLogin, adminController.loadAddCategory)
 admin_route.post('/addCategory', adminController.addCategory)
 admin_route.get('/viewCategory', auth.isAdminLogin, adminController.loadViewCategory)
 admin_route.get('/edit_category', auth.isAdminLogin, adminController.loadEditCatogory)
 admin_route.post('/edit_category', adminController.editCategory)
 admin_route.get('/unlist_category', auth.isAdminLogin, adminController.unlistCategory)
+
+//==================== product related ======================================//
 admin_route.get('/addProduct', auth.isAdminLogin, productController.loadAddProduct)
 admin_route.post('/addProduct', upload.array('productImage', 3), productController.addProduct)
 admin_route.get('/viewProduct', auth.isAdminLogin, productController.loadViewProducts)
@@ -54,10 +62,15 @@ admin_route.get('/unlist_product', auth.isAdminLogin, productController.unlistPr
 admin_route.get('/edit_product', auth.isAdminLogin, productController.loadEditProduct)
 admin_route.post('/edit_product', upload.array('productImage', 3), productController.editProduct)
 
+//========================== order related =====================================//
 admin_route.get('/orders',auth.isAdminLogin,orderController.loadAdminOrder)
 admin_route.get('/manageOrder/:orderId',auth.isAdminLogin,orderController.loadManageOrder)
 admin_route.post('/updateOrderStatus/:orderId', orderController.updateOrderStatus);
 
+//=============================== coupon related ========================================//
+admin_route.get('/viewCoupon', auth.isAdminLogin, couponController.loadViewCoupon)
+admin_route.get('/addCoupon', auth.isAdminLogin, couponController.loadAddCoupon)
+admin_route.post('/addCoupon',couponController.addCoupon)
 
 
 
