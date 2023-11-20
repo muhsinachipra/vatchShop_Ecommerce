@@ -336,7 +336,7 @@ module.exports = {
             );
 
             // Clear the user's cart
-            await Cart.deleteOne({ user: req.session.user_id });
+            await Cart.deleteOne({ user: req.session.userId });
 
             // Set the order status to true for successful payment
             await Order.findByIdAndUpdate(orderId, { $set: { status: true } });

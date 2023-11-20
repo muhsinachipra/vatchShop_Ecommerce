@@ -50,7 +50,7 @@
                                                 </p>
                                             </div>
                                             <input type="radio" name="addressOption"
-                                                value="<%= address.address[i]._id %>" required <%=i===0 ? 'checked' : ''
+                                                value="<%= address.address[i]._id %>" <%=i===0 ? 'checked' : ''
                                                 %> />
                                         </div>
                                     </div>
@@ -371,7 +371,7 @@
             });
     </script>
 
-    <script>
+    <!-- <script>
         function validateCheckoutForm() {
             // Check if at least one address option is selected
             const addressOptions = document.querySelectorAll(
@@ -397,6 +397,6 @@
 
             return true; // Allow the form to submit
         }
-    </script>
+    </script> -->
 
     <%- include('./layouts/footer.ejs') %>
