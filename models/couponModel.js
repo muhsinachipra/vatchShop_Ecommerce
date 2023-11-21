@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const couponSchema = new mongoose.Schema({
+    couponName: {
+        type: String,
+        required: true,
+    },
     code: {
         type: String,
         required: true,

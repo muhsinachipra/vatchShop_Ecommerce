@@ -71,6 +71,9 @@ admin_route.post('/updateOrderStatus/:orderId', orderController.updateOrderStatu
 admin_route.get('/viewCoupon', auth.isAdminLogin, couponController.loadViewCoupon)
 admin_route.get('/addCoupon', auth.isAdminLogin, couponController.loadAddCoupon)
 admin_route.post('/addCoupon',couponController.addCoupon)
+admin_route.delete('/deleteCoupon/:id',couponController.deleteCoupon)
+admin_route.get('/editCoupon', auth.isAdminLogin, couponController.loadEditCoupon)
+admin_route.post('/editCoupon', couponController.editCoupon)
 
 
 

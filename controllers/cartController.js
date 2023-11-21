@@ -17,7 +17,6 @@ module.exports = {
                 const productId = req.body.id;
                 const userId = req.session.userId;
 
-                console.log('Received productId:', productId);
 
                 // Fetch user details
                 const userData = await User.findById(userId);

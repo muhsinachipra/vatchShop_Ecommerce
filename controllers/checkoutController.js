@@ -5,6 +5,7 @@ const Category = require('../models/categoryModel');
 const Admin = require('../models/adminModel');
 const Address = require('../models/addressModel');
 const Order = require('../models/orderModel');
+const Coupon = require('../models/couponModel');
 
 
 const { ObjectId } = require('mongoose').Types;
@@ -30,6 +31,7 @@ module.exports = {
             const userData = await User.findById({ _id: userId })
             const userAddress = await Address.findOne({ userId });
             const cartData = await Cart.findOne({ userId: userId }).populate('items.productId');
+            const couponData = await Coupon.find()
 
             if (!cartData || !cartData.items || cartData.items.length === 0) {
                 console.log('Cart is empty');
@@ -46,7 +48,7 @@ module.exports = {
                 return res.redirect('/cart?error=insufficient-stock');
             }
 
-            res.render('checkout', { user: userData, address: userAddress, cart: cartData });
+            res.render('checkout', { user: userData, address: userAddress, cart: cartData, coupons: couponData });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Internal Server Error');
@@ -230,7 +232,7 @@ module.exports = {
 
                 // Clear the user's cart
                 await Cart.deleteOne({ userId: req.session.userId });
-                
+
             } else if (paymentOption === 'Razorpay') {
 
                 console.log('Entered Razorpay block');

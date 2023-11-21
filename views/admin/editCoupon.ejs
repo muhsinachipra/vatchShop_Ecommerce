@@ -7,40 +7,45 @@
         <div class="col-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Add New Coupon</h4>
+                    <h4 class="card-title">Edit Coupon</h4>
+
+                    <% if (typeof message !== 'undefined') { %>
+                        <p class="successfully">
+                            <%= message %>
+                        </p>
+                    <% } %>
+
                     <hr class="white-line">
-                    <form id="couponForm" class="forms-sample" action="/admin/addCoupon" method="post" onsubmit="return validation();">
+                    <form id="couponForm" class="forms-sample" action="/admin/editCoupon" method="post" onsubmit="return validation();">
                         <div class="form-group row">
                             <div class="col-12 col-md-9 mt-2">
                                 <label for="couponCode">Coupon Name</label>
-                                <input type="text" class="form-control text-light mb-3" name="couponName" id="couponName" placeholder="Coupon Name" required>
+                                <input type="text" class="form-control text-light mb-3" name="couponName" id="couponName" placeholder="Coupon Name" required value="<%= coupon ? coupon.couponName : '' %>">
                                 <p id="couponName-error" style="color: red;"></p>
 
                                 <label for="couponCode">Coupon Code</label>
-                                <input type="text" class="form-control text-light mb-3" name="code" id="couponCode" placeholder="Coupon Code" required>
+                                <input type="text" class="form-control text-light mb-3" name="code" id="couponCode" placeholder="Coupon Code" required value="<%= coupon ? coupon.code : '' %>">
+                                <input type="hidden" name="originalCode" value="<%= coupon ? coupon.code : '' %>">
                                 <p id="couponCode-error" style="color: red;"></p>
 
                                 <label for="discountPercentage">Discount Percentage</label>
-                                <input type="number" class="form-control text-light mb-3" name="discountPercentage" id="discountPercentage" placeholder="Percentage" required>
+                                <input type="number" class="form-control text-light mb-3" name="discountPercentage" id="discountPercentage" placeholder="Percentage" required value="<%= coupon ? coupon.discountPercentage : '' %>">
                                 <p id="discountPercentage-error" style="color: red;"></p>
 
                                 <label for="startDate">Start Date</label>
-                                <input type="date" class="form-control text-light mb-3" name="startDate" id="startDate" required>
+                                <input type="date" class="form-control text-light mb-3" name="startDate" id="startDate" required value="<%= coupon ? coupon.startDate.toISOString().split('T')[0] : '' %>">
+
                                 <p id="startDate-error" style="color: red;"></p>
 
                                 <label for="expiryDate">Expiry Date</label>
-                                <input type="date" class="form-control text-light mb-3" name="expiryDate" id="expiryDate" required>
+                                <input type="date" class="form-control text-light mb-3" name="expiryDate" id="expiryDate" required value="<%= coupon ? coupon.expiryDate.toISOString().split('T')[0] : '' %>">
                                 <p id="expiryDate-error" style="color: red;"></p>
 
                                 <button type="submit" class="btn btn-lg btn-inverse-primary mr-2 mt-5">Add Coupon</button>
                             </div>
                         </div>
 
-                        <% if (typeof message !== 'undefined') { %>
-                        <p class="successfully">
-                            <%= message %>
-                        </p>
-                        <% } %>
+                        
 
                     </form>
                 </div>
@@ -80,10 +85,10 @@
             let isValid = true;
 
             // Update regex to require at least one number and one alphabet character
-            isValid = validateField(inputs.couponCode, errors.couponCode, 'Coupon Code is required', /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]+$/) && isValid;
-            isValid = validateField(inputs.discountPercentage, errors.discountPercentage, 'Discount Percentage should be a positive integer between 0 and 100', /^(100|[1-9]\d?)$/) && isValid;
-            isValid = validateField(inputs.startDate, errors.startDate, 'Start Date is required') && isValid;
-            isValid = validateField(inputs.expiryDate, errors.expiryDate, 'Expiry Date is required') && isValid;
+            isValid = isValid && validateField(inputs.couponCode, errors.couponCode, 'Coupon Code is required', /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]+$/);
+            isValid = isValid && validateField(inputs.discountPercentage, errors.discountPercentage, 'Discount Percentage should be a positive integer between 0 and 100', /^(100|[1-9]\d?)$/);
+            isValid = isValid && validateField(inputs.startDate, errors.startDate, 'Start Date is required');
+            isValid = isValid && validateField(inputs.expiryDate, errors.expiryDate, 'Expiry Date is required');
 
             return isValid;
         }

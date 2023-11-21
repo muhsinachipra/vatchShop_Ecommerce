@@ -1,5 +1,40 @@
 <%- include('./layouts/header.ejs') %>
 
+    <style>
+        /* Style the modal container */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Style the modal content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        /* Style the close button */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+
+
     <!-- <form id="checkoutForm" action="/checkout" method="post" onsubmit="return validateCheckoutForm();"> -->
     <div class="site-wrap m-t-75 bg0">
         <div class="bg-light py-3">
@@ -50,8 +85,7 @@
                                                 </p>
                                             </div>
                                             <input type="radio" name="addressOption"
-                                                value="<%= address.address[i]._id %>" <%=i===0 ? 'checked' : ''
-                                                %> />
+                                                value="<%= address.address[i]._id %>" <%=i===0 ? 'checked' : '' %> />
                                         </div>
                                     </div>
 
@@ -68,7 +102,53 @@
                             </a>
                         </div>
                         <br />
+
+
+
+
+
+
+                        <!-- The Modal -->
+                        <div id="myModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" id="closeModalBtn">&times;</span>
+
+                                <% if (coupons && coupons.length> 0) { %>
+                                    <% coupons.forEach((coupon, index)=> { %>
+
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5><%= coupon.couponName %></h5>
+                                                <div class="row">
+                                                    <div class="col-6 col-sm-12 col-xl-6 my-auto">
+                                                        <div class="d-flex d-sm-block d-md-flex align-items-center">
+                                                            <h2 class="mb-0">Save Upto</h2>
+                                                            <p class="text-success ml-2 mb-0 font-weight-medium"><%= coupon.discountPercentage %> %</p>
+                                                        </div>
+                                                        <h6 class="text-muted font-weight-normal">For purchase more than
+                                                            <%= coupon.discountPercentage %>k
+                                                        </h6>
+                                                    </div>
+                                                    <div class="col-6 col-sm-12 col-xl-6 my-auto">
+                                                        <h5>Apply Code</h5>
+                                                        <p class="text-success ml-2 mb-0 font-weight-medium"><%= coupon.code %></p>
+                                                    </div>
+                                                    <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                                                        <i class="icon-lg mdi mdi-codepen text-primary ml-auto"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% })} %>
+
+                                           
+
+
+                            </div>
+                        </div>
+
                     </div>
+
 
                     <!-- main two -->
 
@@ -89,8 +169,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Trigger Modal -->
+                                <button id="openModalBtn">View Available Coupons</button>
                             </div>
                         </div>
+
 
                         <div class="row mb-5">
                             <div class="col-md-12">
@@ -327,7 +410,7 @@
 
         }
 
-        
+
         function verifyPayment(payment, order) {
             console.log('h');
             $.ajax({
@@ -398,5 +481,31 @@
             return true; // Allow the form to submit
         }
     </script> -->
+
+
+    <script>
+        // Get the modal and buttons
+        const modal = document.getElementById('myModal');
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        // Show the modal when the open button is clicked
+        openModalBtn.addEventListener('click', function () {
+            modal.style.display = 'block';
+        });
+
+        // Hide the modal when the close button is clicked
+        closeModalBtn.addEventListener('click', function () {
+            modal.style.display = 'none';
+        });
+
+        // Hide the modal if the user clicks outside the modal content
+        window.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+    </script>
 
     <%- include('./layouts/footer.ejs') %>
