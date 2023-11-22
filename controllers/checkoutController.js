@@ -358,5 +358,27 @@ module.exports = {
         } catch (error) {
             console.log(error.message);
         }
-    }
+    },
+    // getCouponDetails: async (req, res) => {
+    //     try {
+    //         const couponCode = req.query.code;
+
+    //         // Fetch coupon details from the database based on the code
+    //         const couponDetails = await Coupon.findOne({ code: couponCode });
+
+    //         if (couponDetails) {
+    //             // Return the coupon details as JSON
+    //             res.json({
+    //                 discountPercentage: couponDetails.discountPercentage,
+    //             });
+    //         } else {
+    //             // If the coupon is not found, return an empty response
+    //             res.json({});
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching coupon details:', error);
+    //         res.status(500).json({ error: 'Internal Server Error' });
+    //     }
+    // }
+
 }

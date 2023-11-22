@@ -115,15 +115,18 @@
 
                                 <% if (coupons && coupons.length> 0) { %>
                                     <% coupons.forEach((coupon, index)=> { %>
-
-                                        <div class="card">
+                                        <div class="card" onclick="fillCouponCode('<%= coupon.code %>')">
                                             <div class="card-body">
-                                                <h5><%= coupon.couponName %></h5>
+                                                <h5>
+                                                    <%= coupon.couponName %>
+                                                </h5>
                                                 <div class="row">
                                                     <div class="col-6 col-sm-12 col-xl-6 my-auto">
                                                         <div class="d-flex d-sm-block d-md-flex align-items-center">
                                                             <h2 class="mb-0">Save Upto</h2>
-                                                            <p class="text-success ml-2 mb-0 font-weight-medium"><%= coupon.discountPercentage %> %</p>
+                                                            <p class="text-success ml-2 mb-0 font-weight-medium">
+                                                                <%= coupon.discountPercentage %> %
+                                                            </p>
                                                         </div>
                                                         <h6 class="text-muted font-weight-normal">For purchase more than
                                                             <%= coupon.discountPercentage %>k
@@ -131,7 +134,9 @@
                                                     </div>
                                                     <div class="col-6 col-sm-12 col-xl-6 my-auto">
                                                         <h5>Apply Code</h5>
-                                                        <p class="text-success ml-2 mb-0 font-weight-medium"><%= coupon.code %></p>
+                                                        <p class="text-success ml-2 mb-0 font-weight-medium">
+                                                            <%= coupon.code %>
+                                                        </p>
                                                     </div>
                                                     <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
                                                         <i class="icon-lg mdi mdi-codepen text-primary ml-auto"></i>
@@ -141,7 +146,7 @@
                                         </div>
                                         <% })} %>
 
-                                           
+
 
 
                             </div>
@@ -163,14 +168,15 @@
                                         <input type="text" class="form-control" id="c_code" placeholder="Coupon Code"
                                             aria-label="Coupon Code" aria-describedby="button-addon2" />
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary btn-sm" type="button" id="button-addon2">
+                                            <button class="btn btn-primary btn-sm" type="button" id="button-addon2"
+                                                onclick="applyCoupon()">
                                                 Apply
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- Trigger Modal -->
-                                <button id="openModalBtn">View Available Coupons</button>
+                                <button id="openModalBtn">Available Coupons</button>
                             </div>
                         </div>
 
@@ -179,12 +185,12 @@
                             <div class="col-md-12">
                                 <h2 class="h3 mb-3 text-black">Your Order</h2>
                                 <div class="p-3 p-lg-5 border">
-                                    <table class="table site-block-order-table mb-5">
+                                    <table class="table site-block-order-table mb-5" id="orderTable">
                                         <thead>
                                             <th>Product</th>
                                             <th>Image</th>
                                             <th>Quantity</th>
-                                            <th>Price</th>
+                                            <th>SubTotal</th>
                                         </thead>
                                         <tbody>
                                             <% if (cart && cart.items && cart.items.length> 0) { %>
@@ -211,8 +217,7 @@
                                                         </td>
 
                                                         <td>
-                                                            ₹ <%= (item.productId.productPrice *
-                                                                item.quantity).toFixed(2) %>
+                                                            ₹ <%= cart.subTotal %>
                                                         </td>
                                                     </tr>
                                                     <% }); %>
@@ -507,5 +512,76 @@
         });
 
     </script>
+
+    <script>
+        // Function to fill the coupon code field
+        function fillCouponCode(code) {
+            // Get the coupon code input element
+            const couponCodeInput = document.getElementById('c_code');
+
+            // Set the value of the input field to the selected coupon code
+            if (couponCodeInput) {
+                couponCodeInput.value = code;
+            }
+
+            // Close the modal after setting the coupon code
+            const modal = document.getElementById('myModal');
+            modal.style.display = 'none';
+        }
+    </script>
+
+    <script>
+        async function applyCoupon() {
+            try {
+                
+            } catch (error) {
+                console.error('Error applying coupon:', error);
+                // Handle the error as needed
+            }
+        }
+    </script>
+
+    <!-- <script>
+        async function applyCoupon() {
+            try {
+                // Get the coupon code input element
+                const couponCodeInput = document.getElementById('c_code');
+
+                // Get the value of the coupon code
+                const couponCode = couponCodeInput.value;
+
+                // Fetch coupon details from the server
+                const response = await fetch(`/getCouponDetails?code=${couponCode}`);
+                const couponDetails = await response.json();
+
+                // Check if a valid coupon is selected
+                if (couponDetails && couponDetails.discountPercentage) {
+                    // Update the table with the discounted prices
+                    const tableRows = document.querySelectorAll('#orderTable tbody tr');
+
+                    tableRows.forEach(row => {
+                        // Get the original price and quantity from the row
+                        const originalPrice = parseFloat(row.querySelector('td:nth-child(4)').textContent.trim().slice(1));
+                        const quantity = parseInt(row.querySelector('td:nth-child(3)').textContent.trim());
+
+                        // Calculate the discounted price
+                        const discountedPrice = (originalPrice * (100 - couponDetails.discountPercentage) / 100) * quantity;
+
+                        // Update the price in the row
+                        row.querySelector('td:nth-child(4)').textContent = `₹ ${discountedPrice.toFixed(2)}`;
+                    });
+
+                    // Inform the user that the coupon has been applied (you can customize this part)
+                    alert(`Coupon "${couponCode}" applied successfully!`);
+                } else {
+                    // Inform the user that the entered coupon code is not valid (you can customize this part)
+                    alert('Invalid coupon code. Please enter a valid code.');
+                }
+            } catch (error) {
+                console.error('Error applying coupon:', error);
+                // Handle the error as needed
+            }
+        }
+    </script> -->
 
     <%- include('./layouts/footer.ejs') %>

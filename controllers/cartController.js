@@ -17,7 +17,6 @@ module.exports = {
                 const productId = req.body.id;
                 const userId = req.session.userId;
 
-
                 // Fetch user details
                 const userData = await User.findById(userId);
                 if (!userData) {
@@ -34,12 +33,13 @@ module.exports = {
                     console.log('Out of stock');
                     return res.json({ outofstock: true });
                 }
+
                 // Fetch user's cart
                 let userCart = await Cart.findOne({ userId: userId });
 
                 if (!userCart) {
                     // If the user doesn't have a cart, create a new one
-                    userCart = new Cart({ userId: userId, items: [] });
+                    userCart = new Cart({ userId: userId, items: [], subTotal: 0 }); // Set a default value for subTotal
                 }
 
                 // Check if the product is already in the cart
@@ -62,6 +62,20 @@ module.exports = {
                     userCart.items.push({ productId: productId, quantity: 1 });
                 }
 
+                // // Calculate the new subTotal based on the contents of the cart
+                // userCart.subTotal = userCart.items.reduce((total, item) => {
+                //     const product = await Product.findById(item.productId);
+                //     return total + item.quantity * product.productPrice;
+                // }, 0);
+
+                
+                // Calculate the new subTotal based on the contents of the cart
+                userCart.subTotal = await Promise.all(userCart.items.map(async (item) => {
+                    const product = await Product.findById(item.productId);
+                    return item.quantity * product.productPrice;
+                })).then((prices) => prices.reduce((total, price) => total + price, 0));
+
+
                 // Save the updated cart
                 await userCart.save();
 
@@ -73,8 +87,6 @@ module.exports = {
             console.log(error);
             res.status(500).json({ error: 'An error occurred' });
         }
-
-
     },
     loadCart: async (req, res) => {
         try {
@@ -109,6 +121,46 @@ module.exports = {
             res.status(500).json({ error: 'An error occurred' });
         }
     },
+    // cartQuantity: async (req, res) => {
+    //     try {
+    //         const number = parseInt(req.body.count);
+    //         const proId = req.body.product;
+    //         const userId = req.body.user;
+    //         const count = number;
+
+    //         const cartData = await Cart.findOne(
+    //             { userId: new ObjectId(userId), "items.productId": new ObjectId(proId) },
+    //             { "items.productId.$": 1, "items.quantity": 1 }
+    //         );
+
+    //         const [{ quantity }] = cartData.items;
+
+    //         const productData = await Product.findById(proId);
+
+    //         // Check if the new quantity after the update will be greater than or equal to 1
+    //         if (quantity + count >= 1) {
+    //             if (productData.productStock < quantity + count) {
+    //                 res.json({ success: false, message: "Quantity exceeds available stock" });
+    //             } else {
+    //                 const datat = await Cart.updateOne(
+    //                     { userId: userId, "items.productId": proId },
+    //                     {
+    //                         $inc: { "items.$.quantity": count },
+    //                     }
+    //                 );
+    //                 res.json({ changeSuccess: true });
+    //             }
+
+    //         } else {
+    //             res.json({ success: false, message: "Quantity cannot be less than 1" });
+    //         }
+
+
+    //     } catch (error) {
+    //         console.log(error);
+    //         res.status(500).json({ error: 'An error occurred' });
+    //     }
+    // },
     cartQuantity: async (req, res) => {
         try {
             const number = parseInt(req.body.count);
@@ -118,7 +170,7 @@ module.exports = {
 
             const cartData = await Cart.findOne(
                 { userId: new ObjectId(userId), "items.productId": new ObjectId(proId) },
-                { "items.productId.$": 1, "items.quantity": 1 }
+                { "items.productId.$": 1, "items.quantity": 1, subTotal: 1 }
             );
 
             const [{ quantity }] = cartData.items;
@@ -130,26 +182,34 @@ module.exports = {
                 if (productData.productStock < quantity + count) {
                     res.json({ success: false, message: "Quantity exceeds available stock" });
                 } else {
-                    const datat = await Cart.updateOne(
+                    const newQuantity = quantity + count;
+                    const updatedSubTotal = newQuantity * productData.productPrice;
+
+                    // if (!cartData) {
+                    //     // If the cart doesn't exist, create a new one with the subTotal
+                    //     const newCart = new Cart({
+                    //         userId: userId,
+                    //         items: [{ productId: proId, quantity: newQuantity }],
+                    //         subTotal: updatedSubTotal,
+                    //     });
+
+                    //     await newCart.save();
+                    // } else {
+                    // Update the existing cart with the new quantity and subTotal
+                    await Cart.updateOne(
                         { userId: userId, "items.productId": proId },
                         {
                             $inc: { "items.$.quantity": count },
+                            $set: { subTotal: updatedSubTotal },
                         }
                     );
+                    // }
+
                     res.json({ changeSuccess: true });
                 }
-
             } else {
                 res.json({ success: false, message: "Quantity cannot be less than 1" });
             }
-
-            // console.log(req.body.count);
-            // console.log(userId);
-            // console.log(proId);
-            // console.log(quantity);
-            // console.log(productData);
-            // console.log(cartData);
-
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: 'An error occurred' });
