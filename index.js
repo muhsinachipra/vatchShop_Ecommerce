@@ -10,7 +10,6 @@ mongoose.connect(process.env.MONGO_URL)
 app.set('view engine','ejs')
 
 
-
 const path= require("path")
 app.use('/car',express.static(path.join(__dirname,'public')));
 

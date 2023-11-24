@@ -217,7 +217,7 @@
                                                         </td>
 
                                                         <td>
-                                                            ₹ <%= cart.subTotal %>
+                                                            ₹ <%= item.productId.productPrice * item.quantity %>
                                                         </td>
                                                     </tr>
                                                     <% }); %>
@@ -229,6 +229,11 @@
 
                                         </tbody>
                                     </table>
+
+                                    <div class="afterApplingTheCoupon" style="display: none;">
+                                        <h3>Discound Price</h3>
+                                        ₹ <%= cart.subTotal %>
+                                    </div>
 
                                     <div class="payment-options">
                                         <h3>Select Payment Option</h3>
@@ -530,16 +535,72 @@
         }
     </script>
 
+
     <script>
+        // Client-side script to apply a coupon
         async function applyCoupon() {
             try {
-                
+                // Get the coupon code input element
+                const couponCodeInput = document.getElementById('c_code');
+
+                // Get the value of the coupon code
+                const couponCode = couponCodeInput.value;
+
+                // Check if the coupon code is not empty
+                if (!couponCode.trim()) {
+                    // You can display an alert or handle it in your UI as needed
+                    console.log('Coupon code is empty');
+                    return;
+                }
+
+                // Send a request to the server to apply the coupon
+                const response = await fetch('/applyDiscount', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ couponCode }),
+                });
+
+                // Parse the server response
+                const responseData = await response.json();
+
+                // Handle the response accordingly
+                if (response.ok) {
+                    // Coupon applied successfully, you can update the UI or show a success message
+                    console.log('Coupon applied successfully!');
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Coupon Applied Successfully!',
+                        showConfirmButton: false,
+                        timer: 1500, // You can adjust the timer duration
+                    });
+
+                    const afterApplyingCouponDiv = document.querySelector('.afterApplingTheCoupon');
+                    afterApplyingCouponDiv.style.display = 'block';
+
+                    afterApplyingCouponDiv.innerHTML = `Discount Price: ₹ ${updatedPrice}`;
+                    // window.location.reload();
+                } else {
+                    // Coupon application failed, you can handle the error or show an error message
+                    console.error('Error applying coupon:', responseData.error);
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error Applying Coupon',
+                        text: responseData.error || 'Unknown error',
+                    });
+                    // You can display an alert or handle it in your UI as needed
+                }
             } catch (error) {
                 console.error('Error applying coupon:', error);
                 // Handle the error as needed
+                // You can display an alert or handle it in your UI as needed
             }
         }
     </script>
+
 
     <!-- <script>
         async function applyCoupon() {

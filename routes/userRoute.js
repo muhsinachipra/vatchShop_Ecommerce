@@ -6,7 +6,7 @@ const config = require("../config/config")
 user_route.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: true }))
 const auth = require('../middleware/userAuth')
 
-user_route.set('view engine', 'ejs')
+// user_route.set('view engine', 'ejs')
 user_route.set('views', './views/users');
 
 const bodyParser = require('body-parser')
@@ -64,8 +64,10 @@ user_route.post("/placeOrder", checkoutController.placeOrder);
 user_route.post("/verifyPayment", checkoutController.verifyPayment);
 user_route.get('/checkoutAddress', auth.isUserLogin, checkoutController.checkoutLoadAddress);
 user_route.post('/checkoutAddAddress', checkoutController.checkoutAddAddress);
+
+user_route.post('/applyDiscount', checkoutController.applyDiscount);
+
 user_route.get("/thankyou", auth.isUserLogin, checkoutController.loadThankyou);
-// user_route.get('/getCouponDetails', auth.isUserLogin, checkoutController.getCouponDetails);
 
 user_route.get('/orderdetails/:orderId', auth.isUserLogin, orderController.loadOrderDetails);
 user_route.post('/cancelorder/:productId', orderController.cancelOrderAjax);
