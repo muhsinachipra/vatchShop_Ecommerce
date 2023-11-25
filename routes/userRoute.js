@@ -35,6 +35,9 @@ const orderController = require("../controllers/orderController");
 
 user_route.get('/', userController.loadHome)
 user_route.get('/login', userController.loginLoad)
+
+user_route.get('/loginValidation', userController.passwordValidation)
+
 user_route.post('/login', userController.verifyLogin)
 user_route.get('/register', userController.loadRegister);
 user_route.post('/register', userController.insertUser);
@@ -46,6 +49,8 @@ user_route.get('/productDetails', productController.loadUserProductDetails)
 user_route.post('/add-to-cart', cartController.addToCart)
 user_route.get('/cart', auth.isUserLogin, cartController.loadCart)
 user_route.post('/cart-quantity', cartController.cartQuantity)
+user_route.get('/cartCount', cartController.cartCount)
+
 user_route.post('/remove-product', cartController.removeProduct)
 
 user_route.get('/userProfile', auth.isUserLogin, profileController.loadProfile)

@@ -2267,3 +2267,56 @@ const cartQuantity = async (req, res) => {
     res.status(500).json({ error: 'An error occurred' });
   }
 };
+
+
+
+const updateQuantity = async (req, res) => {
+    const user_id = req.body.user;
+    const product_Id = req.body.product;
+    const number = parseInt(req.body.count);
+    const quantityChange = pnumber;
+
+    try {
+        const cart = await Cart.findOne({ userId: user_id });
+        if (!cart) {
+            return res.status(404).json({ success: false, message: 'Cart not found' });
+        }
+
+        const cartItem = cart.items.find(item => item.product_Id.toString() === product_Id);
+        if (!cartItem) {
+            return res.status(404).json({ success: false, message: 'Product not found in the cart' });
+        }
+
+        const productData = await Product.findOne({_id:product_Id})
+       
+        const productStock = productData.productStock
+
+        // Calculate new quantity and total
+        const newQuantity = cartItem.quantity + quantityChange;
+        console.log(newQuantity)
+        if (newQuantity < 1) {
+            return res.status(400).json({ success: false, message: 'Quantity cannot be less than 1' });
+        }else if(newQuantity >= productStock){
+            return res.status(400).json({ success: false, message: 'Product stock exceeded' });
+        } else if( newQuantity > 10){
+            return res.status(400).json({ success: false, message: 'Only 10 items can be purchased'});
+        }
+        const newTotal = newQuantity * cartItem.productId.productPrice;
+
+        // Update the quantity and total for the cart item
+        cartItem.quantity = newQuantity;
+        // cartItem.total = newTotal;
+
+        // Recalculate the total price of the cart
+        cart.subTotal = cart.subTotal + newTotal;
+
+        // Save the updated cart
+        await cart.save();
+
+        return res.status(200).json({ success: true, message: 'Quantity updated successfully', cart });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};

@@ -62,6 +62,33 @@ module.exports = {
         }
     },
 
+    passwordValidation: async (req, res) => {
+        const { email, password } = req.body;
+
+        try {
+            // Find the user in the database based on the provided email
+            const user = await User.findOne({ email });
+
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+
+            // Check if the provided password matches the stored password
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+
+            if (isPasswordValid) {
+                // Password is valid, you can send a success response or do additional actions
+                return res.status(200).json({ success: 'Password is valid' });
+            } else {
+                // Password is invalid
+                return res.status(401).json({ error: 'Invalid password' });
+            }
+        } catch (error) {
+            console.error('Error in password validation:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    },
+
     verifyLogin: async (req, res) => {
         try {
             const email = req.body.email;

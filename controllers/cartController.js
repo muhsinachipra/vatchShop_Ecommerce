@@ -61,10 +61,10 @@ module.exports = {
                     // If the product is not in the cart, add it
                     userCart.items.push({ productId: productId, quantity: 1 });
                 }
-               
 
                 // Update subTotal
                 await userCart.calculateSubTotal();
+
                 // Save the updated cart
                 await userCart.save();
 
@@ -98,9 +98,7 @@ module.exports = {
                     res.render('cart', { user: req.session.userId, cart: [], total: 0 });
                 }
             } else {
-                // If user is not logged in, render 'login' view with an error message
-                // res.render('login', { errors: "Please log in to view your cart" });
-                // res.redirect('/login');
+
                 res.redirect('/login?errors=Please log in to view');
 
             }
@@ -110,154 +108,54 @@ module.exports = {
             res.status(500).json({ error: 'An error occurred' });
         }
     },
-    // cartQuantity: async (req, res) => {
-    //     try {
-    //         const number = parseInt(req.body.count);
-    //         const proId = req.body.product;
-    //         const userId = req.body.user;
-    //         const count = number;
-
-    //         const cartData = await Cart.findOne(
-    //             { userId: new ObjectId(userId), "items.productId": new ObjectId(proId) },
-    //             { "items.productId.$": 1, "items.quantity": 1 }
-    //         );
-
-    //         const [{ quantity }] = cartData.items;
-
-    //         const productData = await Product.findById(proId);
-
-    //         // Check if the new quantity after the update will be greater than or equal to 1
-    //         if (quantity + count >= 1) {
-    //             if (productData.productStock < quantity + count) {
-    //                 res.json({ success: false, message: "Quantity exceeds available stock" });
-    //             } else {
-    //                 const datat = await Cart.updateOne(
-    //                     { userId: userId, "items.productId": proId },
-    //                     {
-    //                         $inc: { "items.$.quantity": count },
-    //                     }
-    //                 );
-    //                 res.json({ changeSuccess: true });
-    //             }
-
-    //         } else {
-    //             res.json({ success: false, message: "Quantity cannot be less than 1" });
-    //         }
-
-
-    //     } catch (error) {
-    //         console.log(error);
-    //         res.status(500).json({ error: 'An error occurred' });
-    //     }
-    // },
-    // cartQuantity: async (req, res) => {
-    //     try {
-    //         const number = parseInt(req.body.count);
-    //         const proId = req.body.product;
-    //         const userId = req.body.user;
-    //         const count = number;
-
-    //         const cartData = await Cart.findOne(
-    //             { userId: new ObjectId(userId), "items.productId": new ObjectId(proId) },
-    //             { "items.productId.$": 1, "items.quantity": 1, subTotal: 1 }
-    //         );
-
-    //         const [{ quantity }] = cartData.items;
-
-    //         const productData = await Product.findById(proId);
-
-    //         // Check if the new quantity after the update will be greater than or equal to 1
-    //         if (quantity + count >= 1) {
-    //             if (productData.productStock < quantity + count) {
-    //                 res.json({ success: false, message: "Quantity exceeds available stock" });
-    //             } else {
-    //                 const newQuantity = quantity + count;
-
-    //                 if (!cartData) {
-    //                     // If the cart doesn't exist, create a new one with the subTotal
-    //                     const newCart = new Cart({
-    //                         userId: userId,
-    //                         items: [{ productId: proId, quantity: newQuantity }],
-    //                     });
-
-    //                     await newCart.save();
-    //                 } else {
-    //                     // Update the existing cart with the new quantity
-    //                     await Cart.updateOne(
-    //                         { userId: userId, "items.productId": proId },
-    //                         {
-    //                             $inc: { "items.$.quantity": count },
-    //                         }
-    //                     );
-
-
-    //                     // Calculate and update the subTotal using the calculateSubTotal function
-    //                     await cartData.calculateSubTotal();
-    //                     await cartData.save();
-    //                 }
-
-    //                 res.json({ changeSuccess: true });
-    //             }
-    //         } else {
-    //             res.json({ success: false, message: "Quantity cannot be less than 1" });
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //         res.status(500).json({ error: 'An error occurred' });
-    //     }
-    // },
-
     cartQuantity: async (req, res) => {
+        const user_id = req.body.user;
+        const product_Id = req.body.product;
+        const number = parseInt(req.body.count);
+        const quantityChange = number;
+
         try {
-            const number = parseInt(req.body.count);
-            const productId = req.body.product;
-            const userId = req.body.user;
-            const count = number;
-
-            // Check if the cart exists
-            const cartData = await Cart.findOne(
-                { userId: userId, "items.productId": productId },
-                { "items.$": 1, "items.quantity": 1 }
-            );
-
-            if (!cartData) {
-                return res.json({ success: false, message: "Cart not found" });
+            const cart = await Cart.findOne({ userId: user_id });
+            if (!cart) {
+                return res.status(404).json({ success: false, message: 'Cart not found' });
             }
 
-            const [{ quantity }] = cartData.items;
-
-            // Check if the product exists
-            const productData = await Product.findById(productId);
-            if (!productData) {
-                return res.json({ success: false, message: "Product not found" });
+            const cartItem = cart.items.find(item => item.productId.toString() === product_Id);
+            if (!cartItem) {
+                return res.status(404).json({ success: false, message: 'Product not found in the cart' });
             }
 
-            // Check if the new quantity after the update will be greater than or equal to 1
-            if (quantity + count >= 1) {
-                if (productData.stock < quantity + count) {
-                    return res.json({ success: false, message: "Quantity exceeds available stock" });
-                } else {
-                    // Use findOneAndUpdate for a cleaner update
-                    const updatedCart = await Cart.findOneAndUpdate(
-                        { userId: userId, "items.productId": productId },
-                        { $inc: { "items.$.quantity": count } },
-                        { new: true } // Return the updated document
-                    );
+            const productData = await Product.findOne({ _id: product_Id })
 
-                    res.json({ changeSuccess: true, updatedCart });
-                }
-            } else {
-                res.json({ success: false, message: "Quantity cannot be less than 1" });
+            const productStock = productData.productStock
+
+            // Calculate new quantity and total
+            const newQuantity = cartItem.quantity + quantityChange;
+            console.log(newQuantity)
+            if (newQuantity < 1) {
+                return res.status(400).json({ success: false, message: 'Quantity cannot be less than 1' });
+            } else if (newQuantity >= productStock) {
+                return res.status(400).json({ success: false, message: 'Product stock exceeded' });
+            } else if (newQuantity > 10) {
+                return res.status(400).json({ success: false, message: 'Only 10 items can be purchased' });
             }
+
+            // Update the quantity and total for the cart item
+            cartItem.quantity = newQuantity;
+
+            // Update subTotal
+            await cart.calculateSubTotal();
+
+            // Save the updated cart
+            await cart.save();
+
+            return res.status(200).json({ changeSuccess: true, message: 'Quantity updated successfully', cart });
+
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'An error occurred' });
+            return res.status(500).json({ changeSuccess: false, message: 'Internal server error' });
         }
     },
-
-
-
-
     removeProduct: async (req, res) => {
         try {
             console.log('apicall');
@@ -282,7 +180,24 @@ module.exports = {
             console.log(error);
             res.status(500).json({ error: 'An error occurred' });
         }
+    },
+    cartCount: async (req, res) => {
+        try {
+            const userId = req.session.userId;
+
+            // Fetch the cart data from the database based on the user ID
+            const cart = await Cart.findOne({ userId });
+
+            // If the cart is found, send the total number of items to the client
+            if (cart) {
+                const totalItems = cart.items.reduce((acc, item) => acc + item.quantity, 0);
+                res.json({ totalItems });
+            } else {
+                res.json({ totalItems: 0 }); // If no cart is found, assume 0 items
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: 'An error occurred' });
+        }
     }
-
-
 }

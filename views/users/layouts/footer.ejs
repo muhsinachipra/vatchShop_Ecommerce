@@ -322,6 +322,35 @@
     </div>
 </div>
 
+
+<!-- cart item count function -->
+<script>
+    $(document).ready(function () {
+        // Function to update cart item count
+        function updateCartItemCount() {
+            // Make an AJAX request to get the current cart information
+            $.ajax({
+                url: '/cartCount', // Replace with your actual API endpoint for fetching cart data
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Update the cart item count on success
+                    $('#cartItemCount').attr('data-notify', data.totalItems);
+                },
+                error: function () {
+                    console.error('Error fetching cart data');
+                }
+            });
+        }
+
+        // Call the updateCartItemCount function on page load
+        updateCartItemCount();
+
+        // You can also call this function whenever the cart is updated
+        // For example, after adding or removing items from the cart
+    });
+</script>
+
 <!-- Add the Razorpay script at the end of the body -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
