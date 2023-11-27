@@ -73,3 +73,17 @@ function validateLoginForm() {
 
     return true; // Form will be submitted if all validations pass
   }
+
+
+  function validateLoginForm() {
+    const email = document.getElementById("email");
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.value)) {
+      alert("Please enter a valid email address.");
+      return false;
+    }
+
+    return true; // Form will be submitted if all validations pass
+  }

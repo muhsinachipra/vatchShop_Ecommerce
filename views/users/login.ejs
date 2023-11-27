@@ -24,41 +24,40 @@
 								</p>
 							</div> -->
 							</div>
-							<form action="/login" class="signin-form" method="post">
+							<form class="signin-form">
+
 								<div class="form-group mt-3">
 									<input type="email" class="form-control" id="email" name="email" required>
 									<label class="form-control-placeholder" for="email">Email</label>
 								</div>
 								<div class="form-group">
-									<input id="password-field" type="password" class="form-control" id="password"
-										name="password" required>
+									<input id="password-field" type="password" class="form-control" name="password"
+										required>
 									<label class="form-control-placeholder" for="password">Password</label>
 									<span toggle="#password-field"
 										class="fa fa-fw fa-eye field-icon toggle-password"></span>
 								</div>
-								<span id="password-error" class="text-danger"></span>
+								<span id="login-error" class="text-danger"></span>
 
-								<% if (typeof message !=='undefined' ) { %>
-									<p class="successfully">
-										<%= message %>
-									</p>
-									<% } %>
-										<div class="form-group">
-											<button type="submit"
-												class="form-control btn btn-primary rounded submit px-3">Sign
-												In</button>
-										</div>
-										<!-- <div class="form-group d-md-flex">
-					<div class="w-50 text-left">
-						<label class="checkbox-wrap checkbox-primary mb-0">Remember Me
-								  <input type="checkbox" checked>
-								  <span class="checkmark"></span>
-									</label>
+
+								<div class="form-group">
+									<button type="button" class="form-control btn btn-primary rounded submit px-3"
+										onclick="validateLoginForm()">Sign
+										In</button>
 								</div>
-								<div class="w-50 text-md-right">
-									<a href="#">Forgot Password</a>
+
+								<div class="form-group d-md-flex">
+									<div class="w-50 text-left">
+										<!-- <label class="checkbox-wrap checkbox-primary mb-0">Remember Me
+											<input type="checkbox" checked>
+											<span class="checkmark"></span>
+										</label> -->
+									</div>
+									<div class="w-50 text-md-right">
+										<a href="/forget">Forgot Password</a>
+									</div>
 								</div>
-				</div> -->
+								
 							</form>
 							<p class="text-center">Not a member? <a href="/register">Sign Up</a></p>
 						</div>
@@ -69,30 +68,61 @@
 	</section>
 
 	<script>
-		const Endpoint = '/loginValidation'; // Define the correct endpoint
+		const Endpoint = '/loginValidation';
 
-		const passwordValidation = async (data) => {
+		const passwordValidation = async () => {
+			const password = document.getElementById('password-field').value;
+			const email = document.getElementById('email').value;
 			try {
 				const response = await fetch(Endpoint, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
-						// You can include additional headers if needed
 					},
-					body: JSON.stringify(data),
+					body: JSON.stringify({ email, password }),
 				});
 
-				if (!response.ok) {
-					throw new Error('Network response was not ok');
-				}
+				const errorElement = document.getElementById('login-error');
 
-				const responseData = await response.json();
-				console.log('Data sent successfully:', responseData);
-				// Update the page based on the response, e.g., show an error message or update UI
+				if (!response.ok) {
+					const errorData = await response.json();
+					errorElement.textContent = `Login failed. ${errorData.error}`;
+					console.error('Server error:', errorData.error);
+				} else {
+					// Clear previous error messages
+					errorElement.textContent = '';
+					// Redirect to home page after a successful login
+					window.location.href = '/';
+				}
 			} catch (error) {
 				console.error('Error sending data to the server:', error);
 			}
 		};
+
+		function validateLoginForm() {
+			const emailInput = document.getElementById('email');
+			const passwordInput = document.getElementById('password-field');
+			const errorElement = document.getElementById('login-error');
+
+			// Validate email
+			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			if (!emailRegex.test(emailInput.value)) {
+				errorElement.textContent = 'Please enter a valid email address.';
+				return false;
+			}
+
+			// Clear the error message when the email is valid
+			errorElement.textContent = '';
+
+			// Move the password validation logic here if needed
+
+			// Form will be submitted if all validations pass
+			passwordValidation(); // Call the asynchronous function here
+			return false; // Prevent the form from being submitted automatically
+		}
+
+
 	</script>
+
 
 	<%- include('./layouts/footer.ejs') %>

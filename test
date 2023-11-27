@@ -2320,3 +2320,68 @@ const updateQuantity = async (req, res) => {
         return res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
+
+
+<!-- ... (your existing code) ... -->
+
+<span id="login-error" class="text-danger"></span>
+
+<script>
+    const Endpoint = '/loginValidation';
+
+    const passwordValidation = async () => {
+        const password = document.getElementById('password-field').value;
+        const email = document.getElementById('email').value;
+        try {
+            const response = await fetch(Endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const errorElement = document.getElementById('login-error');
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                // Display a generic error message
+                errorElement.textContent = 'Login failed. Please try again.';
+                console.error('Server error:', errorData.error);
+            } else {
+                // Clear previous error messages
+                errorElement.textContent = '';
+                // Redirect to home page after a successful login
+                window.location.href = '/';
+            }
+
+        } catch (error) {
+            console.error('Error sending data to the server:', error);
+        }
+    };
+
+    function validateLoginForm() {
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password-field');
+        const errorElement = document.getElementById('login-error');
+
+        // Validate email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput.value)) {
+            errorElement.textContent = 'Please enter a valid email address.';
+            return false;
+        }
+
+        // Clear the error message when the email is valid
+        errorElement.textContent = '';
+
+        // Move the password validation logic here if needed
+
+        // Form will be submitted if all validations pass
+        passwordValidation(); // Call the asynchronous function here
+        return false; // Prevent the form from being submitted automatically
+    }
+</script>
+
+<!-- ... (your existing code) ... -->
+

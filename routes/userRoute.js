@@ -35,10 +35,12 @@ const orderController = require("../controllers/orderController");
 
 user_route.get('/', userController.loadHome)
 user_route.get('/login', userController.loginLoad)
+user_route.post('/loginValidation', userController.verifyLogin)
+user_route.get('/forget', userController.loadForget)
+user_route.post('/forget', userController.forgotVerify)
+user_route.get('/resetPassword', userController.loadResetPassword)
+user_route.post('/resetPassword', userController.resetPassword)
 
-user_route.get('/loginValidation', userController.passwordValidation)
-
-user_route.post('/login', userController.verifyLogin)
 user_route.get('/register', userController.loadRegister);
 user_route.post('/register', userController.insertUser);
 user_route.get('/otp', userController.loadOtp);

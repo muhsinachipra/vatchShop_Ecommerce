@@ -3,6 +3,8 @@ const Product = require('../models/productModel');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const otpGenerator = require("otp-generator");
+const randomstring = require('randomstring');
+
 
 const handleDatabaseError = (res, error) => {
     console.error(error.message);
@@ -44,6 +46,39 @@ const otpSent = async (email, otp) => {
     }
 };
 
+//for sending recovery mail
+const resetPasswordMail = async (username, email, token) => {
+    try {
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
+            requireTLS: true,
+            auth: {
+                user: 'muhsinachipra@gmail.com',
+                pass: 'azen vizj yufk ekkt',
+            }
+        })
+
+        const mailOptions = {
+            from: 'muhsinachipra@gmail.com',
+            to: email,
+            subject: "For Reset Password",
+            html: `<p> Hi, ${username}, please click here to <a href="http://localhost:5000/resetpassword?token=${token}"> Reset </a> your password</p>`
+        }
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log("Email Has been Sent:-", info, response);
+            }
+        })
+
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 module.exports = {
     loadLogin: async (req, res) => {
@@ -62,64 +97,127 @@ module.exports = {
         }
     },
 
-    passwordValidation: async (req, res) => {
-        const { email, password } = req.body;
-
+    verifyLogin: async (req, res) => {
         try {
-            // Find the user in the database based on the provided email
+            const email = req.body.email;
+            const password = req.body.password;
+
             const user = await User.findOne({ email });
 
             if (!user) {
                 return res.status(404).json({ error: 'User not found' });
             }
 
-            // Check if the provided password matches the stored password
             const isPasswordValid = await bcrypt.compare(password, user.password);
 
             if (isPasswordValid) {
-                // Password is valid, you can send a success response or do additional actions
-                return res.status(200).json({ success: 'Password is valid' });
+                if (user.isBlocked) {
+                    return res.status(401).json({ error: "Your account is blocked. Please contact support for assistance." });
+                } else {
+                    // You can use session or token-based authentication as needed
+                    req.session.userId = user._id;
+                    return res.status(200).json({ success: "Login successful" });
+                }
             } else {
-                // Password is invalid
-                return res.status(401).json({ error: 'Invalid password' });
+                return res.status(401).json({ error: "Incorrect Password" });
             }
         } catch (error) {
-            console.error('Error in password validation:', error);
+            console.error('Error in login:', error);
             return res.status(500).json({ error: 'Internal server error' });
         }
     },
 
-    verifyLogin: async (req, res) => {
+    loadForget: async (req, res) => {
         try {
-            const email = req.body.email;
-            const password = req.body.password;
-
-            const userData = await User.findOne({ email: email });
-
-            if (userData) {
-                const passwordMatch = await bcrypt.compare(password, userData.password);
-
-                if (passwordMatch) {
-                    if (userData.isBlocked) {
-                        res.render('login', { message: "Your account is blocked. Please contact support for assistance." });
-                    } else {
-                        req.session.userId = userData._id;
-                        res.render('userHome');
-                    }
-                } else {
-                    res.render('login', { message: "Incorrect email or password" });
-                }
-            } else {
-                res.render('login', { message: "Incorrect email or password" });
-            }
+            res.render('forgetPassword');
         } catch (error) {
             handleDatabaseError(res, error);
         }
     },
 
+    forgotVerify: async (req, res) => {
+        try {
+            const email = req.body.email
+            const userData = await User.findOne({ email: email })
+
+            if (userData) {
+                if (userData.isVerified === false) {
+                    res.render('forgetPassword', { message: "Please verify your mail" })
+                } else {
+                    const randomString = randomstring.generate()
+                    const updatedData = await User.updateOne({ email: email },
+                        { $set: { token: randomString } })
+
+                    resetPasswordMail(userData.firstName, userData.email, randomString)
+                    res.render('forgetPassword', { message: "Please Check Your Mail to Reset Your Password" })
+                }
+            } else {
+                res.render('forgetPassword', { message: "User email is Incorrect" })
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    loadResetPassword: async (req, res) => {
+        try {
+            const token = req.query.token;
+
+            // Assuming you have a 'token' field in your user schema
+            const user = await User.findOne({ token: token });
+
+            if (user) {
+                // Render the view with the user information
+                res.render('resetPassword', { user_id: user._id });
+            } else {
+                res.render('resetPassword', { message: 'Invalid Token' });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    //Resetting Password  
+    resetPassword: async (req, res) => {
+        try {
+            const id = req.body.id;
+            // console.log('User ID from form submission:', id);
+
+            if (!id) {
+                console.log('User ID is missing in the form submission');
+                return res.status(400).send('User ID is missing in the form submission');
+            }
+
+            // You may want to validate the password and confirm password fields here
+            const password = req.body.password;
+
+            // Hash the new password before saving it to the database
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            // Update the user's password in the database
+            const user = await User.findOneAndUpdate(
+                { _id: id },
+                { $set: { password: hashedPassword } },
+                { new: true }
+            );
+
+
+            if (!user) {
+                console.log('User not found in the database');
+                return res.status(404).send('User not found in the database');
+            }
+
+            res.redirect("/login")
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).send('Internal Server Error');
+        }
+    },
+
     loadRegister: async (req, res) => {
         try {
-            res.render('registration.ejs');
+            res.render('registration');
         } catch (error) {
             handleDatabaseError(res, error);
         }
