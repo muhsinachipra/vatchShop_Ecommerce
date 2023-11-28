@@ -72,6 +72,11 @@
                                                                 </button>
                                                             </a>
                                                             <% } %>
+
+                                                                <a href="/admin/delete_product?id=<%= data[i]._id %>">
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-danger btn-fw">Delete</button>
+                                                                </a>
                                                 </td>
                                             </tr>
                                             <% }; %>
@@ -85,7 +90,7 @@
                                                 <%= i %>
                                             </button>
                                         </a>
-                                    <% } %>
+                                        <% } %>
                                 </div>
 
                             </div>

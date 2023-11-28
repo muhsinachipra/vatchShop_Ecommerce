@@ -61,6 +61,7 @@ admin_route.get('/viewProduct', auth.isAdminLogin, productController.loadViewPro
 admin_route.get('/unlist_product', auth.isAdminLogin, productController.unlistProduct)
 admin_route.get('/edit_product', auth.isAdminLogin, productController.loadEditProduct)
 admin_route.post('/edit_product', upload.array('productImage', 3), productController.editProduct)
+admin_route.get('/delete_product', auth.isAdminLogin, productController.deleteProduct)
 
 //========================== order related =====================================//
 admin_route.get('/orders',auth.isAdminLogin,orderController.loadAdminOrder)

@@ -2385,3 +2385,297 @@ const updateQuantity = async (req, res) => {
 
 <!-- ... (your existing code) ... -->
 
+
+
+
+
+
+
+                                    <div class="form-row">
+                                        <label for="">File upload (Multiple Images)</label>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-0">
+                                            <div class="dynamic-image-inputs">
+                                                
+                                                <div class="input-group">
+                                                    <input type="file" name="productImage" class="form-control"
+                                                        required>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary add-image-input"
+                                                            type="button">Add Image</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    <%- include('./layouts/header.ejs') %>
+    <%- include('./layouts/sideBar.ejs') %>
+        <%- include('./layouts/navBar.ejs') %>
+
+            <div class="main-panel">
+                <div class="content-wrapper">
+
+
+                    <div class="col-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h2 class="card-title">PRODUCTS</h2>
+                                <form class="forms-sample" action="" method="post" enctype="multipart/form-data">
+                                    
+                                    <div class="form-row">
+                                        <label for="exampleInputName1">Product Name</label>
+                                        <input type="text" class="form-control" id="productName" name="productName"
+                                            placeholder="Product Name" required>
+                                    </div>
+                                    <br>
+                                    <div class="form-row">
+                                        <label for="exampleInputName1">Brand Name</label>
+                                        <input type="text" class="form-control" id="productBrand" name="productBrand"
+                                            placeholder="Brand Name" required>
+                                    </div>
+                                    <br>
+                                    <div class="form-row align-items-center">
+                                        <div class="col-sm-4 my-1">
+                                            <label for="exampleInputName1">Category</label>
+                                            <select class="form-control" id="productCategory" name="productCategory"
+                                                required>
+                                                <% category.forEach(category=> { %>
+                                                    <option value="<%= category._id %>">
+                                                        <%= category.categoryName %>
+                                                    </option>
+                                                    <% }); %>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4 my-1">
+                                            <label for="exampleInputName1">Price</label>
+                                            <input type="text" class="form-control" id="productPrice"
+                                                name="productPrice" placeholder="Price" required>
+                                        </div>
+                                        <div class="col-sm-4 my-1">
+                                            <label for="exampleInputName1">Stock</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="productStock"
+                                                    name="productStock" placeholder="Stock" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-row">
+                                        <label for="exampleInputName1">Description</label>
+                                        <textarea class="form-control" id="productDescription" rows="4"
+                                            name="productDescription" required></textarea>
+                                    </div>
+                                    <br>
+
+                                    
+
+                                    <!-- Add this within the form -->
+                                    <div class="form-row">
+                                        <label for="">File upload (Multiple Images)</label>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-0">
+                                            <div class="dynamic-image-inputs">
+
+                                                <!-- Add the image preview container -->
+                                                <img id="image-preview" src="#" alt="Image Preview"
+                                                    style="display: none; max-width: 100%;">
+
+                                                <div class="input-group">
+                                                    <input type="file" name="productImage" class="form-control"
+                                                        id="image-input" required>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary add-image-input"
+                                                            type="button">Add Image</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    
+
+                                    <br>
+                                    <div class="message-container"></div>
+
+                                    <br>
+                                    <div class="form-row">
+                                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                                        <button class="btn btn-dark">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const addImageButton = document.querySelector(".add-image-input");
+                    const dynamicImageInputs = document.querySelector(".dynamic-image-inputs");
+                    const messageContainer = document.querySelector(".message-container"); // Add this line
+
+                    // Define a variable to keep track of the number of added image fields.
+                    let imageFieldCount = 0;
+
+                    addImageButton.addEventListener("click", function () {
+                        // Check if the maximum limit of 4 image fields has been reached.
+                        if (imageFieldCount < 2) {
+                            const inputGroup = document.createElement("div");
+                            inputGroup.className = "input-group";
+                            const inputFile = document.createElement("input");
+                            inputFile.type = "file";
+                            inputFile.name = "productImage";
+                            inputFile.className = "form-control";
+                            inputFile.required = true;
+                            const inputGroupAppend = document.createElement("div");
+                            inputGroupAppend.className = "input-group-append";
+                            const removeButton = document.createElement("button");
+                            removeButton.className = "btn btn-danger remove-image-input";
+                            removeButton.type = "button";
+                            removeButton.textContent = "Remove";
+                            removeButton.addEventListener("click", function () {
+                                inputGroup.remove();
+                                // Decrease the count when an image field is removed.
+                                imageFieldCount--;
+                                // Hide the message container if it's currently visible.
+                                messageContainer.style.display = "none";
+                            });
+                            inputGroupAppend.appendChild(removeButton);
+                            inputGroup.appendChild(inputFile);
+                            inputGroup.appendChild(inputGroupAppend);
+                            dynamicImageInputs.appendChild(inputGroup);
+
+                            // Increase the count when a new image field is added.
+                            imageFieldCount++;
+                        } else {
+                            // Update the message in the message container.
+                            messageContainer.textContent = "You can only add up to 3 image fields.";
+                            // Make the message container visible.
+                            messageContainer.style.display = "block";
+                        }
+                    });
+
+                    // Validate Product Name (Only alphabets)
+                    const productNameInput = document.getElementById("productName");
+                    productNameInput.addEventListener("input", function () {
+                        const value = productNameInput.value;
+                        if (!/^[a-zA-Z ]*$/.test(value)) {
+                            productNameInput.setCustomValidity("Product Name can only contain alphabets and spaces.");
+                        } else {
+                            productNameInput.setCustomValidity("");
+                        }
+                    });
+
+
+                    // Validate Product Brand (Only alphabets)
+                    const productBrandInput = document.getElementById("productBrand");
+                    productBrandInput.addEventListener("input", function () {
+                        const value = productBrandInput.value;
+                        if (!/^[a-zA-Z ]*$/.test(value)) {
+                            productBrandInput.setCustomValidity("Product Brand can only contain alphabets and spaces.");
+                        } else {
+                            productBrandInput.setCustomValidity("");
+                        }
+                    });
+
+                    // Validate Price (Only numbers)
+                    const productPriceInput = document.getElementById("productPrice");
+                    productPriceInput.addEventListener("input", function () {
+                        const value = productPriceInput.value;
+                        if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+                            productPriceInput.setCustomValidity("Price can only contain numbers, optionally with up to 2 decimal places.");
+                        } else {
+                            productPriceInput.setCustomValidity("");
+                        }
+                    });
+
+                    // Validate Stock (Only numbers)
+                    const productStockInput = document.getElementById("productStock");
+                    productStockInput.addEventListener("input", function () {
+                        const value = productStockInput.value;
+                        if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+                            productStockInput.setCustomValidity("Stock can only contain numbers, optionally with up to 2 decimal places.");
+                        } else {
+                            productStockInput.setCustomValidity("");
+                        }
+                    });
+
+
+                });
+
+            </script>
+
+            <!-- Add this within the script tag -->
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const addImageButton = document.querySelector(".add-image-input");
+                    const dynamicImageInputs = document.querySelector(".dynamic-image-inputs");
+                    const messageContainer = document.querySelector(".message-container");
+                    const imageInput = document.getElementById("image-input");
+                    const imagePreview = document.getElementById("image-preview");
+
+                    // ... (rest of your existing script)
+
+                    // Handle file input change event to display image preview
+                    imageInput.addEventListener("change", function () {
+                        const file = imageInput.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                imagePreview.src = e.target.result;
+                                imagePreview.style.display = "block";
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            // Hide the image preview if no file is selected
+                            imagePreview.src = "#";
+                            imagePreview.style.display = "none";
+                        }
+                    });
+                });
+            </script>
+
+
+            <%- include('./layouts/footer.ejs') %>

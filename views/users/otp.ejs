@@ -39,10 +39,17 @@
                             </form>
                             <form action="resendOTP" method="post">
                                 <div class="text-center">
-                                    <button type="submit"
-                                        class="form-control btn btn-primary rounded submit px-3">Resend OTP</button>
+                                    <button id="resendButton" type="submit" class="form-control btn btn-primary rounded submit px-3" disabled>
+                                        Resend OTP
+                                    </button>
                                 </div>
                             </form>
+                            
+
+                            <!-- Add this div to display the timer -->
+                            <div id="timer">Time remaining: <span id="countdown">120</span> seconds</div>
+
+
                             <% if (typeof message !=='undefined' ) { %>
                                 <p class="successfully">
                                     <%= message %>
@@ -61,6 +68,41 @@
     <script src="/car/userAssets/login/js/bootstrap.min.js"></script>
     <script src="/car/userAssets/login/js/main.js"></script>
     <!-- Additional scripts if needed for OTP functionality -->
+
+    <!-- Add the countdown logic -->
+    <script>
+        // Set the initial countdown value
+        let countdownValue = 120;
+
+        // Function to update the countdown display
+        function updateCountdown() {
+            document.getElementById('countdown').textContent = countdownValue;
+        }
+
+        // Function to start the countdown
+        function startCountdown() {
+            // Update the countdown display initially
+            updateCountdown();
+
+            // Update the countdown every second
+            const countdownInterval = setInterval(function () {
+                countdownValue--;
+
+                // Update the countdown display
+                updateCountdown();
+
+                // If countdown reaches 0, stop the interval and enable the "Resend OTP" button
+                if (countdownValue === 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('resendButton').removeAttribute('disabled');
+                }
+            }, 1000);
+        }
+
+        // Call the startCountdown function when the page is loaded
+        document.addEventListener('DOMContentLoaded', startCountdown);
+    </script>
+
 </body>
 
 </html>

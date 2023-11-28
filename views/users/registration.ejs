@@ -23,7 +23,7 @@
 									</p>
 								</div> -->
 							</div>
-							<form id="registration-form" action="register" class="signin-form" method="post"
+							<form id="registration-form" action="/register" class="signin-form" method="post"
 								onsubmit="return validateForm()">
 								<div class="form-group mt-3">
 									<input type="text" class="form-control" id="firstName" name="firstName" required>
@@ -100,7 +100,7 @@
 
 	<script>
 		// register validation
-
+	
 		function validateForm() {
 			const firstName = document.getElementById('firstName').value;
 			const lastName = document.getElementById('lastName').value;
@@ -108,58 +108,57 @@
 			const email = document.getElementById('email').value;
 			const passwordConfirm = document.getElementById('passwordConfirm').value;
 			const password = document.getElementById('password').value;
-
+	
 			document.getElementById('password-error').textContent = '';
 			document.getElementById('passwordConfirm-error').textContent = '';
 			document.getElementById('email-error').textContent = '';
 			document.getElementById('firstName-error').textContent = '';
 			document.getElementById('lastName-error').textContent = '';
 			document.getElementById('mobileno-error').textContent = '';
-
+	
 			const passwordRegex = /^(?=.*[!@#$%^&*]).{6,}$/;
-
+	
 			// Validate password
 			if (!password || !passwordRegex.test(password)) {
 				document.getElementById('password-error').textContent = 'Password must be at least 6 characters and contain a special character.';
 				return false;
 			}
-
+	
 			// Validate password confirmation
 			if (!passwordConfirm || !passwordRegex.test(passwordConfirm) || password !== passwordConfirm) {
 				document.getElementById('passwordConfirm-error').textContent = 'Passwords must match and meet the criteria.';
 				return false;
 			}
-
+	
 			// Validate email
 			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 			if (!emailRegex.test(email)) {
 				document.getElementById('email-error').textContent = 'Please enter a valid email address.';
 				return false;
 			}
-
-			
+	
 			// Validate first name and last name (should be alphabets)
 			const nameRegex = /^[A-Za-z]+$/;
 			if (!nameRegex.test(firstName)) {
 				document.getElementById('firstName-error').textContent = 'First name should only contain alphabets.';
 				return false;
 			}
-
+	
 			if (!nameRegex.test(lastName)) {
 				document.getElementById('lastName-error').textContent = 'Last name should only contain alphabets.';
 				return false;
 			}
-
+	
 			// Validate mobile number (optional, you can adjust the regex according to your needs)
 			const mobileRegex = /^[0-9]{10}$/;
 			if (!mobileRegex.test(mobileno)) {
 				document.getElementById('mobileno-error').textContent = 'Please enter a valid 10-digit mobile number.';
 				return false;
 			}
-
+	
+			// All validations passed, allow form submission
 			return true;
 		}
-
 	</script>
 
 

@@ -78,6 +78,19 @@ module.exports = {
         }
     },
 
+    deleteProduct: async (req, res) => {
+        try {
+            const id = req.query.id;
+
+            // Use deleteOne to remove the product from the database
+            await Product.deleteOne({ _id: id });
+
+            res.redirect('/admin/viewProduct')
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+
     loadEditProduct: async (req, res) => {
         try {
             const id = req.query.id;
@@ -130,10 +143,10 @@ module.exports = {
 
 
     loadUserProducts: async (req, res) => {
-
         try {
-            const products = await Product.find()
-            res.render('productView', { product: products });
+            const categories = await Category.find({ isListed: true });
+            const products = await Product.find({ isListed: true }).populate('productCategory');
+            res.render('productView', { product: products, category: categories });
         } catch (error) {
             console.log(error.message);
             // res.status(500).send('Internal Server Error');
