@@ -61,42 +61,46 @@
                                     </div>
 
                                     <!-- First Image -->
-                                    <img id="imagePreview1" class="img-preview" style="width: 100px"/>
+                                    <img id="imagePreview1" class="img-preview" style="width: 100px" />
 
                                     <div class="form-row">
                                         <div class="col-md-6 mb-0">
                                             <div class="input-group">
                                                 <input type="file" name="productImage" class="form-control"
-                                                    id="imageInput1" required>
+                                                    id="imageInput1" required
+                                                    onchange="handleFileInputChange('imageInput1', 'imagePreview1')">
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- Second Image -->
-                                    <img id="imagePreview2" class="img-preview" style="width: 100px;"/>
+                                    <img id="imagePreview2" class="img-preview" style="width: 100px;" />
 
                                     <div class="form-row">
                                         <div class="col-md-6 mb-0">
                                             <div class="input-group">
                                                 <input type="file" name="productImage" class="form-control"
-                                                    id="imageInput2" required>
+                                                    id="imageInput2" required
+                                                    onchange="handleFileInputChange('imageInput2', 'imagePreview2')">
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- Third Image -->
-                                    <img id="imagePreview3" class="img-preview" style="width: 100px;"/>
+                                    <img id="imagePreview3" class="img-preview" style="width: 100px;" />
 
                                     <div class="form-row">
                                         <div class="col-md-6 mb-0">
                                             <div class="input-group">
                                                 <input type="file" name="productImage" class="form-control"
-                                                    id="imageInput3" required>
+                                                    id="imageInput3" required
+                                                    onchange="handleFileInputChange('imageInput3', 'imagePreview3')">
                                             </div>
                                         </div>
                                     </div>
 
-
+                                    <!-- Crop Button -->
+                                    <button type="button" class="btn btn-success mt-3" id="cropButton">Crop</button>
 
                                     <br>
                                     <div class="message-container"></div>
@@ -116,8 +120,139 @@
             </div>
 
             <script>
-                document.addEventListener("DOMContentLoaded", function () {
+                let croppers = []; // Declare an array to store cropper instances
 
+                function initializeCropper(imagePreview, index) {
+                    croppers[index] = new Cropper(imagePreview, {
+                        aspectRatio: 1,
+                        viewMode: 2,
+                    });
+                }
+
+                function handleFileInputChange(inputId, previewId, index) {
+                    const inputFile = document.getElementById(inputId);
+                    const imagePreview = document.getElementById(previewId);
+
+                    inputFile.addEventListener("change", function () {
+                        const file = this.files[0];
+
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                // Destroy the existing cropper instance if it exists
+                                if (croppers[index]) {
+                                    croppers[index].destroy();
+                                }
+
+                                imagePreview.src = e.target.result;
+
+                                // Initialize Cropper for the specific index
+                                initializeCropper(imagePreview, index);
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            imagePreview.src = "";
+                            // Destroy the existing cropper instance if it exists
+                            if (croppers[index]) {
+                                croppers[index].destroy();
+                            }
+                        }
+                    });
+                }
+
+                // Call the function for each file input and preview combination
+                handleFileInputChange("imageInput1", "imagePreview1", 0);
+                handleFileInputChange("imageInput2", "imagePreview2", 1);
+                handleFileInputChange("imageInput3", "imagePreview3", 2);
+
+                const cropButton = document.getElementById("cropButton");
+                cropButton.addEventListener("click", function () {
+                    // Loop through each cropper instance
+                    croppers.forEach((cropper, index) => {
+                        if (cropper) {
+                            const currentPreview = document.getElementById(`imagePreview${index + 1}`);
+
+                            if (currentPreview) {
+                                const croppedCanvas = cropper.getCroppedCanvas();
+                                const croppedImageDataURL = croppedCanvas.toDataURL("image/jpeg");
+
+                                // Update the preview image
+                                currentPreview.src = croppedImageDataURL;
+
+                                // Destroy Cropper after cropping
+                                cropper.destroy();
+                                croppers[index] = null; // Reset cropper
+                            } else {
+                                console.error(`Preview element not found for index ${index}.`);
+                            }
+                        } else {
+                            console.warn(`Cropper is not initialized for index ${index}. Please select an image first.`);
+                        }
+                    });
+                });
+
+
+
+
+
+                // function handleFileInputChange(inputId, previewId) {
+                //     const inputFile = document.getElementById(inputId);
+                //     const imagePreview = document.getElementById(previewId);
+
+                //     inputFile.addEventListener("change", function () {
+                //         const file = this.files[0];
+
+                //         if (file) {
+                //             const reader = new FileReader();
+                //             reader.onload = function (e) {
+                //                 if (cropper) {
+                //                     cropper.destroy();
+                //                 }
+
+                //                 imagePreview.src = e.target.result;
+
+                //                 // Initialize Cropper
+                //                 initializeCropper(imagePreview);
+                //             };
+                //             reader.readAsDataURL(file);
+                //         } else {
+                //             imagePreview.src = "";
+                //             if (cropper) {
+                //                 cropper.destroy();
+                //             }
+                //         }
+                //     });
+                // }
+
+                // // Call the function for each file input and preview combination
+                // handleFileInputChange("imageInput1", "imagePreview1");
+                // handleFileInputChange("imageInput2", "imagePreview2");
+                // handleFileInputChange("imageInput3", "imagePreview3");
+
+                // const cropButton = document.getElementById("cropButton");
+                // cropButton.addEventListener("click", function () {
+                //     if (cropper) {
+                //         const croppedCanvas = cropper.getCroppedCanvas();
+                //         const croppedImageDataURL = croppedCanvas.toDataURL("image/jpeg");
+
+                //         // Update the preview image
+                //         const imagePreview = document.getElementById("imagePreview1");
+                //         imagePreview.src = croppedImageDataURL;
+
+                //         // Destroy Cropper after cropping
+                //         cropper.destroy();
+                //         cropper = null; // Reset cropper
+
+                //         // You can send this data to your server or use it as needed
+                //     } else {
+                //         console.error("Cropper is not initialized. Please select an image first.");
+                //     }
+                // });
+            </script>
+
+            <script>
+
+                document.addEventListener("DOMContentLoaded", function () {
                     // Validate Product Name (Only alphabets)
                     const productNameInput = document.getElementById("productName");
                     productNameInput.addEventListener("input", function () {
@@ -128,7 +263,6 @@
                             productNameInput.setCustomValidity("");
                         }
                     });
-
 
                     // Validate Product Brand (Only alphabets)
                     const productBrandInput = document.getElementById("productBrand");
@@ -162,34 +296,6 @@
                             productStockInput.setCustomValidity("");
                         }
                     });
-
-
-                    // Function to handle file input change event and update image preview
-                    function handleFileInputChange(inputId, previewId) {
-                        const inputFile = document.getElementById(inputId);
-                        const imagePreview = document.getElementById(previewId);
-
-                        inputFile.addEventListener("change", function () {
-                            const file = this.files[0];
-
-                            if (file) {
-                                const reader = new FileReader();
-                                reader.onload = function (e) {
-                                    imagePreview.src = e.target.result;
-                                };
-                                reader.readAsDataURL(file);
-                            } else {
-                                // Clear the preview if no file is selected
-                                imagePreview.src = "";
-                            }
-                        });
-                    }
-
-                    // Call the function for each file input and preview combination
-                    handleFileInputChange("imageInput1", "imagePreview1");
-                    handleFileInputChange("imageInput2", "imagePreview2");
-                    handleFileInputChange("imageInput3", "imagePreview3");
-
 
                 });
 
