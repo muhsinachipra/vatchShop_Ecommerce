@@ -171,17 +171,16 @@
 
 
     /*==================================================================
-    [ Isotope for panel-filter ]*/
+     [ Isotope for panel-filter ]*/
     var $topeContainer = $('.isotope-grid');
     var $filter = $('.panel-filter');
 
-    // filter items on button click
+    // filter items on li click
     $filter.each(function () {
-        $filter.on('click', 'button', function () {
+        $filter.on('click', 'li', function () { // Change the selector to 'li'
             var filterValue = $(this).attr('data-filter');
             $topeContainer.isotope({ filter: filterValue });
         });
-
     });
 
     // init Isotope
@@ -212,7 +211,8 @@
     });
 
     /*==================================================================
-    [ Filter / Search product ]*/
+    
+        [ Filter / Search product ]*/
     $('.js-show-filter').on('click', function () {
         $(this).toggleClass('show-filter');
         $('.panel-filter').slideToggle(400);

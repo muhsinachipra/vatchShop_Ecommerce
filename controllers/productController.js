@@ -149,9 +149,31 @@ module.exports = {
             res.render('productView', { product: products, category: categories });
         } catch (error) {
             console.log(error.message);
-            // res.status(500).send('Internal Server Error');
         }
     },
+
+    loadSortedUserProducts: async (req, res) => {
+        try {
+            const sortBy = req.query.sortBy || 'default'; // Default sorting
+            const categories = await Category.find({ isListed: true });
+
+            let products;
+
+            if (sortBy === 'lowToHigh') {
+                products = await Product.find({ isListed: true }).sort({ productPrice: 1 }).populate('productCategory');
+            } else if (sortBy === 'highToLow') {
+                products = await Product.find({ isListed: true }).sort({ productPrice: -1 }).populate('productCategory');
+            } else {
+                // Default sorting
+                products = await Product.find({ isListed: true }).populate('productCategory');
+            }
+
+            res.render('productView', { product: products, category: categories, sortBy: sortBy });
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+
 
     loadUserProductDetails: async (req, res) => {
 
