@@ -67,7 +67,7 @@
                                         <div class="col-md-6 mb-0">
                                             <div class="input-group">
                                                 <input type="file" name="productImage" class="form-control"
-                                                    id="imageInput1" required
+                                                    style="display: inline-block;" id="imageInput1" required
                                                     onchange="handleFileInputChange('imageInput1', 'imagePreview1')">
                                                 <input type="hidden" name="croppedImageData1" id="croppedImageData1">
                                             </div>
@@ -110,15 +110,15 @@
                                         <p class="successfully">
                                             <%= message %>
                                         </p>
-                                    <% } %>
-                                    
-                                    <div class="message-container"></div>
+                                        <% } %>
 
-                                    <br>
-                                    <div class="form-row">
-                                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                                        <button class="btn btn-dark">Cancel</button>
-                                    </div>
+                                            <div class="message-container"></div>
+
+                                            <br>
+                                            <div class="form-row">
+                                                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                                                <button class="btn btn-dark">Cancel</button>
+                                            </div>
                                 </form>
                             </div>
                         </div>
@@ -134,7 +134,7 @@
                 function initializeCropper(imagePreview, index) {
                     croppers[index] = new Cropper(imagePreview, {
                         aspectRatio: 1,
-                        viewMode: 2,
+                        viewMode: 1,
                     });
                 }
 
