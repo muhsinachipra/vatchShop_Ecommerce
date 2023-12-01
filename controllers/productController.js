@@ -4,7 +4,7 @@ const Cart = require('../models/cartModel');
 const Category = require('../models/categoryModel');
 const Admin = require('../models/adminModel');
 const fs = require("fs")
-
+const sharp = require('sharp');
 
 module.exports = {
     loadAddProduct: async (req, res) => {
@@ -18,11 +18,27 @@ module.exports = {
 
     addProduct: async (req, res) => {
         try {
-            const { productName, productBrand, productDescription, productCategory, productPrice, productStock } = req.body
-            const productImage = []
-            for (let i = 0; i < req.files.length; i++) {
-                productImage[i] = req.files[i].filename
+            const { productName, productBrand, productDescription, productCategory, productPrice, productStock } = req.body;
+
+            // Extract cropped image data from the request body
+            const croppedImageData1 = req.body.croppedImageData1;
+            const croppedImageData2 = req.body.croppedImageData2;
+            const croppedImageData3 = req.body.croppedImageData3;
+
+            // Check if all required image data is present
+            if (!croppedImageData1 || !croppedImageData2 || !croppedImageData3) {
+                return res.render('addProduct', { message: 'Please upload all required images.' });
             }
+
+            // Function to convert base64 to JPEG
+            const convertBase64ToJPEG = async (base64Data) => {
+                // Remove the base64 prefix if present
+                const base64Image = base64Data.replace(/^data:image\/jpeg;base64,/, '');
+                const buffer = Buffer.from(base64Image, 'base64');
+                return sharp(buffer).jpeg().toBuffer();
+            };
+
+            // Create a new product instance
             const newProduct = new Product({
                 productName,
                 productBrand,
@@ -30,13 +46,22 @@ module.exports = {
                 productCategory,
                 productPrice,
                 productStock,
-                productImage
-            })
-            const productData = await newProduct.save()
+            });
+
+            // Convert and save the cropped image data
+            newProduct.productImage = [
+                await convertBase64ToJPEG(croppedImageData1),
+                await convertBase64ToJPEG(croppedImageData2),
+                await convertBase64ToJPEG(croppedImageData3),
+            ];
+
+            // Save the product to the database
+            const productData = await newProduct.save();
+
             if (productData) {
                 res.redirect('/admin/viewProduct');
             } else {
-                res.render('addProduct', { message: "Something went wrong" });
+                res.render('addProduct', { message: 'Something went wrong' });
             }
         } catch (error) {
             console.log(error.message);
@@ -184,7 +209,6 @@ module.exports = {
             res.render('productDetails', { product: pro })
         } catch (error) {
             console.log(error.message);
-            // res.status(500).send('Internal Server Error');
         }
     },
 

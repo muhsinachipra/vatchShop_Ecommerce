@@ -9,44 +9,20 @@
                         <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
 
                         <div class="slick3 gallery-lb">
-                            <div class="item-slick3"
-                                data-thumb="/car/adminAssets/assets/images/products/<%= product.productImage[0] %>">
-                                <div class="wrap-pic-w pos-relative main-image-0">
-                                    <img id="main-img-0"
-                                        src="/car/adminAssets/assets/images/products/<%= product.productImage[0] %>"
-                                        alt="IMG-PRODUCT">
-                                    <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                        href="/car/adminAssets/assets/images/products/<%= product.productImage[0] %>">
-                                        <i class="fa fa-expand"></i>
-                                    </a>
+                            <% product.productImage.forEach(function(image, index) { %>
+                                <div class="item-slick3"
+                                    data-thumb="data:image/jpeg;base64,<%= image.toString('base64') %>">
+                                    <div class="wrap-pic-w pos-relative main-image-<%= index %>">
+                                        <img id="main-img-<%= index %>"
+                                            src="data:image/jpeg;base64,<%= image.toString('base64') %>"
+                                            alt="IMG-PRODUCT">
+                                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                            href="data:image/jpeg;base64,<%= image.toString('base64') %>">
+                                            <i class="fa fa-expand"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="item-slick3"
-                                data-thumb="/car/adminAssets/assets/images/products/<%= product.productImage[1] %>">
-                                <div class="wrap-pic-w pos-relative main-image-1">
-                                    <img id="main-img-1"
-                                        src="/car/adminAssets/assets/images/products/<%= product.productImage[1] %>"
-                                        alt="IMG-PRODUCT">
-                                    <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                        href="/car/adminAssets/assets/images/products/<%= product.productImage[1] %>">
-                                        <i class="fa fa-expand"></i>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="item-slick3"
-                                data-thumb="/car/adminAssets/assets/images/products/<%= product.productImage[2] %>">
-                                <div class="wrap-pic-w pos-relative main-image-2">
-                                    <img id="main-img-2"
-                                        src="/car/adminAssets/assets/images/products/<%= product.productImage[2] %>"
-                                        alt="IMG-PRODUCT">
-                                    <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                        href="/car/adminAssets/assets/images/products/<%= product.productImage[2] %>">
-                                        <i class="fa fa-expand"></i>
-                                    </a>
-                                </div>
-                            </div>
+                                <% }); %>
                         </div>
                     </div>
                 </div>
@@ -65,7 +41,6 @@
                     <p class="stext-102 cl3 p-t-23">
                         <%= product.productDescription %>
                     </p>
-
                     <!--  -->
                     <div class="p-t-33">
                         <!-- <div class="flex-w flex-r-m p-b-10">

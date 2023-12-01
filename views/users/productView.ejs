@@ -114,6 +114,7 @@
 			</div>
 
 			<div class="row isotope-grid">
+
 				<!-- productView.ejs -->
 				<div class="row">
 					<% product.forEach(function(item) { %>
@@ -121,7 +122,8 @@
 							data-product-category="<%= item.productCategory.categoryName %>">
 							<div class="block2">
 								<div class="block2-pic hov-img0">
-									<img src="/car/adminAssets/assets/images/products/<%= item.productImage[0] %>"
+									<!-- Display the first cropped image -->
+									<img src="data:image/jpeg;base64,<%= item.productImage[0].toString('base64') %>"
 										alt="Product Image">
 									<a href="/product/<%= item._id %>"
 										class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
@@ -146,6 +148,7 @@
 						</div>
 						<% }); %>
 				</div>
+
 			</div>
 
 			<!-- Load more -->

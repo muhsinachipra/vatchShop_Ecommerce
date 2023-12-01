@@ -5,6 +5,7 @@
             <div class="main-panel">
                 <div class="content-wrapper">
 
+
                     <div class="col-12 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
@@ -68,6 +69,7 @@
                                                 <input type="file" name="productImage" class="form-control"
                                                     id="imageInput1" required
                                                     onchange="handleFileInputChange('imageInput1', 'imagePreview1')">
+                                                <input type="hidden" name="croppedImageData1" id="croppedImageData1">
                                             </div>
                                         </div>
                                     </div>
@@ -81,6 +83,7 @@
                                                 <input type="file" name="productImage" class="form-control"
                                                     id="imageInput2" required
                                                     onchange="handleFileInputChange('imageInput2', 'imagePreview2')">
+                                                <input type="hidden" name="croppedImageData2" id="croppedImageData2">
                                             </div>
                                         </div>
                                     </div>
@@ -94,6 +97,7 @@
                                                 <input type="file" name="productImage" class="form-control"
                                                     id="imageInput3" required
                                                     onchange="handleFileInputChange('imageInput3', 'imagePreview3')">
+                                                <input type="hidden" name="croppedImageData3" id="croppedImageData3">
                                             </div>
                                         </div>
                                     </div>
@@ -102,6 +106,12 @@
                                     <button type="button" class="btn btn-success mt-3" id="cropButton">Crop</button>
 
                                     <br>
+                                    <% if (typeof message !=='undefined' ) { %>
+                                        <p class="successfully">
+                                            <%= message %>
+                                        </p>
+                                    <% } %>
+                                    
                                     <div class="message-container"></div>
 
                                     <br>
@@ -113,6 +123,7 @@
                             </div>
                         </div>
                     </div>
+
 
                 </div>
             </div>
@@ -169,13 +180,17 @@
                     croppers.forEach((cropper, index) => {
                         if (cropper) {
                             const currentPreview = document.getElementById(`imagePreview${index + 1}`);
+                            const currentCroppedImageData = document.getElementById(`croppedImageData${index + 1}`);
 
                             if (currentPreview) {
                                 const croppedCanvas = cropper.getCroppedCanvas();
                                 const croppedImageDataURL = croppedCanvas.toDataURL("image/jpeg");
 
+                                console.log('Cropped Image Data:', croppedImageDataURL);
                                 // Update the preview image
                                 currentPreview.src = croppedImageDataURL;
+                                // Set the cropped image data to the corresponding hidden input field
+                                currentCroppedImageData.value = croppedImageDataURL;
 
                                 // Destroy Cropper after cropping
                                 cropper.destroy();
@@ -192,6 +207,7 @@
             </script>
 
             <script>
+
                 document.addEventListener("DOMContentLoaded", function () {
                     // Validate Product Name (Only alphabets)
                     const productNameInput = document.getElementById("productName");
