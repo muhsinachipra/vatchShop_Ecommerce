@@ -90,9 +90,12 @@
                                                         <h4 class="card-title">Image<%= i+1 %>
                                                         </h4>
                                                         <div class="item">
-                                                            <img src="/car/adminAssets/assets/images/products/<%= product.productImage[i] %>"
+                                                            <img src="data:image/jpeg;base64,<%= product.productImage[i].toString('base64') %>"
                                                                 alt="" class="img-responsive"
                                                                 style="max-width: 100%; height: auto;">
+                                                            <!-- <img src="/car/adminAssets/assets/images/products/<%# product.productImage[i] %>"
+                                                                alt="" class="img-responsive"
+                                                                style="max-width: 100%; height: auto;"> -->
                                                         </div>
                                                     </div>
                                                 </div>

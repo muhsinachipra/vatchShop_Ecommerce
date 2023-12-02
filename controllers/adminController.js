@@ -1,12 +1,14 @@
 const Admin = require('../models/adminModel');
 const User = require('../models/userModel');
 const Category = require('../models/categoryModel');
+const Order = require('../models/orderModel');
 const bcrypt = require('bcrypt');
 
 const handleDatabaseError = (res, error) => {
     console.error(error.message);
     res.status(500).send('Internal Server Error');
 };
+
 
 module.exports = {
     loadLogin: async (req, res) => {
@@ -41,9 +43,28 @@ module.exports = {
         }
     },
 
-    loadDashboard: (req, res) => {
+    loadDashboard: async (req, res) => {
         try {
-            res.render('dashboard');
+            const totalUsers = await User.countDocuments();
+            const totalOrders = await Order.countDocuments();
+
+            // Calculate total revenue using aggregation
+            const totalRevenueResult = await Order.aggregate([
+                {
+                    $group: {
+                        _id: null,
+                        totalRevenue: { $sum: '$totalAmount' }
+                    }
+                }
+            ]);
+
+            // Extract the totalRevenue from the result
+            const totalRevenue = totalRevenueResult.length > 0 ? totalRevenueResult[0].totalRevenue : 0;
+
+            // Calculate Average Order Value (AOV)
+            const averageOrderValue = totalOrders !== 0 ? totalRevenue / totalOrders : 0;
+
+            res.render('dashboard', { totalUsers, totalOrders, totalRevenue, averageOrderValue });
         } catch (error) {
             handleDatabaseError(res, error);
         }

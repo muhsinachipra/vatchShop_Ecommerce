@@ -305,7 +305,7 @@
                     console.log('paymentMethodRadio:', paymentMethodRadio);
 
                     if (!selectedAddress) {
-                        throw new Error('Address not selected');
+                        Swal.fire('Address not selected');
                     }
 
                     if (!paymentMethodRadio) {
