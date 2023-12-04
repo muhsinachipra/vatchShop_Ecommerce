@@ -148,11 +148,19 @@
 							data-notify="0">
 							<i class="zmdi zmdi-favorite-outline"></i>
 						</a>
-						<ul class="main-menu">
-							<li>
-								<a href="login">LOG IN</a>
-							</li>
-						</ul>
+						<% if (!isLoggedIn) { %>
+							<ul class="main-menu">
+								<li>
+									<a href="/login">LOG IN</a>
+								</li>
+							</ul>
+						<% } else{%>
+							<ul class="main-menu">
+								<li>
+									<a href="/logout">LOG OUT</a>
+								</li>
+							</ul>
+						<% } %>
 
 					</div>
 				</nav>

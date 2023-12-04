@@ -44,11 +44,6 @@
                                         role="tab" aria-controls="tab-account" aria-selected="false">Edit Profile</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="Change-Password-link" data-toggle="tab"
-                                        href="#Change-Password" role="tab" aria-controls="Change-Password"
-                                        aria-selected="false">Change Password</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link" id="tab-order-link" data-toggle="tab" href="#tab-order"
                                         role="tab" aria-controls="tab-order" aria-selected="false">My Orders</a>
                                 </li>
@@ -72,7 +67,8 @@
                                 <!-- MY PROFILE -->
                                 <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
                                     aria-labelledby="tab-dashboard-link">
-                                    <h6>My Profile</h6>
+                                    <h6 class="text-center fs-1 font-monospace text-decoration-underline">My Profile
+                                    </h6>
 
                                     <form action="#">
                                         <div class="row">
@@ -98,79 +94,8 @@
                                             </div>
                                         </div>
                                     </form>
-                                </div><!-- END MY PROFILE -->
+                                </div>
 
-                                <!-- EDIT PROFILE -->
-                                <div class="tab-pane fade" id="tab-account" role="tabpanel"
-                                    aria-labelledby="tab-account-link">
-                                    <h6>Edit Profile</h6>
-
-                                    <form action="/updateUser" method="post" onsubmit="return validEditProfile()">
-                                        <div class="row">
-                                            <!-- First Name -->
-                                            <div class="col-sm-6">
-                                                <label>First Name</label>
-                                                <input type="text" class="form-control" name="EPFname" id="EPFname"
-                                                    value="<%=user.firstName %>">
-                                                <span id="EPFnameError" class="text-danger"></span>
-                                            </div>
-                                            <!-- Last Name -->
-                                            <div class="col-sm-6">
-                                                <label>Last Name</label>
-                                                <input type="text" class="form-control" name="EPLname" id="EPLname"
-                                                    value="<%=user.lastName %>">
-                                                <span id="EPLnameError" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <!-- Email and Mobile Number -->
-                                        <input type="email" class="form-control" name="EPemail"
-                                            value="<%= user.email %>" disabled>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label>Mobile Number</label>
-                                                <input type="text" class="form-control" name="EPmobile" id="EPmobile"
-                                                    value="<%= user.mobileno %>" name="pincode">
-                                                <span id="EPmobileError" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-outline-primary-2">
-                                            <span>Save Changes</span>
-                                        </button>
-                                    </form>
-
-                                </div><!-- END EDIT PROFILE -->
-
-                                <!-- CHANGE PASSWORD -->
-                                <div class="tab-pane fade" id="Change-Password" role="tabpanel"
-                                    aria-labelledby="Change-Password-link">
-                                    <h6>Change Password</h6>
-
-                                    <form id="passwordChangeForm" action="/resetPassword" method="post"
-                                        onsubmit="return validatePasswords()">
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <label>Current Password</label>
-                                                    <input type="password" name="oldPassword" class="form-control"
-                                                        id="oldPassword">
-                                                    <span id="current-password-error" class="text-danger"></span>
-                                                    <span id="oldPasswordError" class="text-danger"></span>
-                                                </div><!-- End .col-sm-6 -->
-                                                <div class="col-sm-6">
-                                                    <label>Create New Password</label>
-                                                    <input type="password" name="newPassword" class="form-control"
-                                                        id="newPassword">
-                                                    <span id="new-password-error" class="text-danger"></span>
-                                                </div><!-- End .col-sm-6 -->
-                                            </div><!-- End .row -->
-                                            <button type="button" class="btn btn-outline-primary-2"
-                                                onclick="changePassword()">
-                                                <span>Save Changes</span>
-                                            </button>
-                                        </div>
-                                    </form>
-
-                                </div><!-- END CHANGE PASSWORD -->
 
                                 <!-- MY ORDERS -->
                                 <div class="tab-pane fade" id="tab-order" role="tabpanel"
@@ -218,11 +143,17 @@
                                                             <% } %>
                                         </tbody>
                                     </table>
-                                </div><!-- END MY ORDERS -->
+                                </div>
+
+
+
+
+
 
                                 <!-- MANAGE ADDRESS -->
                                 <div class="tab-pane fade" id="tab-address" role="tabpanel"
                                     aria-labelledby="tab-address-link">
+
 
                                     <a href="/address">
                                         <div class="card col-md-5 col-10 m-2 shadow-sm" id="addressDiv"
@@ -284,9 +215,74 @@
                                                     <% } else { %>
                                                         <% } %>
                                     </div>
-                                </div><!-- END MANAGE ADDRESS -->
+                                </div>
 
+                                <!-- EDIT PROFILE -->
+                                <div class="tab-pane fade" id="tab-account" role="tabpanel"
+                                    aria-labelledby="tab-account-link">
+                                    <h6 class="text-center fs-1 font-monospace text-decoration-underline">Edit Profile
+                                    </h6>
+                                    <form action="/updateUser" method="post" onsubmit="return validEditAddress()">
+                                        <div class="row">
+                                            <!-- First Name -->
+                                            <div class="col-sm-6">
+                                                <label>First Name</label>
+                                                <input type="text" class="form-control" name="Fname" id="Fname"
+                                                    value="<%=user.firstName %>">
+                                                <span id="Fname-error" class="text-danger"></span>
+                                            </div>
+                                            <!-- Last Name -->
+                                            <div class="col-sm-6">
+                                                <label>Last Name</label>
+                                                <input type="text" class="form-control" name="Lname" id="Lname"
+                                                    value="<%=user.lastName %>">
+                                                <span id="Lname-error" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <!-- Email and Mobile Number -->
+                                        <input type="email" class="form-control" name="email" value="<%= user.email %>"
+                                            disabled>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>Mobile Number</label>
+                                                <input type="text" class="form-control" name="mobile" id="mobile"
+                                                    value="<%= user.mobileno %>" name="pincode">
+                                                <span id="mobile-error" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-outline-primary-2" >
+                                            <span>Save Changes</span>
+                                        </button>
+                                    </form>
 
+                                    <hr>
+                                    <h6 class="fs-1 font-monospace">Change Password</h6>
+                                    <form id="passwordChangeForm" action="/resetPassword" method="post"
+                                        onsubmit="return validatePasswords()">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label>Current Password</label>
+                                                    <input type="password" name="oldPassword" class="form-control"
+                                                        id="oldPassword">
+                                                    <span id="current-password-error" class="text-danger"></span>
+                                                    <span id="oldPasswordError" class="text-danger"></span>
+                                                </div><!-- End .col-sm-6 -->
+                                                <div class="col-sm-6">
+                                                    <label>Create New Password</label>
+                                                    <input type="password" name="newPassword" class="form-control"
+                                                        id="newPassword">
+                                                    <span id="new-password-error" class="text-danger"></span>
+                                                </div><!-- End .col-sm-6 -->
+                                            </div><!-- End .row -->
+                                            <button type="button" class="btn btn-outline-primary-2"
+                                                onclick="changePassword()">
+                                                <span>Save Changes</span>
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </div><!-- .End .tab-pane -->
                             </div>
                         </div><!-- End .col-lg-9 -->
                     </div><!-- End .row -->
@@ -294,6 +290,8 @@
             </div><!-- End .dashboard -->
         </div><!-- End .page-content -->
     </main><!-- End .main -->
+
+
 
     <script>
         function validatePasswords() {
@@ -314,6 +312,54 @@
 
             return true;
         }
+
+        function validEditAddress() {
+            // Reset any previous error messages
+            document.getElementById('Fname-error').textContent = '';
+            document.getElementById('Lname-error').textContent = '';
+            document.getElementById('mobile-error').textContent = '';
+
+            // Get form values
+            const firstName = document.getElementById('Fname').value;
+            const lastName = document.getElementById('Lname').value;
+            const mobile = document.getElementById('mobile').value.trim();
+
+            // Validation rules
+
+            // Validate first name
+            const firstNameRegex = /^\s*$/; // Regex to ensure no whitespaces
+            if (!firstName.trim()) {
+                document.getElementById('Fname-error').textContent = 'First name is required';
+                return false;
+            } else if (firstNameRegex.test(firstName)) {
+                document.getElementById('Fname-error').textContent = 'First name cannot be just whitespaces';
+                return false;
+            }
+
+            // Validate last name
+            const lastNameRegex = /^\s*$/; // Regex to ensure no whitespaces
+            if (!lastName.trim()) {
+                document.getElementById('Lname-error').textContent = 'Last name is required';
+                return false;
+            } else if (lastNameRegex.test(lastName)) {
+                document.getElementById('Lname-error').textContent = 'Last name cannot be just whitespaces';
+                return false;
+            }
+
+            // Validate mobile number
+            const mobileRegex = /^\d{10}$/;
+            if (!mobile) {
+                document.getElementById('mobile-error').textContent = 'Mobile number is required';
+                return false;
+            } else if (!mobileRegex.test(mobile)) {
+                document.getElementById('mobile-error').textContent = 'Invalid mobile number format';
+                return false;
+            }
+
+            // If all validations pass, return true to allow form submission
+            return true;
+        }
+
 
         async function changePassword() {
             if (!validatePasswords()) {
@@ -352,7 +398,7 @@
             const resetPasswordForm = document.querySelector('form[action="/resetPassword"]');
 
             editForm.onsubmit = function () {
-                return validEditProfile();
+                return validEditAddress();
             };
 
             resetPasswordForm.onsubmit = function () {

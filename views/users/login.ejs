@@ -38,7 +38,11 @@
 										class="fa fa-fw fa-eye field-icon toggle-password"></span>
 								</div>
 								<span id="login-error" class="text-danger"></span>
-
+								<% if (typeof message !=='undefined' ) { %>
+									<p class="successfully">
+										<%= message %>
+									</p>
+								<% } %>
 
 								<div class="form-group">
 									<button type="button" class="form-control btn btn-primary rounded submit px-3"

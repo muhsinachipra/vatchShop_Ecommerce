@@ -67,7 +67,7 @@
 							Help & FAQs
 						</a>
 
-						<a href="userProfile" class="flex-c-m trans-04 p-lr-25">
+						<a href="/userProfile" class="flex-c-m trans-04 p-lr-25">
 							My Account
 						</a>
 
@@ -149,11 +149,19 @@
 							data-notify="0">
 							<i class="zmdi zmdi-favorite-outline"></i>
 						</a>
-						<ul class="main-menu">
-							<li>
-								<a href="login">LOG IN</a>
-							</li>
-						</ul>
+						<% if (!isLoggedIn) { %>
+							<ul class="main-menu">
+								<li>
+									<a href="/login">LOG IN</a>
+								</li>
+							</ul>
+						<% } else{%>
+							<ul class="main-menu">
+								<li>
+									<a href="/logout">LOG OUT</a>
+								</li>
+							</ul>
+						<% } %>
 
 					</div>
 				</nav>
@@ -210,7 +218,7 @@
 							Help & FAQs
 						</a>
 
-						<a href="userProfile" class="flex-c-m p-lr-10 trans-04">
+						<a href="/userProfile" class="flex-c-m p-lr-10 trans-04">
 							My Account
 						</a>
 

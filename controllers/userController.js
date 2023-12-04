@@ -64,7 +64,7 @@ const resetPasswordMail = async (username, email, token) => {
             from: 'muhsinachipra@gmail.com',
             to: email,
             subject: "For Reset Password",
-            html: `<p> Hi, ${username}, please click here to <a href="http://localhost:5000/resetpassword?token=${token}"> Reset </a> your password</p>`
+            html: `<p> Hi, ${username}, please click here to <a href="http://localhost:5000/forgotPassword?token=${token}"> Reset </a> your password</p>`
         }
 
         transporter.sendMail(mailOptions, function (error, info) {
@@ -159,7 +159,7 @@ module.exports = {
         }
     },
 
-    loadResetPassword: async (req, res) => {
+    loadForgotPassword: async (req, res) => {
         try {
             const token = req.query.token;
 
@@ -168,9 +168,9 @@ module.exports = {
 
             if (user) {
                 // Render the view with the user information
-                res.render('resetPassword', { user_id: user._id });
+                res.render('forgotPassword', { user_id: user._id });
             } else {
-                res.render('resetPassword', { message: 'Invalid Token' });
+                res.render('forgotPassword', { message: 'Invalid Token' });
             }
         } catch (error) {
             console.log(error);
@@ -178,7 +178,7 @@ module.exports = {
     },
 
     //Resetting Password  
-    resetPassword: async (req, res) => {
+    forgotPassword: async (req, res) => {
         try {
             const id = req.body.id;
             // console.log('User ID from form submission:', id);
@@ -207,7 +207,7 @@ module.exports = {
                 return res.status(404).send('User not found in the database');
             }
 
-            res.redirect("/login")
+            res.render("login", { message: "Password Changed Successfully, Proceed To Sign In" });
 
         } catch (error) {
             console.log(error);

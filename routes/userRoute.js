@@ -15,6 +15,11 @@ user_route.use(bodyParser.urlencoded({ extended: true }))
 
 user_route.use(express.static('public'))
 
+// Middleware to set isLoggedIn in locals for every request
+user_route.use((req, res, next) => {
+    res.locals.isLoggedIn = !!req.session.userId;
+    next();
+});
 
 // user_route.use('/public',express.static(path.join(__dirname,'../public')))
 // user_route.use('/userlogin',express.static(path.join(__dirname,'../public/userlogin')))
@@ -38,8 +43,8 @@ user_route.get('/login', userController.loginLoad)
 user_route.post('/loginValidation', userController.verifyLogin)
 user_route.get('/forget', userController.loadForget)
 user_route.post('/forget', userController.forgotVerify)
-user_route.get('/resetPassword', userController.loadResetPassword)
-user_route.post('/resetPassword', userController.resetPassword)
+user_route.get('/forgotPassword', userController.loadForgotPassword)
+user_route.post('/forgotPassword', userController.forgotPassword)
 
 user_route.get('/register', userController.loadRegister);
 user_route.post('/register', userController.insertUser);
@@ -59,7 +64,7 @@ user_route.post('/remove-product', cartController.removeProduct)
 user_route.get('/userProfile', auth.isUserLogin, profileController.loadProfile)
 user_route.get('/logout', profileController.userLogout)
 user_route.post('/updateUser', profileController.updateUser);
-user_route.post('/resetPassword', profileController.resetPassword);
+user_route.post('/profileResetPassword', profileController.profileResetPassword);
 
 user_route.get('/address', auth.isUserLogin, profileController.loadAddress);
 user_route.post('/addAddress', profileController.addAddress);

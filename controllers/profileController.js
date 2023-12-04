@@ -53,10 +53,10 @@ module.exports = {
                 { _id: user_id },
                 {
                     $set: {
-                        firstName: req.body.Fname,
-                        lastName: req.body.Lname,
-                        email: req.body.email,
-                        mobile: req.body.mobile,
+                        firstName: req.body.EPFname,
+                        lastName: req.body.EPLname,
+                        email: req.body.EPemail,
+                        mobile: req.body.EPmobile,
                     },
                 },
                 {
@@ -70,7 +70,7 @@ module.exports = {
             console.log(error);
         }
     },
-    resetPassword: async (req, res) => {
+    profileResetPassword: async (req, res) => {
 
         try {
             const userDetails = await User.findOne({ _id: req.session.userId })
