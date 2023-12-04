@@ -42,26 +42,26 @@
 									<p class="successfully">
 										<%= message %>
 									</p>
-								<% } %>
+									<% } %>
 
-								<div class="form-group">
-									<button type="button" class="form-control btn btn-primary rounded submit px-3"
-										onclick="validateLoginForm()">Sign
-										In</button>
-								</div>
+										<div class="form-group">
+											<button type="submit"
+												class="form-control btn btn-primary rounded submit px-3">Sign
+												In</button>
+										</div>
 
-								<div class="form-group d-md-flex">
-									<div class="w-50 text-left">
-										<!-- <label class="checkbox-wrap checkbox-primary mb-0">Remember Me
+										<div class="form-group d-md-flex">
+											<div class="w-50 text-left">
+												<!-- <label class="checkbox-wrap checkbox-primary mb-0">Remember Me
 											<input type="checkbox" checked>
 											<span class="checkmark"></span>
 										</label> -->
-									</div>
-									<div class="w-50 text-md-right">
-										<a href="/forget">Forgot Password</a>
-									</div>
-								</div>
-								
+											</div>
+											<div class="w-50 text-md-right">
+												<a href="/forget">Forgot Password</a>
+											</div>
+										</div>
+
 							</form>
 							<p class="text-center">Not a member? <a href="/register">Sign Up</a></p>
 						</div>
@@ -103,7 +103,9 @@
 			}
 		};
 
-		function validateLoginForm() {
+		function validateLoginForm(event) {
+			event.preventDefault(); // Prevent the default form submission
+
 			const emailInput = document.getElementById('email');
 			const passwordInput = document.getElementById('password-field');
 			const errorElement = document.getElementById('login-error');
@@ -125,6 +127,9 @@
 			return false; // Prevent the form from being submitted automatically
 		}
 
+		// Attach the function to the form's submit event
+		const loginForm = document.querySelector('.signin-form');
+		loginForm.addEventListener('submit', validateLoginForm);
 
 	</script>
 
