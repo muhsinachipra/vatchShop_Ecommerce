@@ -5,6 +5,7 @@ const Category = require('../models/categoryModel');
 const Admin = require('../models/adminModel');
 const fs = require("fs")
 const sharp = require('sharp');
+const path = require('path');
 
 module.exports = {
     loadAddProduct: async (req, res) => {
@@ -19,15 +20,23 @@ module.exports = {
     addProduct: async (req, res) => {
         try {
             const { productName, productBrand, productDescription, productCategory, productPrice, productStock } = req.body;
+            const category = await Category.find({})
+
+            const images = [];
+
+            images[0] = 'image1_' + Date.now() + '.jpg'
+            images[1] = 'image2_' + Date.now() + '.jpg'
+            images[2] = 'image3_' + Date.now() + '.jpg'
 
             // Extract cropped image data from the request body
             const croppedImageData1 = req.body.croppedImageData1;
             const croppedImageData2 = req.body.croppedImageData2;
             const croppedImageData3 = req.body.croppedImageData3;
 
+
             // Check if all required image data is present
             if (!croppedImageData1 || !croppedImageData2 || !croppedImageData3) {
-                return res.render('addProduct', { message: 'Please upload all required images.' });
+                return res.render('addProduct', { message: 'Please upload all required images.', category: category });
             }
 
             // Function to convert base64 to JPEG
@@ -45,15 +54,21 @@ module.exports = {
                 productDescription,
                 productCategory,
                 productPrice,
+                productImage: images,
                 productStock,
             });
 
+
+
             // Convert and save the cropped image data
-            newProduct.productImage = [
-                await convertBase64ToJPEG(croppedImageData1),
-                await convertBase64ToJPEG(croppedImageData2),
-                await convertBase64ToJPEG(croppedImageData3),
-            ];
+            croppedImage1Buffer = await convertBase64ToJPEG(croppedImageData1),
+                croppedImage2Buffer = await convertBase64ToJPEG(croppedImageData2),
+                croppedImage3Buffer = await convertBase64ToJPEG(croppedImageData3),
+
+                // Save the image files to the server (assuming 'public/productImages' is the destination)
+                fs.writeFileSync(path.join(__dirname, '../public/productImages', newProduct.productImage[0]), croppedImage1Buffer);
+            fs.writeFileSync(path.join(__dirname, '../public/productImages', newProduct.productImage[1]), croppedImage2Buffer);
+            fs.writeFileSync(path.join(__dirname, '../public/productImages', newProduct.productImage[2]), croppedImage3Buffer);
 
             // Save the product to the database
             const productData = await newProduct.save();
@@ -133,21 +148,48 @@ module.exports = {
             const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand } = req.body;
 
             // Retrieve the existing product data
-            const existingProduct = await Product.findById(id);
+            // const existingProduct = await Product.findById(id);
 
-            // Create an array to store the updated product images
-            const updatedProductImages = [];
 
-            // Iterate over the product images and check if they are updated
-            for (let i = 0; i < existingProduct.productImage.length; i++) {
-                if (req.files[i]) {
-                    // If an updated image is available, use it
-                    updatedProductImages.push(req.files[i].filename);
-                } else {
-                    // Otherwise, keep the existing image
-                    updatedProductImages.push(existingProduct.productImage[i]);
-                }
+            // Extract cropped image data from the request body
+            const croppedImageData1 = req.body.croppedImageData1;
+            const croppedImageData2 = req.body.croppedImageData2;
+            const croppedImageData3 = req.body.croppedImageData3;
+
+            // Check if all required image data is present
+            if (!croppedImageData1 || !croppedImageData2 || !croppedImageData3) {
+                return res.render('addProduct', { message: 'Please upload all required images.' });
             }
+
+            // Function to convert base64 to JPEG
+            const convertBase64ToJPEG = async (base64Data) => {
+                // Remove the base64 prefix if present
+                const base64Image = base64Data.replace(/^data:image\/jpeg;base64,/, '');
+                const buffer = Buffer.from(base64Image, 'base64');
+                return sharp(buffer).jpeg().toBuffer();
+            };
+
+            // Convert and save the cropped image data
+            updatedProductImages = [
+                await convertBase64ToJPEG(croppedImageData1),
+                await convertBase64ToJPEG(croppedImageData2),
+                await convertBase64ToJPEG(croppedImageData3),
+            ];
+
+
+            // // Create an array to store the updated product images
+            // const updatedProductImages = [];
+
+            // // Iterate over the product images and check if they are updated
+            // for (let i = 0; i < existingProduct.productImage.length; i++) {
+            //     if (req.files[i]) {
+            //         // If an updated image is available, use it
+            //         updatedProductImages.push(req.files[i].filename);
+            //     } else {
+            //         // Otherwise, keep the existing image
+            //         updatedProductImages.push(existingProduct.productImage[i]);
+            //     }
+            // }
 
             await Product.findByIdAndUpdate(id, {
                 $set: {

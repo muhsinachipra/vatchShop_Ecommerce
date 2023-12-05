@@ -48,7 +48,7 @@
                                                 <td>
                                                     <% if (data[i].productImage && data[i].productImage.length > 0) { %>
                                                         <% data[i].productImage.forEach(croppedImage => { %>
-                                                            <img src="data:image/jpeg;base64,<%= croppedImage.toString('base64') %>">
+                                                            <img src="/car/productImages/<%= croppedImage %>">
                                                         <% }); %>
                                                     <% } else { %>
                                                         <!-- Handle the case where productImage is undefined or empty -->

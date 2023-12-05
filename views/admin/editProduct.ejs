@@ -81,30 +81,50 @@
                                     <div class="message-container"></div> -->
 
 
-                                    <!-- NEW IMAGE EDIT -->
-                                    <div class="row">
-                                        <% for (var i=0; i < product.productImage.length; i++) { %>
-                                            <div class="col-md-6 col-xl-4">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h4 class="card-title">Image<%= i+1 %>
-                                                        </h4>
-                                                        <div class="item">
-                                                            <img src="data:image/jpeg;base64,<%= product.productImage[i].toString('base64') %>"
-                                                                alt="" class="img-responsive"
-                                                                style="max-width: 100%; height: auto;">
-                                                            <!-- <img src="/car/adminAssets/assets/images/products/<%# product.productImage[i] %>"
-                                                                alt="" class="img-responsive"
-                                                                style="max-width: 100%; height: auto;"> -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <input type="file" name="productImage" class="form-control">
-                                            </div>
-                                            <% } %>
-                                    </div>
-                                    <!-- NEW IMAGE EDIT -->
+                                    <!-- First Image -->
+                                    <img src="data:image/jpeg;base64,<%= product.productImage[0].toString('base64') %>"
+                                        id="imagePreview1" class="img-preview" style="width: 100px" />
 
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-0">
+                                            <div class="input-group">
+                                                <input type="file" name="productImage" class="form-control"
+                                                    style="display: inline-block;" id="imageInput1" required
+                                                    onchange="handleFileInputChange('imageInput1', 'imagePreview1')">
+                                                <input type="hidden" name="croppedImageData1" id="croppedImageData1">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Second Image -->
+                                    <img src="data:image/jpeg;base64,<%= product.productImage[1].toString('base64') %>"
+                                        id="imagePreview2" class="img-preview" style="width: 100px;" />
+
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-0">
+                                            <div class="input-group">
+                                                <input type="file" name="productImage" class="form-control"
+                                                    id="imageInput2" required
+                                                    onchange="handleFileInputChange('imageInput2', 'imagePreview2')">
+                                                <input type="hidden" name="croppedImageData2" id="croppedImageData2">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Third Image -->
+                                    <img src="data:image/jpeg;base64,<%= product.productImage[2].toString('base64') %>"
+                                        id="imagePreview3" class="img-preview" style="width: 100px;" />
+
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-0">
+                                            <div class="input-group">
+                                                <input type="file" name="productImage" class="form-control"
+                                                    id="imageInput3" required
+                                                    onchange="handleFileInputChange('imageInput3', 'imagePreview3')">
+                                                <input type="hidden" name="croppedImageData3" id="croppedImageData3">
+                                            </div>
+                                        </div>
+                                    </div>
 
 
 
@@ -127,7 +147,8 @@
                                         </div>
                                     </div> -->
 
-
+                                    <!-- Crop Button -->
+                                    <button type="button" class="btn btn-success mt-3" id="cropButton">Crop</button>
 
 
                                     <br>
@@ -149,72 +170,109 @@
                 </div>
             </div>
 
+            <!-- image cropping -->
+            <script>
+                let croppers = []; // Declare an array to store cropper instances
+
+                function initializeCropper(imagePreview, index) {
+                    croppers[index] = new Cropper(imagePreview, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                    });
+                }
+
+                function handleFileInputChange(inputId, previewId, index) {
+                    const inputFile = document.getElementById(inputId);
+                    const imagePreview = document.getElementById(previewId);
+
+                    inputFile.addEventListener("change", function () {
+                        const file = this.files[0];
+
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                // Destroy the existing cropper instance if it exists
+                                if (croppers[index]) {
+                                    croppers[index].destroy();
+                                }
+
+                                imagePreview.src = e.target.result;
+
+                                // Initialize Cropper for the specific index
+                                initializeCropper(imagePreview, index);
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            imagePreview.src = "";
+                            // Destroy the existing cropper instance if it exists
+                            if (croppers[index]) {
+                                croppers[index].destroy();
+                            }
+                        }
+                    });
+                }
+
+                // Call the function for each file input and preview combination
+                handleFileInputChange("imageInput1", "imagePreview1", 0);
+                handleFileInputChange("imageInput2", "imagePreview2", 1);
+                handleFileInputChange("imageInput3", "imagePreview3", 2);
+
+                const cropButton = document.getElementById("cropButton");
+                cropButton.addEventListener("click", function () {
+                    // Loop through each cropper instance
+                    croppers.forEach((cropper, index) => {
+                        if (cropper) {
+                            const currentPreview = document.getElementById(`imagePreview${index + 1}`);
+                            const currentCroppedImageData = document.getElementById(`croppedImageData${index + 1}`);
+
+                            if (currentPreview) {
+                                const croppedCanvas = cropper.getCroppedCanvas();
+                                const croppedImageDataURL = croppedCanvas.toDataURL("image/jpeg");
+
+                                console.log('Cropped Image Data:', croppedImageDataURL);
+                                // Update the preview image
+                                currentPreview.src = croppedImageDataURL;
+                                // Set the cropped image data to the corresponding hidden input field
+                                currentCroppedImageData.value = croppedImageDataURL;
+
+                                // Destroy Cropper after cropping
+                                cropper.destroy();
+                                croppers[index] = null; // Reset cropper
+                            } else {
+                                console.error(`Preview element not found for index ${index}.`);
+                            }
+                        } else {
+                            console.warn(`Cropper is not initialized for index ${index}. Please select an image first.`);
+                        }
+                    });
+                });
+
+            </script>
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
-                    const addImageButton = document.querySelector(".add-image-input");
-                    const dynamicImageInputs = document.querySelector(".dynamic-image-inputs");
-                    const messageContainer = document.querySelector(".message-container"); // Add this line
 
-                    // Define a variable to keep track of the number of added image fields.
-                    let imageFieldCount = 0;
-
-                    addImageButton.addEventListener("click", function () {
-                        // Check if the maximum limit of 4 image fields has been reached.
-                        if (imageFieldCount < 2) {
-                            const inputGroup = document.createElement("div");
-                            inputGroup.className = "input-group";
-                            const inputFile = document.createElement("input");
-                            inputFile.type = "file";
-                            inputFile.name = "productImage";
-                            inputFile.className = "form-control";
-                            inputFile.required = true;
-                            const inputGroupAppend = document.createElement("div");
-                            inputGroupAppend.className = "input-group-append";
-                            const removeButton = document.createElement("button");
-                            removeButton.className = "btn btn-danger remove-image-input";
-                            removeButton.type = "button";
-                            removeButton.textContent = "Remove";
-                            removeButton.addEventListener("click", function () {
-                                inputGroup.remove();
-                                // Decrease the count when an image field is removed.
-                                imageFieldCount--;
-                                // Hide the message container if it's currently visible.
-                                messageContainer.style.display = "none";
-                            });
-                            inputGroupAppend.appendChild(removeButton);
-                            inputGroup.appendChild(inputFile);
-                            inputGroup.appendChild(inputGroupAppend);
-                            dynamicImageInputs.appendChild(inputGroup);
-
-                            // Increase the count when a new image field is added.
-                            imageFieldCount++;
-                        } else {
-                            // Update the message in the message container.
-                            messageContainer.textContent = "You can only add up to 3 image fields.";
-                            // Make the message container visible.
-                            messageContainer.style.display = "block";
-                        }
-                    });
-
-                    // Validate Product Name (Only alphabets)
+                    // Validate Product Name (Alphabets with optional spaces)
                     const productNameInput = document.getElementById("productName");
+
                     productNameInput.addEventListener("input", function () {
                         const value = productNameInput.value;
-                        if (!/^[a-zA-Z ]*$/.test(value)) {
-                            productNameInput.setCustomValidity("Product Name can only contain alphabets and spaces.");
+
+                        if (!/^[a-zA-Z ]+$/.test(value.trim())) {
+                            productNameInput.setCustomValidity("Product Name can only contain alphabets and may include spaces, but should not be just whitespace.");
                         } else {
                             productNameInput.setCustomValidity("");
                         }
                     });
 
-
-                    // Validate Product Brand (Only alphabets)
+                    // Validate Product Brand (Alphabets with optional spaces)
                     const productBrandInput = document.getElementById("productBrand");
+
                     productBrandInput.addEventListener("input", function () {
                         const value = productBrandInput.value;
-                        if (!/^[a-zA-Z ]*$/.test(value)) {
-                            productBrandInput.setCustomValidity("Product Brand can only contain alphabets and spaces.");
+
+                        if (!/^[a-zA-Z ]+$/.test(value.trim())) {
+                            productBrandInput.setCustomValidity("Product Brand can only contain alphabets and may include spaces, but should not be just whitespace.");
                         } else {
                             productBrandInput.setCustomValidity("");
                         }

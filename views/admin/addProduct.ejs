@@ -128,6 +128,7 @@
                 </div>
             </div>
 
+            <!-- image cropping -->
             <script>
                 let croppers = []; // Declare an array to store cropper instances
 
@@ -209,23 +210,27 @@
             <script>
 
                 document.addEventListener("DOMContentLoaded", function () {
-                    // Validate Product Name (Only alphabets)
+                    // Validate Product Name (Alphabets with optional spaces)
                     const productNameInput = document.getElementById("productName");
+
                     productNameInput.addEventListener("input", function () {
                         const value = productNameInput.value;
-                        if (!/^[a-zA-Z ]*$/.test(value)) {
-                            productNameInput.setCustomValidity("Product Name can only contain alphabets and spaces.");
+
+                        if (!/^[a-zA-Z ]+$/.test(value.trim())) {
+                            productNameInput.setCustomValidity("Product Name can only contain alphabets and may include spaces, but should not be just whitespace.");
                         } else {
                             productNameInput.setCustomValidity("");
                         }
                     });
 
-                    // Validate Product Brand (Only alphabets)
+                    // Validate Product Brand (Alphabets with optional spaces)
                     const productBrandInput = document.getElementById("productBrand");
+
                     productBrandInput.addEventListener("input", function () {
                         const value = productBrandInput.value;
-                        if (!/^[a-zA-Z ]*$/.test(value)) {
-                            productBrandInput.setCustomValidity("Product Brand can only contain alphabets and spaces.");
+
+                        if (!/^[a-zA-Z ]+$/.test(value.trim())) {
+                            productBrandInput.setCustomValidity("Product Brand can only contain alphabets and may include spaces, but should not be just whitespace.");
                         } else {
                             productBrandInput.setCustomValidity("");
                         }
