@@ -72,15 +72,35 @@ module.exports = {
 
     loadUsers: async (req, res) => {
         try {
+
+            var search = '';
+            if (req.query.search) {
+                search = req.query.search
+            }
+
             const page = req.query.page || 1; // Get the current page from query parameters
-            const pageSize = 4; // Set your desired page size
+            const pageSize = 4; // Set your desired page size for both regular and search results
 
             const skip = (page - 1) * pageSize;
+
+            let users;
+
+            if (search) {
+                users = await User.find({
+                    $or: [
+                        { firstName: { $regex: '.*' + search + '.*', $options: 'i' } },
+                        { lastName: { $regex: '.*' + search + '.*', $options: 'i' } },
+                        { email: { $regex: '.*' + search + '.*', $options: 'i' } },
+                        { mobileno: { $regex: '.*' + search + '.*', $options: 'i' } }
+                    ]
+                })
+            } else {
+                users = await User.find({}).skip(skip).limit(pageSize);
+            }
 
             const totalUsers = await User.countDocuments();
             const totalPages = Math.ceil(totalUsers / pageSize);
 
-            const users = await User.find({}).skip(skip).limit(pageSize);
             res.render('Users', { users, currentPage: page, totalPages: totalPages });
 
         } catch (error) {
@@ -130,10 +150,43 @@ module.exports = {
         }
     },
 
+    // loadViewCategory: async (req, res) => {
+    //     try {
+    //         const categories = await Category.find({});
+    //         res.render('viewCategory', { category: categories });
+    //     } catch (error) {
+    //         handleDatabaseError(res, error);
+    //     }
+    // },
+
     loadViewCategory: async (req, res) => {
         try {
-            const categories = await Category.find({});
-            res.render('viewCategory', { category: categories });
+            const page = req.query.page || 1; // Get the current page from query parameters
+            const pageSize = 4; // Set your desired page size
+
+            const skip = (page - 1) * pageSize;
+            let categories;
+
+            var search = '';
+            if (req.query.search) {
+                search = req.query.search;
+                // Use a regular expression to make the search case-insensitive and match partial strings
+                const searchRegex = new RegExp('.*' + search + '.*', 'i');
+
+                categories = await Category.find({
+                    $or: [
+                        { categoryName: searchRegex },
+                        { categoryDescription: searchRegex },
+                    ]
+                });
+            } else {
+                categories = await Category.find().skip(skip).limit(pageSize);
+            }
+
+            const totalCategories = await Category.countDocuments();
+            const totalPages = Math.ceil(totalCategories / pageSize);
+
+            res.render('viewCategory', { category: categories, currentPage: page, totalPages: totalPages });
         } catch (error) {
             handleDatabaseError(res, error);
         }

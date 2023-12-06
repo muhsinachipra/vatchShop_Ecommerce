@@ -10,7 +10,8 @@
                             <div class="card-body">
                                 <h2 class="card-title" style="text-align: center;">ORDERS</h2>
                                 <div class="table-responsive">
-                                    <table class="table table-dark">
+
+                                    <table id="search-table" class="table table-dark">
 
 
                                         <thead>
@@ -31,16 +32,16 @@
                                                 </td>
                                                 <td>
                                                     <%= orders[i].user.firstName %>
-                                                    <br>
-                                                    <%= orders[i].user.lastName %>
+                                                        <br>
+                                                        <%= orders[i].user.lastName %>
                                                 </td>
                                                 <td>
                                                     <%= orders[i].deliveryAddress.fullName %>
-                                                    <br>
-                                                    <%= orders[i].deliveryAddress.state %>,
-                                                    <%= orders[i].deliveryAddress.city %>
-                                                    <br>
-                                                    <%= orders[i].deliveryAddress.mobile %>
+                                                        <br>
+                                                        <%= orders[i].deliveryAddress.state %>,
+                                                            <%= orders[i].deliveryAddress.city %>
+                                                                <br>
+                                                                <%= orders[i].deliveryAddress.mobile %>
                                                 </td>
                                                 <td>
                                                     <%= orders[i].orderDate.toLocaleDateString() %>
@@ -51,7 +52,7 @@
                                                 <td>
                                                     ₹ <%= orders[i].totalAmount %>
                                                 </td>
-                                                
+
                                                 <td>
                                                     <a href="/admin/manageOrder/<%= orders[i]._id%>">
                                                         <button type="button"
@@ -75,9 +76,9 @@
                                                 <%= i %>
                                             </button>
                                         </a>
-                                    <% } %>
+                                        <% } %>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -86,4 +87,5 @@
                 </div>
             </div>
 
+            <script src="/car/adminAssets/assets/js/clientSideSearch.js"></script>
             <%- include('./layouts/footer.ejs') %>

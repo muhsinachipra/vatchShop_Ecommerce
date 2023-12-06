@@ -13,7 +13,7 @@
                             <div class="card-body">
                                 <h2 class="card-title" style="text-align: center;">PRODUCTS</h2>
                                 <div class="table-responsive">
-                                    <table class="table table-dark">
+                                    <table id="search-table" class="table table-dark">
                                         <thead>
                                             <tr>
                                                 <th>Product Name</th>
@@ -89,7 +89,7 @@
                                     </table>
                                 </div>
 
-                                <div class="pagination mt-3" style="display: flex; justify-content: center;">
+                                <div id="paginationButtons" class="pagination mt-3" style="display: flex; justify-content: center;">
                                     <% for (let i=1; i <=totalPages; i++) { %>
                                         <a href="?page=<%= i %>">
                                             <button type="button" class="btn btn-inverse-primary btn-rounded btn-icon">
@@ -107,5 +107,6 @@
                 </div>
             </div>
 
+            <script src="/car/adminAssets/assets/js/clientSideSearch.js"></script>
 
             <%- include('./layouts/footer.ejs') %>

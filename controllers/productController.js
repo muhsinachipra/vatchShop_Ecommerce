@@ -84,18 +84,33 @@ module.exports = {
     },
 
     loadViewProducts: async (req, res) => {
-
         try {
             const page = req.query.page || 1; // Get the current page from query parameters
             const pageSize = 4; // Set your desired page size
-
+    
             const skip = (page - 1) * pageSize;
-
+            let products;
+    
+            var search = '';
+            if (req.query.search) {
+                search = req.query.search;
+                // Use a regular expression to make the search case-insensitive and match partial strings
+                const searchRegex = new RegExp('.*' + search + '.*', 'i');
+    
+                products = await Product.find({
+                    $or: [
+                        { productName: searchRegex },
+                        { productDescription: searchRegex },
+                        // Add more fields to search if needed
+                    ]
+                }).populate('productCategory')
+            } else {
+                products = await Product.find().populate('productCategory').skip(skip).limit(pageSize);
+            }
+    
             const totalProducts = await Product.countDocuments();
             const totalPages = Math.ceil(totalProducts / pageSize);
-
-
-            const products = await Product.find().populate('productCategory').skip(skip).limit(pageSize);
+    
             res.render('viewProduct', { data: products, currentPage: page, totalPages: totalPages });
         } catch (error) {
             console.error(error);

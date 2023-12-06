@@ -17,6 +17,60 @@
 <!-- page-body-wrapper ends -->
 </div>
 <!-- container-scroller -->
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get the search query from the URL
+    var searchQuery = new URLSearchParams(window.location.search).get('search');
+
+    if (searchQuery) {
+      // Hide pagination buttons when there is a search query
+      var paginationButtons = document.getElementById('paginationButtons');
+      if (paginationButtons) {
+        paginationButtons.style.display = 'none';
+      }
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get the page name from the URL
+    var pageName = window.location.pathname.split('/').pop();
+    var searchBar = document.getElementById('searchInput');
+
+    // Compare pageName to a string (assuming it's case-sensitive)
+    if (pageName === 'Users') {
+      if (searchBar) {
+        searchBar.placeholder = 'Search for user name, email, mobile';
+      }
+    } else if (pageName === 'viewCategory') {
+      if (searchBar) {
+        searchBar.placeholder = 'Search for category';
+      }
+    } else if (pageName === 'viewProduct') {
+      if (searchBar) {
+        searchBar.placeholder = 'Search for Product';
+      }
+    } else if (pageName === 'orders') {
+      if (searchBar) {
+        searchBar.placeholder = 'Search for Orders';
+      }
+    } else if (pageName === 'viewCoupon') {
+      if (searchBar) {
+        searchBar.placeholder = 'Search for Coupon';
+      }
+    } else {
+      if (searchBar) {
+        searchBar.style.display = 'none';
+      }
+    }
+  });
+</script>
+
+
+
+
 <!-- plugins:js -->
 <script src="/car/adminAssets/assets/vendors/js/vendor.bundle.base.js"></script>
 <!-- endinject -->
@@ -43,4 +97,5 @@
 <!-- End custom js for chart.js -->
 
 </body>
+
 </html>

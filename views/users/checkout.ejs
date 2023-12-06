@@ -207,13 +207,9 @@
                                                         </td>
 
                                                         <td>
-                                                            <img src="data:image/jpeg;base64,<%= item.productId.productImage?.[0].toString('base64') %>"
-                                                                alt="Product Image"
-                                                                style="max-width: 5rem; max-height: 5rem" />
-
-                                                            <!-- <img src="/car/adminAssets/assets/images/products/<%# item.productId.productImage?.[0] %>"
+                                                            <img src="/car/ProductImages/<%= item.productId.productImage?.[0] %>"
                                                                 alt="ProductImage"
-                                                                style="max-width: 5rem; max-height: 5rem" /> -->
+                                                                style="max-width: 5rem; max-height: 5rem" />
                                                         </td>
 
                                                         <td>

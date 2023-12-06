@@ -25,8 +25,8 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage: storage });
 
+const upload = multer({ storage: storage });
 
 
 admin_route.set('view engine', 'ejs')
@@ -64,15 +64,15 @@ admin_route.post('/edit_product', upload.array('productImage', 3), productContro
 admin_route.get('/delete_product', auth.isAdminLogin, productController.deleteProduct)
 
 //========================== order related =====================================//
-admin_route.get('/orders',auth.isAdminLogin,orderController.loadAdminOrder)
-admin_route.get('/manageOrder/:orderId',auth.isAdminLogin,orderController.loadManageOrder)
+admin_route.get('/orders', auth.isAdminLogin, orderController.loadAdminOrder)
+admin_route.get('/manageOrder/:orderId', auth.isAdminLogin, orderController.loadManageOrder)
 admin_route.post('/updateOrderStatus/:orderId', orderController.updateOrderStatus);
 
 //=============================== coupon related ========================================//
 admin_route.get('/viewCoupon', auth.isAdminLogin, couponController.loadViewCoupon)
 admin_route.get('/addCoupon', auth.isAdminLogin, couponController.loadAddCoupon)
-admin_route.post('/addCoupon',couponController.addCoupon)
-admin_route.delete('/deleteCoupon/:id',couponController.deleteCoupon)
+admin_route.post('/addCoupon', couponController.addCoupon)
+admin_route.delete('/deleteCoupon/:id', couponController.deleteCoupon)
 admin_route.get('/editCoupon', auth.isAdminLogin, couponController.loadEditCoupon)
 admin_route.post('/editCoupon', couponController.editCoupon)
 

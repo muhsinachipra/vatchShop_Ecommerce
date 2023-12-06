@@ -24,6 +24,7 @@
                                                 <th></th>
                                             </tr>
                                         </thead>
+
                                         <% order.products.forEach((product, index)=> { %>
                                             <tr>
                                                 <td>
@@ -31,7 +32,7 @@
                                                 </td>
                                                 <td>
                                                     <% product.productId.productImage.forEach(image=> { %>
-                                                        <img src="/car/adminAssets/assets/images/products/<%= image %>">
+                                                        <img src="/car/ProductImages/<%= image %>">
                                                         <% }); %>
                                                 </td>
                                                 <td>
@@ -46,8 +47,6 @@
                                                 </td>
                                                 <td>
                                                     <div class="col-sm-4 my-1">
-
-
 
                                                         <form action="/admin/updateOrderStatus/<%= product._id %>"
                                                             method="post">
@@ -74,7 +73,6 @@
 
                                             </tr>
                                             <% }); %>
-
 
                                     </table>
                                 </div>

@@ -1,12 +1,11 @@
 <%- include('./layouts/header.ejs') %>
-<%- include('./layouts/sideBar.ejs') %>
-<%- include('./layouts/navBar.ejs') %>
+  <%- include('./layouts/sideBar.ejs') %>
+    <%- include('./layouts/navBar.ejs') %>
 
-<div class="main-panel">
-    <div class="content-wrapper">
+      <div class="main-panel">
+        <div class="content-wrapper">
 
-
-        <div class="col-lg-12 grid-margin stretch-card">
+          <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
                 <h2 class="card-title" style="text-align: center;">CATEGORIES</h2>
@@ -21,50 +20,63 @@
                         <th> Action </th>
                       </tr>
                     </thead>
-                    
-               
 
-                  <% if (category.length > 0) {
-                    for (let i = 0; i < category.length; i++) { %>
+                    <% if (category.length> 0) {
+                      for (let i = 0; i < category.length; i++) { %>
                         <tr>
-                            <td>*</td>
-                            <td><%= category[i].categoryName %></td>
-                            <td><%= category[i].categoryDescription %></td>
-                            <td> <a href="/admin/edit_category?id=<%= category[i]._id%>">
+                          <td>*</td>
+                          <td>
+                            <%= category[i].categoryName %>
+                          </td>
+                          <td>
+                            <%= category[i].categoryDescription %>
+                          </td>
+                          <td> <a href="/admin/edit_category?id=<%= category[i]._id%>">
                               <button type="button" class="btn btn-outline-secondary btn-icon-text">
                                 Edit <i class="mdi mdi-file-check btn-icon-append"></i>
                               </button>
                             </a>
-                            </td>
-                            <td>
-                                <% if (category[i].isListed === false) { %>
-                                  <a href="/admin/unlist_category?id=<%= category[i]._id %>">
-                                    <button type="button" class="btn btn-inverse-success btn-fw">
-                                      List
-                                    </button>
-                                  </a>
-                                <% } else { %>
-                                  <a href="/admin/unlist_category?id=<%= category[i]._id %>">
-                                    <button type="button" class="btn btn-inverse-danger btn-fw">
-                                      Unlist
-                                    </button>
-                                  </a> 
+                          </td>
+                          <td>
+                            <% if (category[i].isListed===false) { %>
+                              <a href="/admin/unlist_category?id=<%= category[i]._id %>">
+                                <button type="button" class="btn btn-inverse-success btn-fw">
+                                  List
+                                </button>
+                              </a>
+                              <% } else { %>
+                                <a href="/admin/unlist_category?id=<%= category[i]._id %>">
+                                  <button type="button" class="btn btn-inverse-danger btn-fw">
+                                    Unlist
+                                  </button>
+                                </a>
                                 <% } %>
 
-                            </td>
+                          </td>
                         </tr>
-                    <% }
-                } %>
-                
-                  
-                   </table>
+                        <% }} %>
+
+                  </table>
                 </div>
+
+                <div class="pagination mt-3" id="paginationButtons" style="display: flex; justify-content: center;">
+
+                  <% for (let i=1; i <=totalPages; i++) { %>
+                    <a href="?page=<%= i %>">
+                      <button type="button" class="btn btn-inverse-primary btn-rounded btn-icon">
+                        <%= i %>
+                      </button>
+                    </a>
+                    <% } %>
+
+                </div>
+
               </div>
             </div>
+          </div>
+
+
         </div>
+      </div>
 
-
-    </div>
-</div>
-
-<%- include('./layouts/footer.ejs') %>
+      <%- include('./layouts/footer.ejs') %>
