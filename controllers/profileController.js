@@ -36,14 +36,18 @@ module.exports = {
             res.render('userProfile', { user: req.session.userId, address: null, orders: [], error: 'Error fetching user data' });
         }
     },
+    
     userLogout: async (req, res) => {
         try {
-            req.session.destroy()
+            if (req.session.userId) {
+                delete req.session.userId;
+            }
             res.redirect('/')
         } catch (error) {
             console.log(error.message);
         }
     },
+
     updateUser: async (req, res) => {
         try {
 

@@ -362,9 +362,6 @@ module.exports = {
                 return res.json({ success: false, message: "Signature verification failed" });
             }
 
-            // Signature verification successful
-            console.log("Signature verification successful");
-
             // Update product quantities
             for (const product of cartData.items) {
                 await Product.findByIdAndUpdate(
@@ -386,7 +383,6 @@ module.exports = {
             // Set the order status to true for successful payment
             await Order.findByIdAndUpdate(orderId, { $set: { status: true } });
 
-            console.log("Payment successful");
             res.json({ codsuccess: true, orderid: orderId });
         } catch (error) {
             console.log("Error:", error);

@@ -28,11 +28,8 @@
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-md-2">
-                                                        <img src="data:image/jpeg;base64,<%= order.products[i].productId.productImage[0].toString('base64') %>"
-                                                            alt="Product Image" class="img-fluid">
-
-                                                        <!-- <img src="/car/adminAssets/assets/images/products/<%# order.products[i].productId.productImage[0] %>"
-                                                            class="img-fluid" alt="Phone"> -->
+                                                        <img src="/car/productImages/<%= order.products[i].productId.productImage[0] %>"
+                                                            class="img-fluid" alt="Phone">
                                                         <p class="text-muted mb-0">
                                                             <%= order.products[i].productId.productName %>
                                                         </p>
@@ -64,8 +61,8 @@
 
                                                     <div
                                                         class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                                        <% if (order.products[i].status !=="Cancelled" ) { %>
-                                                            <% if (order.products[i].status=="Delivered" ) { %>
+                                                        <% if (order.products[i].orderStatus !=="Cancelled" ) { %>
+                                                            <% if (order.products[i].orderStatus=="Delivered" ) { %>
                                                                 <a href="#"
                                                                     onclick="confirmAndCancel('<%= order.products[i]._id %>')"
                                                                     style="color: red;">Return Product</a>
@@ -75,13 +72,16 @@
                                                                         style="color: red;">Cancel Order</a>
                                                                     <%} %>
                                                                         <% } %>
+                                                        <% if (order.products[i].orderStatus ==="Cancelled" ) { %>
+                                                            <a href="#" style="color: red;">Cancelled</a>
+                                                        <% } %>
                                                     </div>
 
                                                 </div>
                                                 <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
 
 
-                                                <% if (order.products[i].status !=="Cancelled" ) { %>
+                                                <% if (order.products[i].orderStatus !=="Cancelled" ) { %>
 
                                                     <div class="row d-flex align-items-center"
                                                         id="status-row-<%= order.products[i]._id %>">
@@ -189,19 +189,19 @@
                             console.log('Cancel order AJAX response:', response);
 
                             if (response.data.success) {
-                                // Update the DOM to remove the status bar row and cancel td
-                                const statusRow = document.querySelector(`#status-row-${productId}`);
-                                console.log(statusRow);
-                                if (statusRow) {
-                                    statusRow.remove();
-                                }
+                                // // Update the DOM to remove the status bar row and cancel td
+                                // const statusRow = document.querySelector(`#status-row-${productId}`);
+                                // console.log(statusRow);
+                                // if (statusRow) {
+                                //     statusRow.remove();
+                                // }
 
-                                // Update the order status dynamically
-                                const orderStatusElement = document.querySelector(`#orderStatus-${productId}`);
-                                console.log(orderStatusElement);
-                                if (orderStatusElement) {
-                                    orderStatusElement.textContent = 'Cancelled';
-                                }
+                                // // Update the order status dynamically
+                                // const orderStatusElement = document.querySelector(`#orderStatus-${productId}`);
+                                // console.log(orderStatusElement);
+                                // if (orderStatusElement) {
+                                //     orderStatusElement.textContent = 'Cancelled';
+                                // }
 
                                 Swal.fire('Success!', 'Order canceled successfully!', 'success');
                                 location.reload();

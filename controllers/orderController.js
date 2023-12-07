@@ -24,7 +24,6 @@ module.exports = {
 
             // Ensure user is authenticated
             if (!userId) {
-                console.log('Unauthorized');
                 return res.status(400).json({
                     success: false,
                     message: 'Unauthorized',
@@ -45,14 +44,11 @@ module.exports = {
 
             // Check if the order exists
             if (!order) {
-                console.log('Order not found');
                 return res.status(400).json({
                     success: false,
                     message: 'Order not found',
                 });
             }
-
-
 
             // Render order details view with user and order data
             res.render('orderDetails', {
@@ -79,11 +75,6 @@ module.exports = {
                 path: 'products.productId',
                 model: 'Product',
             });
-            // Find the order in the database
-            // const order = await Order.findById(productId).populate({
-            //     path: 'products.productId',
-            //     model: 'Product',
-            // });
 
             // Check if the order exists
             if (!order) {
@@ -92,14 +83,6 @@ module.exports = {
                     message: 'Order not found',
                 });
             }
-
-            // // Check if the order is cancelable (e.g., status is 'Placed' or 'Shipped')
-            // if (order.products._id.toString() === productId.toString()(product => product.status !== 'Placed' && product.status !== 'Shipped')) {
-            //     return res.status(400).json({
-            //         success: false,
-            //         message: 'Order cannot be canceled at this stage',
-            //     });
-            // }
 
             const invalidProduct = order.products.find(product => product._id.toString() === productId.toString() && (product.orderStatus !== 'Placed' && product.orderStatus !== 'Shipped'));
 
@@ -110,17 +93,28 @@ module.exports = {
                 });
             }
 
+            let productForStockIncrease;
+            let canceledQuantity;
 
             order.products.forEach(product => {
                 if (product._id.toString() === productId.toString()) {
                     product.orderStatus = 'Cancelled';
+                    productForStockIncrease = product.productId
+                    canceledQuantity = product.quantity
                 }
             });
 
+            // Retrieve the product from the order
+            const product = await Product.findById(productForStockIncrease);
+
+            // Increase the product stock
+            product.productStock += canceledQuantity;
+
+            // Save the updated product
+            await product.save();
 
             // Save the updated order
             await order.save();
-
             // Respond with JSON indicating success
             res.json({ success: true, message: 'Order canceled successfully' });
         } catch (error) {

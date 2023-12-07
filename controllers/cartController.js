@@ -131,10 +131,9 @@ module.exports = {
 
             // Calculate new quantity and total
             const newQuantity = cartItem.quantity + quantityChange;
-            console.log(newQuantity)
             if (newQuantity < 1) {
                 return res.status(400).json({ success: false, message: 'Quantity cannot be less than 1' });
-            } else if (newQuantity >= productStock) {
+            } else if (newQuantity > productStock) {
                 return res.status(400).json({ success: false, message: 'Product stock exceeded' });
             } else if (newQuantity > 10) {
                 return res.status(400).json({ success: false, message: 'Only 10 items can be purchased' });
@@ -158,11 +157,8 @@ module.exports = {
     },
     removeProduct: async (req, res) => {
         try {
-            console.log('apicall');
             const proId = req.body.product;
-            console.log("productiddd ", proId);
             const user = req.session.userId;
-            const userId = user._id;
 
             // Find the user's cart and update it to remove the specified product
             const cartData = await Cart.findOneAndUpdate(

@@ -43,6 +43,17 @@ module.exports = {
         }
     },
 
+    adminLogout: async (req, res) => {
+        try {
+            if (req.session.admin_id) {
+                delete req.session.admin_id;
+            }
+            res.redirect('/admin')
+        } catch (error) {
+            handleDatabaseError(res, error);
+        }
+    },
+
     loadDashboard: async (req, res) => {
         try {
             const totalUsers = await User.countDocuments();

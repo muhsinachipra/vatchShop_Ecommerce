@@ -44,6 +44,7 @@ admin_route.post('/', adminController.verifyLogin)
 admin_route.get('/dashboard', auth.isAdminLogin, adminController.loadDashboard)
 admin_route.get('/Users', auth.isAdminLogin, adminController.loadUsers)
 admin_route.get('/block_users', auth.isAdminLogin, adminController.blockUser)
+admin_route.get('/logout', adminController.adminLogout)
 
 //==================== category related ======================================//
 
