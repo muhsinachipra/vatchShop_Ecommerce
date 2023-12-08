@@ -177,7 +177,7 @@ module.exports = {
     },
     updateOrderStatus: async (req, res) => {
         try {
-            const productId = req.params.orderId;
+            const productId = req.params.productId;
             const newStatus = req.body.status;
 
             // Find the order containing the product
@@ -191,11 +191,36 @@ module.exports = {
                 });
             }
 
+            // FOR INCREASING THE PRODUCT STOCK WHEN NEWSTATUS IS CANCELLED
+            if (newStatus === 'Cancelled') {
+                console.log('newStatus', newStatus)
+
+                let productForStockIncrease;
+                let canceledQuantity;
+                order.products.forEach(product => {
+                    if (product._id.toString() === productId.toString()) {
+                        product.orderStatus = 'Cancelled';
+                        productForStockIncrease = product.productId
+                        canceledQuantity = product.quantity
+                    }
+                });
+
+                // Retrieve the product from the order
+                const product = await Product.findById(productForStockIncrease);
+
+                // Increase the product stock
+                product.productStock += canceledQuantity;
+
+                // Save the updated product
+                await product.save();
+            }
+
             // Find the product within the order and update its status
             const product = order.products.find(product => product._id.toString() === productId);
             if (product) {
                 product.orderStatus = newStatus;
-
+                // productForStockIncrease = product.productId
+                // canceledQuantity = product.quantity
                 // Update statusLevel based on newStatus
                 // switch (newStatus) {
                 //     case 'Shipped':

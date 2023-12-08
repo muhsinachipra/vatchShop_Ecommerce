@@ -67,7 +67,7 @@ admin_route.get('/delete_product', auth.isAdminLogin, productController.deletePr
 //========================== order related =====================================//
 admin_route.get('/orders', auth.isAdminLogin, orderController.loadAdminOrder)
 admin_route.get('/manageOrder/:orderId', auth.isAdminLogin, orderController.loadManageOrder)
-admin_route.post('/updateOrderStatus/:orderId', orderController.updateOrderStatus);
+admin_route.post('/updateOrderStatus/:productId', orderController.updateOrderStatus);
 
 //=============================== coupon related ========================================//
 admin_route.get('/viewCoupon', auth.isAdminLogin, couponController.loadViewCoupon)

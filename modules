@@ -1,17 +1,80 @@
-"Pending Topics:
-remove alert show error in page 
-Name should be alphabet
-password need to be strong(1 capital,1 small,1 number ,1 special character)
-never reset the form
-user data need to save to database then trigger otp
-user blocking not working
-product management not completed in both user and admin
-duplicate category
-validation needed in code
+<% if (order.products[i].orderStatus !== "Cancelled") { %>
+    <div class="row d-flex align-items-center" id="status-row-<%= order.products[i]._id %>">
+        <div class="col-md-2">
+            <p class="text-muted mb-0 small">Track Order</p>
+        </div>
+        <div class="col-md-10">
+            <div class="progress" style="height: 6px; border-radius: 16px">
+                <% switch (order.products[i].orderStatus) { %>
+                    <% case 'Placed': %>
+                        <div class="progress-bar" role="progressbar" style="width: 25%; border-radius: 16px; background-color: #a8729a" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        <% break %>
+                    <% case 'Shipped': %>
+                        <div class="progress-bar" role="progressbar" style="width: 50%; border-radius: 16px; background-color: #a8729a" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        <% break %>
+                    <% case 'Out for delivery': %>
+                        <div class="progress-bar" role="progressbar" style="width: 75%; border-radius: 16px; background-color: #a8729a" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        <% break %>
+                    <% case 'Delivered': %>
+                        <div class="progress-bar" role="progressbar" style="width: 100%; border-radius: 16px; background-color: #a8729a" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        <% break %>
+                    <% default: %>
+                        <div class="progress-bar" role="progressbar" style="width: 0%; border-radius: 16px; background-color: #a8729a" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                <% } %>
+            </div>
+            <div class="d-flex justify-content-around mb-1">
+                <% if (order.products[i].orderStatus === 'Placed') { %>
+                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Order Placed</p>
+                <% } else if (order.products[i].orderStatus === 'Shipped') { %>
+                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Shipped</p>
+                <% } else if (order.products[i].orderStatus === 'Out for delivery') { %>
+                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Out for Delivery</p>
+                <% } else if (order.products[i].orderStatus === 'Delivered') { %>
+                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Delivered</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+<% } %>
 
-Next Week Updation:
-User Side:
-: Proceed to checkout(Add address)
-: Place order with Cash on Delivery(Address selection)
-: User profile( show orders,  cancel orders,)
-Admin Side: List orders, change order status, cancel orders
+
+
+
+
+
+const User = require('../models/userModel');
+const Product = require('../models/productModel');
+const Cart = require('../models/cartModel');
+const Category = require('../models/categoryModel');
+const Admin = require('../models/adminModel');
+const fs = require("fs")
+const sharp = require('sharp');
+const path = require('path');
+
+module.exports = {
+   
+
+    loadUserProducts: async (req, res) => {
+        try {
+            const categories = await Category.find({ isListed: true });
+            const products = await Product.find({ isListed: true }).populate('productCategory');
+            res.render('productView', { product: products, category: categories });
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+
+    loadUserProductDetails: async (req, res) => {
+
+        try {
+            const id = req.query.id;
+            const pro = await Product.findById(id).populate('productCategory productImage');
+
+            res.render('productDetails', { product: pro })
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+
+
+}

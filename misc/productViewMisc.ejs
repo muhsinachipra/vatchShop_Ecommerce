@@ -1,0 +1,246 @@
+<%- include('./layouts/header.ejs') %>
+
+	<!-- Product -->
+	<div class="bg0 m-t-70 p-b-140">
+		<div class="container  pt-5 mt-5">
+			<div class="flex-w flex-sb-m p-b-52">
+				<div class="flex-w flex-l-m filter-tope-group m-tb-10">
+					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-carr="all">
+						All Products
+					</button>
+					<% if (category && category.length> 0) { %>
+						<% category.forEach(singleCategory=> { %>
+							<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
+								data-carr="<%= singleCategory.categoryName %>">
+								<%= singleCategory.categoryName %>
+							</button>
+							<% }); %>
+								<% } %>
+				</div>
+				<div class="flex-w flex-c-m m-tb-10">
+					<div
+						class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
+						<i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
+						<i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+						Filter
+					</div>
+					<div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
+						<i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
+						<i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+						Search
+					</div>
+				</div>
+
+				<!-- Search product -->
+				<div class="dis-none panel-search w-full p-t-10 p-b-15">
+					<div class="bor8 dis-flex p-l-15">
+						<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+							<i class="zmdi zmdi-search"></i>
+						</button>
+						<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product"
+							placeholder="Search">
+					</div>
+				</div>
+
+				<!-- Filter -->
+				<div class="dis-none panel-filter w-full p-t-10">
+					<div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
+
+						<div class="filter-col1 p-r-15 p-b-27">
+							<div class="mtext-102 cl2 p-b-15">
+								Sort By Price
+							</div>
+							<ul>
+								<li class="p-b-6 panel-filter-li">
+									<a href="/productView/sorted?sortBy=default" class="filter-link stext-106 trans-04">
+										Default
+									</a>
+								</li>
+								<li class="p-b-6 panel-filter-li">
+									<a href="/productView/sorted?sortBy=lowToHigh"
+										class="filter-link stext-106 trans-04">
+										Low to High
+									</a>
+								</li>
+								<li class="p-b-6 panel-filter-li">
+									<a href="/productView/sorted?sortBy=highToLow"
+										class="filter-link stext-106 trans-04">
+										High to Low
+									</a>
+								</li>
+							</ul>
+						</div>
+
+						<div class="filter-col2 p-r-15 p-b-27">
+							<div class="mtext-102 cl2 p-b-15">
+								Price Range
+							</div>
+							<ul>
+								<li class="p-b-6 panel-filter-li">
+									<a href="#" class="filter-link stext-106 trans-04" data-price="all">
+										All
+									</a>
+								</li>
+								<li class="p-b-6 panel-filter-li">
+									<a href="#" class="filter-link stext-106 trans-04" data-price="0-1000">
+										₹0.00 - ₹1000.00
+									</a>
+								</li>
+								<li class="p-b-6 panel-filter-li">
+									<a href="#" class="filter-link stext-106 trans-04" data-price="1000-2000">
+										₹1000.00 - ₹2000.00
+									</a>
+								</li>
+								<li class="p-b-6 panel-filter-li">
+									<a href="#" class="filter-link stext-106 trans-04" data-price="2000-3000">
+										₹2000.00 - ₹3000.00
+									</a>
+								</li>
+								<li class="p-b-6 panel-filter-li">
+									<a href="#" class="filter-link stext-106 trans-04" data-price="3000-4000">
+										₹3000.00 - ₹4000.00
+									</a>
+								</li>
+								<li class="p-b-6 panel-filter-li">
+									<a href="#" class="filter-link stext-106 trans-04" data-price="4000-+">
+										₹4000.00+
+									</a>
+								</li>
+							</ul>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="row isotope-grid">
+
+				<!-- productView.ejs -->
+				<div class="row">
+					<% product.forEach(function(item) { %>
+						<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item product-card"
+							data-product-category="<%= item.productCategory.categoryName %>">
+							<div class="block2">
+								<div class="block2-pic hov-img0">
+									<!-- Display the first cropped image -->
+									<img src="/car/ProductImages/<%= item.productImage[0] %>"
+										alt="Product Image">
+									<a href="/product/<%= item._id %>"
+										class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+										Quick View
+									</a>
+								</div>
+								<div class="block2-txt flex-w flex-t p-t-14">
+									<div class="block2-txt-child1 flex-col-l">
+										<a href="/productDetails?id=<%= item._id %>"
+											class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+											<%= item.productName %>
+										</a>
+										<span class="stext-105 cl3">
+											₹<%= item.productPrice %>
+										</span>
+									</div>
+									<div class="block2-txt-child2 flex-r p-t-3">
+										<!-- Add to wishlist button here if needed -->
+									</div>
+								</div>
+							</div>
+						</div>
+						<% }); %>
+				</div>
+
+			</div>
+
+			<!-- Load more -->
+			<div class="flex-c-m flex-w w-full p-t-45">
+				<a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
+					Load More
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const filterButtons = document.querySelectorAll('[data-carr]');
+			const priceButtons = document.querySelectorAll('[data-price]');
+			const productCards = document.querySelectorAll('.product-card');
+
+			filterButtons.forEach(button => {
+				button.addEventListener('click', function () {
+					const category = this.getAttribute('data-carr');
+					filterProducts(category);
+				});
+			});
+
+			priceButtons.forEach(button => {
+				button.addEventListener('click', function () {
+					const priceRange = this.getAttribute('data-price');
+					filterProductsByPrice(priceRange);
+				});
+			});
+
+			function filterProducts(category) {
+				// Show all products initially
+				productCards.forEach(card => card.style.display = 'block');
+
+				// Filter products based on the selected category
+				if (category !== 'all') {
+					productCards.forEach(card => {
+						const cardCategory = card.getAttribute('data-product-category');
+						if (cardCategory !== category) {
+							card.style.display = 'none';
+						}
+					});
+				}
+			}
+
+			function filterProductsByPrice(priceRange) {
+				// Show all products initially
+				productCards.forEach(card => card.style.display = 'block');
+
+				// Filter products based on the selected price range
+				if (priceRange && priceRange !== 'all') {
+					const [minPrice, maxPrice] = priceRange.split('-').map(Number); // Convert to numbers
+					productCards.forEach(card => {
+						const cardPrice = parseInt(card.querySelector('.stext-105.cl3').textContent.replace('₹', '').replace(',', ''), 10); // Assuming price is displayed in an element with class 'stext-105.cl3'
+						if (cardPrice < minPrice || cardPrice > maxPrice) {
+							card.style.display = 'none';
+						}
+					});
+				}
+			}
+
+		});
+
+	</script>
+
+
+	<%- include('./layouts/footer.ejs') %>
+
+
+
+	loadSortedUserProducts: async (req, res) => {
+        try {
+            const sortBy = req.query.sortBy || 'default'; // Default sorting
+            const categories = await Category.find({ isListed: true });
+
+            let products;
+
+            if (sortBy === 'lowToHigh') {
+                products = await Product.find({ isListed: true }).sort({ productPrice: 1 }).populate('productCategory');
+            } else if (sortBy === 'highToLow') {
+                products = await Product.find({ isListed: true }).sort({ productPrice: -1 }).populate('productCategory');
+            } else {
+                // Default sorting
+                products = await Product.find({ isListed: true }).populate('productCategory');
+            }
+
+            res.render('productView', { product: products, category: categories, sortBy: sortBy });
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
+
+
+user_route.get('/productView/sorted', productController.loadSortedUserProducts);

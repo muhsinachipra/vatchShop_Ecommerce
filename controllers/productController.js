@@ -87,16 +87,16 @@ module.exports = {
         try {
             const page = req.query.page || 1; // Get the current page from query parameters
             const pageSize = 4; // Set your desired page size
-    
+
             const skip = (page - 1) * pageSize;
             let products;
-    
+
             var search = '';
             if (req.query.search) {
                 search = req.query.search;
                 // Use a regular expression to make the search case-insensitive and match partial strings
                 const searchRegex = new RegExp('.*' + search + '.*', 'i');
-    
+
                 products = await Product.find({
                     $or: [
                         { productName: searchRegex },
@@ -107,10 +107,10 @@ module.exports = {
             } else {
                 products = await Product.find().populate('productCategory').skip(skip).limit(pageSize);
             }
-    
+
             const totalProducts = await Product.countDocuments();
             const totalPages = Math.ceil(totalProducts / pageSize);
-    
+
             res.render('viewProduct', { data: products, currentPage: page, totalPages: totalPages });
         } catch (error) {
             console.error(error);
@@ -234,29 +234,6 @@ module.exports = {
         }
     },
 
-    loadSortedUserProducts: async (req, res) => {
-        try {
-            const sortBy = req.query.sortBy || 'default'; // Default sorting
-            const categories = await Category.find({ isListed: true });
-
-            let products;
-
-            if (sortBy === 'lowToHigh') {
-                products = await Product.find({ isListed: true }).sort({ productPrice: 1 }).populate('productCategory');
-            } else if (sortBy === 'highToLow') {
-                products = await Product.find({ isListed: true }).sort({ productPrice: -1 }).populate('productCategory');
-            } else {
-                // Default sorting
-                products = await Product.find({ isListed: true }).populate('productCategory');
-            }
-
-            res.render('productView', { product: products, category: categories, sortBy: sortBy });
-        } catch (error) {
-            console.log(error.message);
-        }
-    },
-
-
     loadUserProductDetails: async (req, res) => {
 
         try {
@@ -269,5 +246,68 @@ module.exports = {
         }
     },
 
+    // // Updated function to handle sorting and filtering
+    // loadSortedAndFilteredProducts: async (req, res) => {
+    //     try {
+    //         const categories = await Category.find({ isListed: true });
+    //         let query = { isListed: true };
+
+    //         // Handle category filtering
+    //         if (req.query.category) {
+    //             query.productCategory = req.query.category;
+    //         }
+
+    //         // Handle sorting
+    //         let sortOptions = {};
+    //         if (req.query.sort) {
+    //             if (req.query.sort === 'lowToHigh') {
+    //                 sortOptions.productPrice = 1;
+    //             } else if (req.query.sort === 'highToLow') {
+    //                 sortOptions.productPrice = -1;
+    //             }
+    //             // Add more sorting options if needed
+    //         }
+
+    //         const products = await Product.find(query)
+    //             .populate('productCategory')
+    //             .sort(sortOptions);
+
+    //         res.render('productView', { product: products, category: categories });
+    //     } catch (error) {
+    //         console.log(error.message);
+    //     }
+    // },
+
+    // Updated function to handle sorting within a specific category
+    loadSortedAndFilteredProducts: async (req, res) => {
+        try {
+            const categories = await Category.find({ isListed: true });
+            let query = { isListed: true };
+
+            // Handle category filtering
+            if (req.query.category) {
+                query.productCategory = req.query.category;
+            }
+
+            // Handle sorting
+            let sortOptions = {};
+            if (req.query.sort) {
+                if (req.query.sort === 'lowToHigh') {
+                    sortOptions.productPrice = 1;
+                } else if (req.query.sort === 'highToLow') {
+                    sortOptions.productPrice = -1;
+                }
+                // Add more sorting options if needed
+            }
+
+            const products = await Product.find(query)
+                .populate('productCategory')
+                .sort(sortOptions);
+
+            res.render('productView', { product: products, category: categories });
+        } catch (error) {
+            console.log(error.message);
+        }
+    },
 
 }
