@@ -248,5 +248,13 @@ module.exports = {
         } catch (error) {
             handleDatabaseError(res, error);
         }
+    },
+
+    loadSalesReport: async (req, res) => {
+        try {
+            res.render('salesReport');
+        } catch (error) {
+            handleDatabaseError(res, error);
+        }
     }
 };

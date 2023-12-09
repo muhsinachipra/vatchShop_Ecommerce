@@ -77,6 +77,7 @@ admin_route.delete('/deleteCoupon/:id', couponController.deleteCoupon)
 admin_route.get('/editCoupon', auth.isAdminLogin, couponController.loadEditCoupon)
 admin_route.post('/editCoupon', couponController.editCoupon)
 
+admin_route.get('/salesReport', auth.isAdminLogin, adminController.loadSalesReport)
 
 
 module.exports = admin_route

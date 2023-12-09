@@ -52,7 +52,7 @@ const sharp = require('sharp');
 const path = require('path');
 
 module.exports = {
-   
+
 
     loadUserProducts: async (req, res) => {
         try {
@@ -78,3 +78,39 @@ module.exports = {
 
 
 }
+
+
+
+const topCategories = await Order.aggregate([
+    {
+        $unwind: '$products' // Unwind the products array
+    },
+    {
+        $group: {
+            _id: '$products.category', // Group by category
+            totalQuantity: { $sum: '$products.quantity' } // Calculate total quantity
+        }
+    },
+    {
+        $lookup: {
+            from: 'categories', // Assuming your category model is named 'Category'
+            localField: '_id',
+            foreignField: '_id',
+            as: 'categoryDetails'
+        }
+    },
+    {
+        $project: {
+            categoryName: '$categoryDetails.categoryName', // Include category name in the result
+            totalQuantity: 1,
+            _id: 0
+        }
+    },
+    {
+        $sort: { totalQuantity: -1 } // Sort by total quantity in descending order
+    },
+    {
+        $limit: 3 // Get top 5 categories
+    }
+]);
+return topCategories.map(category => ({ label: category.categoryName, value: category.totalQuantity }));
