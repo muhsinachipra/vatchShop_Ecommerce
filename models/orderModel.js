@@ -28,7 +28,13 @@ const orderSchema = new mongoose.Schema({
         },
         returnOrder: {
             status: {
-                type: String
+                type: Boolean,
+                default: false,
+            },
+            returnStatus: {
+                type: String,
+                enum: ['Placed', 'Out for pickup', 'Returned', 'Refund'],
+                default: 'Placed',
             },
             reason: {
                 type: String
@@ -80,8 +86,8 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     status: {
-      type: Boolean,
-      default: false, // Set the default value to false
+        type: Boolean,
+        default: false, // Set the default value to false
     }
 });
 

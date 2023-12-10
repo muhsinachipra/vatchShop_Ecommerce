@@ -135,7 +135,7 @@ module.exports = {
             );
 
             return res.json({ message: 'Discount applied successfully.', updatedCart: discountedCart });
-            
+
         } catch (error) {
             console.error('Error applying discount:', error);
             return res.status(500).json({ error: 'Internal Server Error' });
@@ -216,7 +216,6 @@ module.exports = {
                     price: item.productId.productPrice,
                     orderStatus: 'Placed', // Set the initial status for each product as 'Placed'
                     returnOrder: {
-                        status: "none",
                         reason: "none",
                     }
                 })),

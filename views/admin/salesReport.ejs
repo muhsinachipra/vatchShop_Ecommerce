@@ -11,46 +11,70 @@
                             <div class="card-body">
                                 <h2 class="card-title" style="text-align: center;">ORDERS</h2>
                                 <div class="table-responsive">
+                                    <% if (salesData.length> 0) { %>
 
-                                    <table id="search-table" class="table table-dark">
+                                        <table id="search-table" class="table table-dark">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order ID</th>
+                                                    <th>Username</th>
+                                                    <th>Product</th>
+                                                    <th>Category</th>
+                                                    <th>Price</th>
+                                                    <th>Qty</th>
+                                                    <th>Order Date</th>
+                                                    <th>Time</th>
+                                                    <th>Payment Method</th>
+                                                    <th>Order Status</th>
 
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% salesData.reverse().forEach(sale=> { %>
+                                                    <tr>
+                                                        <td>
+                                                            <%= sale._id %>
+                                                        </td>
+                                                        <td>
+                                                            <%= sale.userData[0]?.firstName || '' %>
+                                                        </td>
+                                                        <td>
+                                                            <%= sale.productDetails[0]?.productName || '' %>
+                                                        </td>
+                                                        <td>
+                                                            <%= sale.productDetails[0]?.productCategory || '' %>
+                                                        </td>
+                                                        <td>&#8377; <%= sale.products.price.toFixed(2) || '' %>
+                                                        </td>
+                                                        <td>
+                                                            <%= sale.products.quantity || '' %>
+                                                        </td>
+                                                        <td>
+                                                            <%= sale.orderDate.toDateString() %>
+                                                        </td>
+                                                        <td>
+                                                            <%= sale.orderDate.toLocaleTimeString() %>
+                                                        </td>
+                                                        <td>
+                                                            <%= sale.paymentOption || '' %>
+                                                        </td>
+                                                        <td>
+                                                            <%= sale.products.orderStatus || '' %>
+                                                        </td>
 
-                                        <thead>
-                                            <tr>
-                                                <th>Order ID</th>
-                                                <th>Username</th>
-                                                <th>Product</th>
-                                                <th>Product Price</th>
-                                                <th>Quantity</th>
-                                                <th>Payment Method</th>
-                                                <th>Order Date</th>
-                                                <th>Time</th>
-                                            </tr>
-                                        </thead>
-                                        <tr>
-                                            <td>
-                                            </td>
-                                            <td>
-                                            </td>
-                                            <td>
-                                            </td>
-                                            <td>
-                                            </td>
-                                            <td>
-                                            </td>
-                                            <td>
-                                            </td>
-                                            <td>
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
+                                                    </tr>
+                                                    <% }) %>
+                                                        <% } else { %>
+                                                            <tr>
+                                                                <td colspan="9" class="text-center">
+                                                                    <p style="text-align: center;">No sales found.</p>
+                                                                </td>
+                                                            </tr>
+                                                            <% } %>
+                                            </tbody>
+                                        </table>
 
-
-                                    </table>
                                 </div>
-
-                                
 
                             </div>
                         </div>

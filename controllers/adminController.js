@@ -252,7 +252,71 @@ module.exports = {
 
     loadSalesReport: async (req, res) => {
         try {
-            res.render('salesReport');
+
+            const salesData = await Order.aggregate([
+
+                {
+                    $match: {
+                        $or: [
+                            {
+                                paymentOption: 'COD',
+                                'products.orderStatus': 'Delivered',
+                                'products.returnOrder.returnStatus': { $ne: 'Refund' },
+                            },
+                            {
+                                paymentOption: { $in: ['Razorpay', 'Wallet'] },
+                                'products.orderStatus': { $in: ['Placed', 'Shipped', 'Out for delivery', 'Delivered'] },
+                                'products.returnOrder.returnStatus': { $ne: 'Refund' },
+                            },
+                        ],
+                        'products.returnOrder.returnStatus': { $ne: 'Refund' },
+                    },
+                },
+                {
+                    $unwind: "$products",
+                },
+                {
+                    $match: {
+                        'products.returnOrder.returnStatus': { $ne: 'Refund' },
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'products.productId',
+                        foreignField: '_id',
+                        as: 'productDetails',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'user',
+                        foreignField: '_id',
+                        as: 'userData',
+                    },
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        orderDate: 1,
+                        totalAmount: 1,
+                        paymentOption: 1,
+                        'products.productId': 1,
+                        'products.orderStatus': 1,
+                        'products.quantity': 1,
+                        'products.price': 1,
+                        'productDetails.productName': 1,
+                        'productDetails.productCategory': 1,
+                        'productDetails.productPrice': 1,
+                        'userData.firstName': 1,
+                    },
+                },
+            ]);
+
+            console.log("Sales Data:", salesData);
+
+            res.render('salesReport', { salesData });
         } catch (error) {
             handleDatabaseError(res, error);
         }
