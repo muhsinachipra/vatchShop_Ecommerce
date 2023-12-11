@@ -117,7 +117,7 @@
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Top Selling Product</h4>
-                  <canvas id="barChart" style="height:230px"></canvas>
+                  <canvas id="productBarChart" style="height:250px"></canvas>
                 </div>
               </div>
             </div>
@@ -127,34 +127,108 @@
         </div>
         <!-- content-wrapper ends -->
 
+        <!-- Top Selling Category -->
         <script>
-          var doughnutPieData = {
-            datasets: [{
-              data: [10, 40, 50],
-              backgroundColor: [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(255, 206, 86, 0.5)',
-                'rgba(75, 192, 192, 0.5)',
-                'rgba(153, 102, 255, 0.5)',
-                'rgba(255, 159, 64, 0.5)'
-              ],
-              borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-              ],
-            }],
+          $(function () {
+              var topCategoriesData = <%- JSON.stringify(top3Categories) %>; // Parse the JSON data
+      
+              // Extract labels and revenues from the data
+              var categoryLabels = topCategoriesData.map(category => category.name);
+              var categoryRevenues = topCategoriesData.map(category => category.revenue);
+      
+              // Now use categoryLabels and categoryRevenues to dynamically configure your chart
+              var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
+              var doughnutChart = new Chart(doughnutChartCanvas, {
+                  type: 'doughnut',
+                  data: {
+                      datasets: [{
+                          data: categoryRevenues,
+                          backgroundColor: [
+                              'rgba(255, 99, 132, 0.5)',
+                              'rgba(54, 162, 235, 0.5)',
+                              'rgba(255, 206, 86, 0.5)',
+                          ],
+                          borderColor: [
+                              'rgba(255,99,132,1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                          ],
+                      }],
+                      labels: categoryLabels,
+                  },
+                  options: {
+                      responsive: true,
+                      animation: {
+                          animateScale: true,
+                          animateRotate: true,
+                      },
+                  },
+              });
+          });
+      </script>
+        <!-- Top Selling Category -->
 
-            // These labels appear in the legend and in the tooltips when hovering different arcs
-            labels: [
-              'Analog',
-              'Digital',
-              'Smart',
-            ]
-          };
+        <!-- Top Selling Products -->
+        <script>
+          $(function () {
+            var topProductsData = <%- JSON.stringify(top3Products) %>; // Parse the JSON data
+        
+            // Extract labels and revenues from the data
+            var productLabels = topProductsData.map(product => product.name);
+            var productRevenues = topProductsData.map(product => product.revenue);
+        
+            // Now use productLabels and productRevenues to dynamically configure your bar chart
+            var productBarChartCanvas = $("#productBarChart").get(0).getContext("2d");
+            var productBarChart = new Chart(productBarChartCanvas, {
+              type: 'bar',
+              data: {
+                labels: productLabels,
+                datasets: [{
+                  label: 'Revenue',
+                  data: productRevenues,
+                  backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(54, 162, 235, 0.5)',
+                    'rgba(255, 206, 86, 0.5)',
+                  ],
+                  borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                  ],
+                  borderWidth: 1,
+                }],
+              },
+              options: {
+                responsive: true,
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true,
+                    },
+                    gridLines: {
+                      color: "rgba(204, 204, 204,0.1)",
+                    },
+                  }],
+                  xAxes: [{
+                    gridLines: {
+                      color: "rgba(204, 204, 204,0.1)",
+                    },
+                  }],
+                },
+                legend: {
+                  display: false,
+                },
+                elements: {
+                  point: {
+                    radius: 0,
+                  },
+                },
+              },
+            });
+          });
         </script>
+        
+        <!-- Top Selling Products -->
+
         <%- include('./layouts/footer.ejs') %>

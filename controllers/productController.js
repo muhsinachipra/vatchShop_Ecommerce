@@ -223,17 +223,41 @@ module.exports = {
         }
     },
 
-
     loadUserProducts: async (req, res) => {
         try {
+            const { category: selectedCategory, sort } = req.query;
             const categories = await Category.find({ isListed: true });
-            const products = await Product.find({ isListed: true }).populate('productCategory');
-            res.render('productView', { product: products, category: categories });
+            const filterCriteria = { isListed: true };
+    
+            if (selectedCategory) {
+                const categoryObject = await Category.findOne({
+                    categoryName: { $regex: new RegExp(".*" + selectedCategory + ".*", "i") },
+                });
+    
+                if (categoryObject) {
+                    filterCriteria.productCategory = categoryObject._id;
+                }
+            }
+    
+            let sortOption = {};
+    
+            if (sort === "lowtohigh") {
+                sortOption = { productPrice: 1 };
+            } else if (sort === "hightolow") {
+                sortOption = { productPrice: -1 };
+            }
+    
+            const products = await Product.find(filterCriteria)
+                .populate('productCategory')
+                .sort(sortOption);
+    
+            res.render('productView', { product: products, category: categories, currentSort: sort, selectedCategory });
         } catch (error) {
             console.log(error.message);
+            res.status(500).send('Internal Server Error');
         }
     },
-
+    
     loadUserProductDetails: async (req, res) => {
 
         try {
@@ -241,70 +265,6 @@ module.exports = {
             const pro = await Product.findById(id).populate('productCategory productImage');
 
             res.render('productDetails', { product: pro })
-        } catch (error) {
-            console.log(error.message);
-        }
-    },
-
-    // // Updated function to handle sorting and filtering
-    // loadSortedAndFilteredProducts: async (req, res) => {
-    //     try {
-    //         const categories = await Category.find({ isListed: true });
-    //         let query = { isListed: true };
-
-    //         // Handle category filtering
-    //         if (req.query.category) {
-    //             query.productCategory = req.query.category;
-    //         }
-
-    //         // Handle sorting
-    //         let sortOptions = {};
-    //         if (req.query.sort) {
-    //             if (req.query.sort === 'lowToHigh') {
-    //                 sortOptions.productPrice = 1;
-    //             } else if (req.query.sort === 'highToLow') {
-    //                 sortOptions.productPrice = -1;
-    //             }
-    //             // Add more sorting options if needed
-    //         }
-
-    //         const products = await Product.find(query)
-    //             .populate('productCategory')
-    //             .sort(sortOptions);
-
-    //         res.render('productView', { product: products, category: categories });
-    //     } catch (error) {
-    //         console.log(error.message);
-    //     }
-    // },
-
-    // Updated function to handle sorting within a specific category
-    loadSortedAndFilteredProducts: async (req, res) => {
-        try {
-            const categories = await Category.find({ isListed: true });
-            let query = { isListed: true };
-
-            // Handle category filtering
-            if (req.query.category) {
-                query.productCategory = req.query.category;
-            }
-
-            // Handle sorting
-            let sortOptions = {};
-            if (req.query.sort) {
-                if (req.query.sort === 'lowToHigh') {
-                    sortOptions.productPrice = 1;
-                } else if (req.query.sort === 'highToLow') {
-                    sortOptions.productPrice = -1;
-                }
-                // Add more sorting options if needed
-            }
-
-            const products = await Product.find(query)
-                .populate('productCategory')
-                .sort(sortOptions);
-
-            res.render('productView', { product: products, category: categories });
         } catch (error) {
             console.log(error.message);
         }

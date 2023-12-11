@@ -10,7 +10,10 @@
 					</a>
 					<% if (category && category.length> 0) { %>
 						<% category.forEach(singleCategory=> { %>
-							<a href="/productView/sorted?category=<%= singleCategory._id %>" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5">
+							<!-- href="/productView?category=<%# singleCategory._id %>" -->
+							<!-- <a href="/shop?category=<%#= encodeURIComponent(category.category_name) %>&sort=<%#= currentSort || 'default' %>"> -->
+								<!-- href="/shop?category=<%#= encodeURIComponent(category.category_name) %>&sort=<%#= currentSort || 'default' %>" -->
+							<a href="/productView?category=<%= encodeURIComponent(singleCategory.categoryName) %>&sort=<%= currentSort || '' %>" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5">
 								<%= singleCategory.categoryName %>
 							</a>
 							<% }); %>
@@ -51,17 +54,17 @@
 							</div>
 							<ul>
 								<li class="p-b-6 panel-filter-li">
-									<a href="/productView/sorted?sort=default" class="filter-link stext-106 trans-04">
+									<a href="/productView?category=<%= selectedCategory %>&sort=default" class="filter-link stext-106 trans-04">
 										Default
 									</a>
 								</li>
 								<li class="p-b-6 panel-filter-li">
-									<a href="/productView/sorted?sort=lowToHigh" class="filter-link stext-106 trans-04">
+									<a href="/productView?category=<%= selectedCategory %>&sort=lowtohigh" class="filter-link stext-106 trans-04">
 										Low to High
 									</a>
 								</li>
 								<li class="p-b-6 panel-filter-li">
-									<a href="/productView/sorted?sort=highToLow" class="filter-link stext-106 trans-04">
+									<a href="/productView?category=<%= selectedCategory %>&sort=hightolow" class="filter-link stext-106 trans-04">
 										High to Low
 									</a>
 								</li>
