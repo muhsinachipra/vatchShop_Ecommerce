@@ -19,7 +19,7 @@ module.exports = {
 
     addProduct: async (req, res) => {
         try {
-            const { productName, productBrand, productDescription, productCategory, productPrice, productStock } = req.body;
+            const { productName, productBrand, productDescription, productCategory, productPrice, productStock, productOfferPercentage } = req.body;
             const category = await Category.find({})
 
             const images = [];
@@ -56,6 +56,7 @@ module.exports = {
                 productPrice,
                 productImage: images,
                 productStock,
+                productOfferPercentage
             });
 
 

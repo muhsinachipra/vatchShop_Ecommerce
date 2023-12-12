@@ -17,10 +17,17 @@
                                             placeholder="Product Name" value="<%= product.productName %>">
                                     </div>
                                     <br>
-                                    <div class="form-row">
-                                        <label for="exampleInputName1">Brand Name</label>
-                                        <input type="text" class="form-control" id="productBrand" name="productBrand"
-                                            placeholder="Brand Name" value="<%= product.productBrand %>">
+                                    <div class="form-row align-items-center">
+                                        <div class="col-sm-6 my-1">
+                                            <label for="exampleInputName1">Brand Name</label>
+                                            <input type="text" class="form-control" id="productBrand"
+                                                name="productBrand" placeholder="Brand Name" value="<%= product.productBrand %>" required>
+                                        </div>
+                                        <div class="col-sm-6 my-1">
+                                            <label for="exampleInputName1">Offer Percentage</label>
+                                            <input type="text" class="form-control" id="offerPercentage"
+                                                name="offerPercentage" placeholder="Offer Percentage" value="<%= product.productOfferPercentage %>">
+                                        </div>
                                     </div>
                                     <br>
                                     <div class="form-row align-items-center">
@@ -82,7 +89,7 @@
 
 
                                     <!-- First Image -->
-                                    <img src="data:image/jpeg;base64,<%= product.productImage[0].toString('base64') %>"
+                                    <img src="/car/productImages/<%= product.productImage[0] %>"
                                         id="imagePreview1" class="img-preview" style="width: 100px" />
 
                                     <div class="form-row">
@@ -97,7 +104,7 @@
                                     </div>
 
                                     <!-- Second Image -->
-                                    <img src="data:image/jpeg;base64,<%= product.productImage[1].toString('base64') %>"
+                                    <img src="/car/productImages/<%= product.productImage[1] %>"
                                         id="imagePreview2" class="img-preview" style="width: 100px;" />
 
                                     <div class="form-row">
@@ -112,7 +119,7 @@
                                     </div>
 
                                     <!-- Third Image -->
-                                    <img src="data:image/jpeg;base64,<%= product.productImage[2].toString('base64') %>"
+                                    <img src="/car/productImages/<%= product.productImage[2] %>"
                                         id="imagePreview3" class="img-preview" style="width: 100px;" />
 
                                     <div class="form-row">
@@ -287,6 +294,17 @@
                         }
                     });
 
+                    // Validate offerPercentage (Only numbers)
+                    const offerPercentageInput = document.getElementById("offerPercentage");
+                    offerPercentageInput.addEventListener("input", function () {
+                        const value = offerPercentageInput.value;
+                        if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+                            offerPercentageInput.setCustomValidity("Offer Percentage can only contain numbers, optionally with up to 2 decimal places.");
+                        } else {
+                            offerPercentageInput.setCustomValidity("");
+                        }
+                    });
+                    
                     // Validate Stock (Only numbers)
                     const productStockInput = document.getElementById("productStock");
                     productStockInput.addEventListener("input", function () {

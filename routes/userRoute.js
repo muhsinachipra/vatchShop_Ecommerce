@@ -52,7 +52,6 @@ user_route.get('/otp', userController.loadOtp);
 user_route.post('/otp', userController.verifyOTP)
 user_route.post('/resendOTP', userController.resendOTP)
 user_route.get('/productView', productController.loadUserProducts);
-// user_route.get('/productView/sorted', productController.loadSortedAndFilteredProducts);
 user_route.get('/productDetails', productController.loadUserProductDetails)
 user_route.post('/add-to-cart', cartController.addToCart)
 user_route.get('/cart', auth.isUserLogin, cartController.loadCart)

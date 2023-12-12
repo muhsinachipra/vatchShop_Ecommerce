@@ -149,6 +149,7 @@
                                         onsubmit="return validatePasswords()">
                                         <div class="form-group">
                                             <div class="row">
+                                                <!-- Current Password -->
                                                 <div class="col-sm-6">
                                                     <label>Current Password</label>
                                                     <input type="password" name="oldPassword" class="form-control"
@@ -156,11 +157,21 @@
                                                     <span id="current-password-error" class="text-danger"></span>
                                                     <span id="oldPasswordError" class="text-danger"></span>
                                                 </div><!-- End .col-sm-6 -->
+                                                <!-- New Password -->
                                                 <div class="col-sm-6">
                                                     <label>Create New Password</label>
                                                     <input type="password" name="newPassword" class="form-control"
                                                         id="newPassword">
                                                     <span id="new-password-error" class="text-danger"></span>
+                                                </div><!-- End .col-sm-6 -->
+                                            </div><!-- End .row -->
+                                            <!-- Confirm Password -->
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label>Confirm Password</label>
+                                                    <input type="password" name="confirmPassword" class="form-control"
+                                                        id="confirmPassword">
+                                                    <span id="confirm-password-error" class="text-danger"></span>
                                                 </div><!-- End .col-sm-6 -->
                                             </div><!-- End .row -->
                                             <button type="button" class="btn btn-outline-primary-2"
@@ -169,8 +180,8 @@
                                             </button>
                                         </div>
                                     </form>
-
                                 </div><!-- END CHANGE PASSWORD -->
+
 
                                 <!-- MY ORDERS -->
                                 <div class="tab-pane fade" id="tab-order" role="tabpanel"
@@ -215,7 +226,7 @@
                                                                 <td colspan="5">No orders found.
                                                                 </td>
                                                             </tr>
-                                                        <% } %>
+                                                            <% } %>
                                         </tbody>
                                     </table>
                                 </div><!-- END MY ORDERS -->
@@ -298,6 +309,7 @@
         function validatePasswords() {
             const currentPassword = document.querySelector('input[name="oldPassword"]').value;
             const newPassword = document.querySelector('input[name="newPassword"]').value;
+            const confirmPassword = document.querySelector('input[name="confirmPassword"]').value;
 
             const passwordRegex = /^(?=.*[!@#$%^&*]).{6,}$/;
 
@@ -311,8 +323,14 @@
                 return false;
             }
 
+            if (newPassword !== confirmPassword) {
+                document.getElementById('confirm-password-error').textContent = 'Passwords do not match.';
+                return false;
+            }
+
             return true;
         }
+
 
         async function changePassword() {
             if (!validatePasswords()) {

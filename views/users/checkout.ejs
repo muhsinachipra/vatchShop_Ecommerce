@@ -391,7 +391,7 @@
             console.log('Razorpay Order:', order);
 
             var options = {
-                key: 'rzp_test_Kdpx3v778r8haC',
+                key: '<%= process.env.RAZORPAY_KEY_ID %>',
                 amount: order.amount,
                 currency: "INR",
                 name: "Shopify",

@@ -28,13 +28,13 @@ const otpSent = async (email, otp) => {
             secure: false,
             requireTLS: true,
             auth: {
-                user: 'muhsinachipra@gmail.com',
-                pass: 'azen vizj yufk ekkt',
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
             },
         });
 
         const mailOptions = {
-            from: 'muhsinachipra@gmail.com',
+            from: process.env.SMTP_USER,
             to: email,
             subject: 'Verify Your Email',
             html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
@@ -55,13 +55,13 @@ const resetPasswordMail = async (username, email, token) => {
             secure: false,
             requireTLS: true,
             auth: {
-                user: 'muhsinachipra@gmail.com',
-                pass: 'azen vizj yufk ekkt',
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
             }
         })
 
         const mailOptions = {
-            from: 'muhsinachipra@gmail.com',
+            from: process.env.SMTP_USER,
             to: email,
             subject: "For Reset Password",
             html: `<p> Hi, ${username}, please click here to <a href="http://localhost:5000/forgotPassword?token=${token}"> Reset </a> your password</p>`

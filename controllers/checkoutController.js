@@ -51,7 +51,10 @@ module.exports = {
                 return res.redirect('/cart?error=insufficient-stock');
             }
 
-            res.render('checkout', { user: userData, address: userAddress, cart: cartData, coupons: couponData });
+            let razoKey = process.env.RAZORPAY_KEY_ID
+            console.log('RAZORPAY_KEY_ID :',razoKey)
+
+            res.render('checkout', { user: userData, address: userAddress, cart: cartData, coupons: couponData, razoKey });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Internal Server Error');

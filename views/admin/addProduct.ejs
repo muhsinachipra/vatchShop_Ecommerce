@@ -18,10 +18,17 @@
                                             placeholder="Product Name" required>
                                     </div>
                                     <br>
-                                    <div class="form-row">
-                                        <label for="exampleInputName1">Brand Name</label>
-                                        <input type="text" class="form-control" id="productBrand" name="productBrand"
-                                            placeholder="Brand Name" required>
+                                    <div class="form-row align-items-center">
+                                        <div class="col-sm-6 my-1">
+                                            <label for="exampleInputName1">Brand Name</label>
+                                            <input type="text" class="form-control" id="productBrand"
+                                                name="productBrand" placeholder="Brand Name" required>
+                                        </div>
+                                        <div class="col-sm-6 my-1">
+                                            <label for="exampleInputName1">Offer Percentage</label>
+                                            <input type="text" class="form-control" id="productOfferPercentage"
+                                                name="productOfferPercentage" placeholder="Offer Percentage">
+                                        </div>
                                     </div>
                                     <br>
                                     <div class="form-row align-items-center">
@@ -242,6 +249,17 @@
                             productPriceInput.setCustomValidity("Price can only contain numbers, optionally with up to 2 decimal places.");
                         } else {
                             productPriceInput.setCustomValidity("");
+                        }
+                    });
+
+                    // Validate productOfferPercentage (Only numbers)
+                    const offerPercentageInput = document.getElementById("productOfferPercentage");
+                    offerPercentageInput.addEventListener("input", function () {
+                        const value = offerPercentageInput.value;
+                        if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+                            offerPercentageInput.setCustomValidity("Offer Percentage can only contain numbers.");
+                        } else {
+                            offerPercentageInput.setCustomValidity("");
                         }
                     });
 

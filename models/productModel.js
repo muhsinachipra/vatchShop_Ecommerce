@@ -35,7 +35,11 @@ const productSchema = mongoose.Schema({
     isListed: {
         type: Boolean,
         default: true
-    }
+    },
+    productOfferPercentage: {
+        type: Number,
+        default: 0,
+    },
 
 })
 

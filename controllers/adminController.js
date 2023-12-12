@@ -14,6 +14,7 @@ const handleDatabaseError = (res, error) => {
 module.exports = {
     loadLogin: async (req, res) => {
         try {
+            
             res.render('login');
         } catch (error) {
             handleDatabaseError(res, error);
@@ -176,9 +177,6 @@ module.exports = {
 
             const categoryLabels = top3Categories.map(category => category.name);
             const categoryRevenues = top3Categories.map(category => category.revenue);
-            console.log(top3Categories)
-            console.log(categoryLabels)
-            console.log(categoryRevenues)
 
 
             res.render('dashboard', {
@@ -399,6 +397,14 @@ module.exports = {
                 },
                 {
                     $lookup: {
+                        from: 'categories',
+                        localField: 'productDetails.productCategory',
+                        foreignField: '_id',
+                        as: 'categoryDetails',
+                    },
+                },
+                {
+                    $lookup: {
                         from: 'products',
                         localField: 'products.productId',
                         foreignField: '_id',
@@ -426,6 +432,7 @@ module.exports = {
                         'productDetails.productName': 1,
                         'productDetails.productCategory': 1,
                         'productDetails.productPrice': 1,
+                        'categoryDetails.categoryName': 1,
                         'userData.firstName': 1,
                     },
                 },
