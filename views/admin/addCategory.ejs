@@ -26,6 +26,11 @@
                                             <input type="text" class="form-control  text-light "
                                                 name="categoryDescription" id="categoryDescription"
                                                 placeholder="Description" required style="height: 100px;">
+                                            <label class="mt-3" for="exampleInputName1">Category Offer</label>
+                                            <input type="text" class="form-control  text-light mb-3 "
+                                                name="categoryOfferPercentage" id="categoryOfferPercentage"
+                                                placeholder="Offer Percentage">
+                                            <p id="offer-error" style="color: red;"></p>
                                             <button type="submit" class="btn btn-lg btn-inverse-primary mr-2 mt-5">Add
                                                 Category</button>
                                         </div>
@@ -50,6 +55,7 @@
             <script>
                 function validation() {
                     const name = document.getElementById('categoryName').value;
+                    const offer = document.getElementById("categoryOfferPercentage").value;
 
                     document.getElementById('name-error').textContent = '';
 
@@ -62,6 +68,13 @@
 
                     if (!regex.test(name)) {
                         document.getElementById('name-error').textContent = 'Category name should contain only alphabetical characters';
+                        return false;
+                    }
+
+                    const regexOffer = /^\d+(\.\d{1,2})?$/;
+
+                    if (!regexOffer.test(offer)) {
+                        document.getElementById('offer-error').textContent = "Stock can only contain numbers, optionally with up to 2 decimal places.";
                         return false;
                     }
 

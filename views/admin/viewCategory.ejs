@@ -14,8 +14,9 @@
                     <thead>
                       <tr>
                         <th> # </th>
-                        <th> category </th>
-                        <th> category Description</th>
+                        <th> Category Name</th>
+                        <th> Category Description</th>
+                        <th> Category Offer</th>
                         <th> Edit </th>
                         <th> Action </th>
                       </tr>
@@ -30,6 +31,9 @@
                           </td>
                           <td>
                             <%= category[i].categoryDescription %>
+                          </td>
+                          <td>
+                            <%= category[i].categoryOfferPercentage %> %
                           </td>
                           <td> <a href="/admin/edit_category?id=<%= category[i]._id%>">
                               <button type="button" class="btn btn-outline-secondary btn-icon-text">

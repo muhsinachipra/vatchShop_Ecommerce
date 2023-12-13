@@ -159,24 +159,71 @@ module.exports = {
         }
     },
 
+    // editProduct: async (req, res) => {
+    //     try {
+    //         const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand } = req.body;
+
+    //         // Retrieve the existing product data
+    //         // const existingProduct = await Product.findById(id);
+
+
+    //         // Extract cropped image data from the request body
+    //         const croppedImageData1 = req.body.croppedImageData1;
+    //         const croppedImageData2 = req.body.croppedImageData2;
+    //         const croppedImageData3 = req.body.croppedImageData3;
+
+    //         // Check if all required image data is present
+    //         if (!croppedImageData1 || !croppedImageData2 || !croppedImageData3) {
+    //             return res.render('addProduct', { message: 'Please upload all required images.' });
+    //         }
+
+    //         // Function to convert base64 to JPEG
+    //         const convertBase64ToJPEG = async (base64Data) => {
+    //             // Remove the base64 prefix if present
+    //             const base64Image = base64Data.replace(/^data:image\/jpeg;base64,/, '');
+    //             const buffer = Buffer.from(base64Image, 'base64');
+    //             return sharp(buffer).jpeg().toBuffer();
+    //         };
+
+    //         // Convert and save the cropped image data
+    //         updatedProductImages = [
+    //             await convertBase64ToJPEG(croppedImageData1),
+    //             await convertBase64ToJPEG(croppedImageData2),
+    //             await convertBase64ToJPEG(croppedImageData3),
+    //         ];
+
+
+    //         await Product.findByIdAndUpdate(id, {
+    //             $set: {
+    //                 productName,
+    //                 productDescription,
+    //                 productCategory,
+    //                 productImage: updatedProductImages,
+    //                 productStock,
+    //                 productPrice,
+    //                 productBrand,
+    //             }
+    //         });
+    //         res.redirect('/admin/viewProduct');
+    //     } catch (error) {
+    //         console.log(error.message);
+    //     }
+    // },
+
     editProduct: async (req, res) => {
         try {
-            const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand } = req.body;
-
-            // Retrieve the existing product data
-            // const existingProduct = await Product.findById(id);
-
-
+            const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand, productOfferPercentage } = req.body;
+    
             // Extract cropped image data from the request body
             const croppedImageData1 = req.body.croppedImageData1;
             const croppedImageData2 = req.body.croppedImageData2;
             const croppedImageData3 = req.body.croppedImageData3;
-
+    
             // Check if all required image data is present
             if (!croppedImageData1 || !croppedImageData2 || !croppedImageData3) {
-                return res.render('addProduct', { message: 'Please upload all required images.' });
+                return res.render('editProduct', { message: 'Please upload all required images.' });
             }
-
+    
             // Function to convert base64 to JPEG
             const convertBase64ToJPEG = async (base64Data) => {
                 // Remove the base64 prefix if present
@@ -184,46 +231,43 @@ module.exports = {
                 const buffer = Buffer.from(base64Image, 'base64');
                 return sharp(buffer).jpeg().toBuffer();
             };
-
+    
             // Convert and save the cropped image data
-            updatedProductImages = [
+            const updatedProductImages = [
                 await convertBase64ToJPEG(croppedImageData1),
                 await convertBase64ToJPEG(croppedImageData2),
                 await convertBase64ToJPEG(croppedImageData3),
             ];
-
-
-            // // Create an array to store the updated product images
-            // const updatedProductImages = [];
-
-            // // Iterate over the product images and check if they are updated
-            // for (let i = 0; i < existingProduct.productImage.length; i++) {
-            //     if (req.files[i]) {
-            //         // If an updated image is available, use it
-            //         updatedProductImages.push(req.files[i].filename);
-            //     } else {
-            //         // Otherwise, keep the existing image
-            //         updatedProductImages.push(existingProduct.productImage[i]);
-            //     }
-            // }
-
+    
+            // Save the image files to the server (assuming 'public/productImages' is the destination)
+            fs.writeFileSync(path.join(__dirname, '../public/productImages', `image1_${id}.jpg`), updatedProductImages[0]);
+            fs.writeFileSync(path.join(__dirname, '../public/productImages', `image2_${id}.jpg`), updatedProductImages[1]);
+            fs.writeFileSync(path.join(__dirname, '../public/productImages', `image3_${id}.jpg`), updatedProductImages[2]);
+    
+            // Update the product in the database
             await Product.findByIdAndUpdate(id, {
                 $set: {
                     productName,
                     productDescription,
                     productCategory,
-                    productImage: updatedProductImages,
+                    productImage: [
+                        `image1_${id}.jpg`,
+                        `image2_${id}.jpg`,
+                        `image3_${id}.jpg`,
+                    ],
                     productStock,
                     productPrice,
                     productBrand,
+                    productOfferPercentage
                 }
             });
+    
             res.redirect('/admin/viewProduct');
         } catch (error) {
             console.log(error.message);
         }
     },
-
+    
     loadUserProducts: async (req, res) => {
         try {
             const { category: selectedCategory, sort } = req.query;

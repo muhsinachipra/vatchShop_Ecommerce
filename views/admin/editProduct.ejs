@@ -25,8 +25,8 @@
                                         </div>
                                         <div class="col-sm-6 my-1">
                                             <label for="exampleInputName1">Offer Percentage</label>
-                                            <input type="text" class="form-control" id="offerPercentage"
-                                                name="offerPercentage" placeholder="Offer Percentage" value="<%= product.productOfferPercentage %>">
+                                            <input type="text" class="form-control" id="productOfferPercentage"
+                                                name="productOfferPercentage" placeholder="Offer Percentage" value="<%= product.productOfferPercentage %>">
                                         </div>
                                     </div>
                                     <br>
@@ -294,8 +294,8 @@
                         }
                     });
 
-                    // Validate offerPercentage (Only numbers)
-                    const offerPercentageInput = document.getElementById("offerPercentage");
+                    // Validate productOfferPercentage (Only numbers)
+                    const offerPercentageInput = document.getElementById("productOfferPercentage");
                     offerPercentageInput.addEventListener("input", function () {
                         const value = offerPercentageInput.value;
                         if (!/^\d+(\.\d{1,2})?$/.test(value)) {

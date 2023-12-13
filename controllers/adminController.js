@@ -14,7 +14,7 @@ const handleDatabaseError = (res, error) => {
 module.exports = {
     loadLogin: async (req, res) => {
         try {
-            
+
             res.render('login');
         } catch (error) {
             handleDatabaseError(res, error);
@@ -351,15 +351,26 @@ module.exports = {
 
     editCategory: async (req, res) => {
         try {
-            const { id, categoryName, categoryDescription } = req.body;
-            const alreadyExists = await Category.findOne({ categoryName: { $regex: categoryName, $options: 'i' } });
+            const { id, categoryName, categoryDescription, categoryOfferPercentage } = req.body;
 
-            if (alreadyExists) {
-                return res.render('editCategory', { message: 'Category Already Created', category: { categoryName, categoryDescription } });
+            // Find the existing category by ID
+            const existingCategory = await Category.findById(id);
+            if (!existingCategory) {
+                return res.status(404).json({ error: 'Category not found' });
             }
 
-            await Category.findByIdAndUpdate(id, { $set: { categoryName, categoryDescription } });
-            res.redirect('/admin/viewCategory');
+            // Check if the category name has been changed
+            if (categoryName !== existingCategory.categoryName) {
+                // If changed, check for existence of a category with the new name
+                const alreadyExists = await Category.findOne({ categoryName: { $regex: `^${categoryName}$`, $options: 'i' } });
+                if (alreadyExists) {
+                    return res.status(401).json({ error: 'Category Already Created' });
+                }
+            }
+
+            // Update the category
+            await Category.findByIdAndUpdate(id, { $set: { categoryName, categoryDescription, categoryOfferPercentage } });
+            return res.status(200).json({ success: 'Category updated successfully' });
         } catch (error) {
             handleDatabaseError(res, error);
         }

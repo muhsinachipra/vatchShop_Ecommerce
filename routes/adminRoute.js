@@ -52,7 +52,7 @@ admin_route.get('/addCategory', auth.isAdminLogin, adminController.loadAddCatego
 admin_route.post('/addCategory', adminController.addCategory)
 admin_route.get('/viewCategory', auth.isAdminLogin, adminController.loadViewCategory)
 admin_route.get('/edit_category', auth.isAdminLogin, adminController.loadEditCatogory)
-admin_route.post('/edit_category', adminController.editCategory)
+admin_route.post('/editCategoryFetch', adminController.editCategory)
 admin_route.get('/unlist_category', auth.isAdminLogin, adminController.unlistCategory)
 
 //==================== product related ======================================//
