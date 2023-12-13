@@ -40,8 +40,35 @@ const productSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
+    discountedPrice: {
+        type: Number,
+        default: 0,
+    },
+});
 
-})
+// Define a pre-save middleware to calculate the discountedPrice
+productSchema.pre(['save', 'updateOne', 'updateMany'], async function (next) {
+    try {
+        // Fetch the corresponding category
+        
+        const Category = mongoose.model('Category');
+        const category = await Category.findById(this.productCategory);
+        console.log('in PRODUCT model ', category)
 
+        // Calculate the discounted price based on the higher percentage
+        const highestPercentage = Math.max(
+            category.categoryOfferPercentage,
+            this.productOfferPercentage
+        );
 
-module.exports = mongoose.model('Product', productSchema)
+        // Apply the discount to the product price
+        const discountMultiplier = 1 - highestPercentage / 100;
+        this.discountedPrice = this.productPrice * discountMultiplier;
+
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
+
+module.exports = mongoose.model('Product', productSchema);
