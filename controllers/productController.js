@@ -295,8 +295,15 @@ module.exports = {
 
     loadUserProducts: async (req, res) => {
         try {
-            const { category: selectedCategory, sort, search } = req.query;
+            const { category: selectedCategory, sort, search, page } = req.query;
             const categories = await Category.find({ isListed: true });
+    
+            // Define the number of items per page
+            const itemsPerPage = 8;
+    
+            // Calculate the skip value based on the current page
+            const skip = (page - 1) * itemsPerPage || 0;
+    
             const filterCriteria = { isListed: true };
     
             if (selectedCategory) {
@@ -322,16 +329,30 @@ module.exports = {
                 sortOption = { discountedPrice: -1 };
             }
     
+            // Fetch total number of products without pagination
+            const totalProducts = await Product.countDocuments(filterCriteria);
+    
             const products = await Product.find(filterCriteria)
                 .populate('productCategory')
-                .sort(sortOption);
+                .sort(sortOption)
+                .skip(skip)
+                .limit(itemsPerPage);
     
-            res.render('productView', { product: products, category: categories, currentSort: sort, selectedCategory, search });
+            res.render('productView', {
+                product: products,
+                category: categories,
+                currentSort: sort,
+                selectedCategory,
+                search,
+                currentPage: parseInt(page) || 1, // Parse the current page to an integer
+                totalPages: Math.ceil(totalProducts / itemsPerPage), // Calculate the total pages
+            });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Internal Server Error');
         }
     },
+    
     
 
     loadUserProductDetails: async (req, res) => {

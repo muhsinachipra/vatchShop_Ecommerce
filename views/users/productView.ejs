@@ -10,7 +10,8 @@
 					</a>
 					<% if (category && category.length> 0) { %>
 						<% category.forEach(singleCategory=> { %>
-							<a href="/productView?category=<%= encodeURIComponent(singleCategory.categoryName) %>&sort=<%= currentSort || '' %>&search=<%= search || '' %>" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5">
+							<a href="/productView?category=<%= encodeURIComponent(singleCategory.categoryName) %>&sort=<%= currentSort || '' %>&search=<%= search || '' %>"
+								class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5">
 								<%= singleCategory.categoryName %>
 							</a>
 							<% }); %>
@@ -123,6 +124,21 @@
 				</div>
 
 			</div>
+
+			<!-- Bootstrap-styled Pagination -->
+			<nav aria-label="Page navigation">
+				<ul class="pagination justify-content-center">
+					<% for (let i=1; i <=totalPages; i++) { %>
+						<li class="page-item <%= currentPage === i ? 'active' : '' %>">
+							<a class="flex-c-m stext-101 cl0 size-108 bg1 bor1 hov-btn2 p-lr-15 trans-04"
+								href="/productView?page=<%= i %>&category=<%= selectedCategory %>&sort=<%= currentSort || '' %>&search=<%= search || '' %>">
+								<%= i %>
+							</a>
+						</li>
+						<% } %>
+				</ul>
+			</nav>
+
 
 		</div>
 	</div>
