@@ -26,7 +26,6 @@ categorySchema.pre(['save', 'updateOne', 'updateMany'], async function (next) {
         const Product = mongoose.model('Product');
         // Find all products with the current category
         const products = await Product.find({ productCategory: this._id });
-        console.log('in category model ', products)
 
         // Iterate through products and update discountedPrice
         for (const product of products) {

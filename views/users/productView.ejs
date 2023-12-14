@@ -10,10 +10,8 @@
 					</a>
 					<% if (category && category.length> 0) { %>
 						<% category.forEach(singleCategory=> { %>
-							<!-- href="/productView?category=<%# singleCategory._id %>" -->
-							<!-- <a href="/shop?category=<%#= encodeURIComponent(category.category_name) %>&sort=<%#= currentSort || 'default' %>"> -->
-								<!-- href="/shop?category=<%#= encodeURIComponent(category.category_name) %>&sort=<%#= currentSort || 'default' %>" -->
-							<a href="/productView?category=<%= encodeURIComponent(singleCategory.categoryName) %>&sort=<%= currentSort || '' %>" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5">
+							<a href="/productView?category=<%= encodeURIComponent(singleCategory.categoryName) %>&sort=<%= currentSort || '' %>"
+								class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5">
 								<%= singleCategory.categoryName %>
 							</a>
 							<% }); %>
@@ -54,17 +52,20 @@
 							</div>
 							<ul>
 								<li class="p-b-6 panel-filter-li">
-									<a href="/productView?category=<%= selectedCategory %>&sort=default" class="filter-link stext-106 trans-04">
+									<a href="/productView?category=<%= selectedCategory %>&sort=default"
+										class="filter-link stext-106 trans-04">
 										Default
 									</a>
 								</li>
 								<li class="p-b-6 panel-filter-li">
-									<a href="/productView?category=<%= selectedCategory %>&sort=lowtohigh" class="filter-link stext-106 trans-04">
+									<a href="/productView?category=<%= selectedCategory %>&sort=lowtohigh"
+										class="filter-link stext-106 trans-04">
 										Low to High
 									</a>
 								</li>
 								<li class="p-b-6 panel-filter-li">
-									<a href="/productView?category=<%= selectedCategory %>&sort=hightolow" class="filter-link stext-106 trans-04">
+									<a href="/productView?category=<%= selectedCategory %>&sort=hightolow"
+										class="filter-link stext-106 trans-04">
 										High to Low
 									</a>
 								</li>
@@ -85,8 +86,8 @@
 								<div class="block2-pic hov-img0">
 									<!-- Display the first cropped image -->
 									<a href="/productDetails?id=<%= item._id %>">
-									<img src="/car/ProductImages/<%= item.productImage[0] %>" alt="Product Image">
-								</a>
+										<img src="/car/ProductImages/<%= item.productImage[0] %>" alt="Product Image">
+									</a>
 									<a href="/productDetails?id=<%= item._id %>"
 										class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
 										Quick View
@@ -99,7 +100,11 @@
 											<%= item.productName %>
 										</a>
 										<span class="stext-105 cl3">
-											₹<%= item.productPrice %>
+											<% if(item.productPrice===item.discountedPrice) { %>
+												₹<%= item.productPrice %>
+													<% }else{ %>
+												<del style="color: red;">₹<%= item.productPrice %></del> <span style="color: green;"><%= item.highestOfferPercentage %>%off</span>  &nbsp; &nbsp; &nbsp; ₹<%= item.discountedPrice %>
+														<% } %>
 										</span>
 									</div>
 									<div class="block2-txt-child2 flex-r p-t-3">

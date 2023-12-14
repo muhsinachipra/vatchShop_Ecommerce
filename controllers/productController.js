@@ -213,17 +213,17 @@ module.exports = {
     editProduct: async (req, res) => {
         try {
             const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand, productOfferPercentage } = req.body;
-    
+
             // Extract cropped image data from the request body
             const croppedImageData1 = req.body.croppedImageData1;
             const croppedImageData2 = req.body.croppedImageData2;
             const croppedImageData3 = req.body.croppedImageData3;
-    
+
             // Check if all required image data is present
             if (!croppedImageData1 || !croppedImageData2 || !croppedImageData3) {
                 return res.render('editProduct', { message: 'Please upload all required images.' });
             }
-    
+
             // Function to convert base64 to JPEG
             const convertBase64ToJPEG = async (base64Data) => {
                 // Remove the base64 prefix if present
@@ -231,78 +231,103 @@ module.exports = {
                 const buffer = Buffer.from(base64Image, 'base64');
                 return sharp(buffer).jpeg().toBuffer();
             };
-    
+
             // Convert and save the cropped image data
             const updatedProductImages = [
                 await convertBase64ToJPEG(croppedImageData1),
                 await convertBase64ToJPEG(croppedImageData2),
                 await convertBase64ToJPEG(croppedImageData3),
             ];
-    
+
             // Save the image files to the server (assuming 'public/productImages' is the destination)
             fs.writeFileSync(path.join(__dirname, '../public/productImages', `image1_${id}.jpg`), updatedProductImages[0]);
             fs.writeFileSync(path.join(__dirname, '../public/productImages', `image2_${id}.jpg`), updatedProductImages[1]);
             fs.writeFileSync(path.join(__dirname, '../public/productImages', `image3_${id}.jpg`), updatedProductImages[2]);
-    
-            // Update the product in the database
-            await Product.findByIdAndUpdate(id, {
-                $set: {
-                    productName,
-                    productDescription,
-                    productCategory,
-                    productImage: [
-                        `image1_${id}.jpg`,
-                        `image2_${id}.jpg`,
-                        `image3_${id}.jpg`,
-                    ],
-                    productStock,
-                    productPrice,
-                    productBrand,
-                    productOfferPercentage
-                }
-            });
-    
+
+            // // Update the product in the database
+            // await Product.findByIdAndUpdate(id, {
+            //     $set: {
+            //         productName,
+            //         productDescription,
+            //         productCategory,
+            //         productImage: [
+            //             `image1_${id}.jpg`,
+            //             `image2_${id}.jpg`,
+            //             `image3_${id}.jpg`,
+            //         ],
+            //         productStock,
+            //         productPrice,
+            //         productBrand,
+            //         productOfferPercentage
+            //     }
+            // });
+            // Update the product in the database and save it
+            const updatedProduct = await Product.findByIdAndUpdate(
+                id,
+                {
+                    $set: {
+                        productName,
+                        productDescription,
+                        productCategory,
+                        productImage: [
+                            `image1_${id}.jpg`,
+                            `image2_${id}.jpg`,
+                            `image3_${id}.jpg`,
+                        ],
+                        productStock,
+                        productPrice,
+                        productBrand,
+                        productOfferPercentage,
+                    },
+                },
+                { new: true } // Ensure that hooks are triggered
+            );
+
+            // Save the updated product
+            await updatedProduct.save();
+
+
             res.redirect('/admin/viewProduct');
         } catch (error) {
             console.log(error.message);
         }
     },
-    
+
     loadUserProducts: async (req, res) => {
         try {
             const { category: selectedCategory, sort } = req.query;
             const categories = await Category.find({ isListed: true });
             const filterCriteria = { isListed: true };
-    
+
             if (selectedCategory) {
                 const categoryObject = await Category.findOne({
                     categoryName: { $regex: new RegExp(".*" + selectedCategory + ".*", "i") },
                 });
-    
+
                 if (categoryObject) {
                     filterCriteria.productCategory = categoryObject._id;
                 }
             }
-    
+
             let sortOption = {};
-    
+
             if (sort === "lowtohigh") {
-                sortOption = { productPrice: 1 };
+                sortOption = { discountedPrice: 1 };
             } else if (sort === "hightolow") {
-                sortOption = { productPrice: -1 };
+                sortOption = { discountedPrice: -1 };
             }
-    
+
             const products = await Product.find(filterCriteria)
                 .populate('productCategory')
                 .sort(sortOption);
-    
+
             res.render('productView', { product: products, category: categories, currentSort: sort, selectedCategory });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Internal Server Error');
         }
     },
-    
+
     loadUserProductDetails: async (req, res) => {
 
         try {

@@ -88,7 +88,7 @@ module.exports = {
 
                     // Calculate total
                     cartData.items.forEach((product) => {
-                        total += product.quantity * product.productId.productPrice;
+                        total += product.quantity * product.productId.discountedPrice;
                     });
 
                     // Render the 'cart' view with the calculated total

@@ -369,7 +369,23 @@ module.exports = {
             }
 
             // Update the category
-            await Category.findByIdAndUpdate(id, { $set: { categoryName, categoryDescription, categoryOfferPercentage } });
+            // await Category.findByIdAndUpdate(id, { $set: { categoryName, categoryDescription, categoryOfferPercentage } }, { new: true });
+            // Update the category in the database and save it
+            const updatedCategory = await Category.findByIdAndUpdate(
+                id,
+                {
+                    $set: {
+                        categoryName,
+                        categoryDescription,
+                        categoryOfferPercentage,
+                    },
+                },
+                { new: true } // Ensure that hooks are triggered
+            );
+
+            // Save the updated category
+            await updatedCategory.save();
+
             return res.status(200).json({ success: 'Category updated successfully' });
         } catch (error) {
             handleDatabaseError(res, error);
@@ -442,7 +458,7 @@ module.exports = {
                         'products.price': 1,
                         'productDetails.productName': 1,
                         'productDetails.productCategory': 1,
-                        'productDetails.productPrice': 1,
+                        'productDetails.discountedPrice': 1,
                         'categoryDetails.categoryName': 1,
                         'userData.firstName': 1,
                     },

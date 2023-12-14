@@ -54,7 +54,7 @@
                                                 <td class="column-2">
                                                     <%=data.productId.productName%>
                                                 </td>
-                                                <td class="column-3">₹ <%=data.productId.productPrice%>
+                                                <td class="column-3">₹ <%=data.productId.discountedPrice%>
                                                 </td>
                                                 <td class="column-4">
                                                     <div class="wrap-num-product flex-w m-l-auto m-r-0">
@@ -64,7 +64,7 @@
                                                             onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)">-</a>
                                                         <span class="mtext-104 cl3 txt-center num-product p-2"
                                                             id="<%=data.productId._id%>"
-                                                            data-price="<%=data.productId.productPrice%>">
+                                                            data-price="<%=data.productId.discountedPrice%>">
                                                             <%=data.quantity%>
                                                         </span>
                                                         <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m btn "
@@ -72,9 +72,9 @@
                                                     </div>
                                                 </td>
                                                 <td class="column-5" id="subtotal-<%=data.productId._id%>"
-                                                    data-price="<%=data.productId.productPrice%>">
+                                                    data-price="<%=data.productId.discountedPrice%>">
                                                     ₹ <span id="subtotal-<%=data.productId._id%>">
-                                                        <%= (parseFloat(data.productId.productPrice) *
+                                                        <%= (parseFloat(data.productId.discountedPrice) *
                                                             data.quantity).toFixed(2) %>
                                                     </span>
                                                 </td>
@@ -226,13 +226,13 @@
             let newTotal = 0;
 
             products.forEach((product) => {
-                const productPrice = parseFloat(product.dataset.price || 0);
+                const discountedPrice = parseFloat(product.dataset.price || 0);
                 const productQuantity = parseInt(product.textContent);
 
-                if (isNaN(productPrice) || isNaN(productQuantity)) {
-                    console.log('Invalid data: productPrice=', productPrice, 'productQuantity=', productQuantity);
+                if (isNaN(discountedPrice) || isNaN(productQuantity)) {
+                    console.log('Invalid data: discountedPrice=', discountedPrice, 'productQuantity=', productQuantity);
                 } else {
-                    newTotal += productPrice * productQuantity;
+                    newTotal += discountedPrice * productQuantity;
                 }
             });
 
@@ -244,8 +244,8 @@
         const updateSubtotal = (productId, newQuantity) => {
             const subtotalElement = document.getElementById(`subtotal-${productId}`);
             if (subtotalElement) {
-                const productPrice = parseFloat(subtotalElement.dataset.price || 0);
-                const newSubtotal = (productPrice * newQuantity).toFixed(2);
+                const discountedPrice = parseFloat(subtotalElement.dataset.price || 0);
+                const newSubtotal = (discountedPrice * newQuantity).toFixed(2);
                 subtotalElement.textContent = `₹ ${newSubtotal}`; // Update the format accordingly
             }
         };

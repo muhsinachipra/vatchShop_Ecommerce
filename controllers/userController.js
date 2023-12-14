@@ -1,5 +1,6 @@
 const User = require('../models/userModel');
 const Product = require('../models/productModel');
+const Category = require('../models/categoryModel');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const otpGenerator = require("otp-generator");
@@ -286,12 +287,43 @@ module.exports = {
 
     loadHome: async (req, res) => {
         try {
-            const pro = await Product.find()
-            res.render('userHome', { product: pro })
+            const { category: selectedCategory, sort } = req.query;
+            const categories = await Category.find({ isListed: true });
+            const filterCriteria = { isListed: true };
+
+            if (selectedCategory) {
+                const categoryObject = await Category.findOne({
+                    categoryName: { $regex: new RegExp(".*" + selectedCategory + ".*", "i") },
+                });
+
+                if (categoryObject) {
+                    filterCriteria.productCategory = categoryObject._id;
+                }
+            }
+
+            let sortOption = {};
+
+            if (sort === "lowtohigh") {
+                sortOption = { discountedPrice: 1 };
+            } else if (sort === "hightolow") {
+                sortOption = { discountedPrice: -1 };
+            }
+
+            const products = await Product.find(filterCriteria)
+                .populate('productCategory')
+                .sort(sortOption)
+                .limit(8);
+
+            const Analog = await Category.findOne({ categoryName: 'Analog' });
+            const Smart = await Category.findOne({ categoryName: 'Smart' });
+            const Digital = await Category.findOne({ categoryName: 'Digital' });
+    
+            res.render('userHome', { product: products, Digital, Smart, Analog, category: categories, currentSort: sort, selectedCategory });
         } catch (error) {
             handleDatabaseError(res, error);
         }
     },
+    
 
     verifyOTP: async (req, res) => {
         try {

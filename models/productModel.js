@@ -42,7 +42,14 @@ const productSchema = mongoose.Schema({
     },
     discountedPrice: {
         type: Number,
-        default: 0,
+        default: function () {
+            // Set the default value to be equal to productPrice
+            return this.productPrice;
+        },
+    },
+    highestOfferPercentage: {
+        type: Number,
+        default: 0, // Set a default value if needed
     },
 });
 
@@ -50,16 +57,17 @@ const productSchema = mongoose.Schema({
 productSchema.pre(['save', 'updateOne', 'updateMany'], async function (next) {
     try {
         // Fetch the corresponding category
-        
         const Category = mongoose.model('Category');
         const category = await Category.findById(this.productCategory);
-        console.log('in PRODUCT model ', category)
 
         // Calculate the discounted price based on the higher percentage
         const highestPercentage = Math.max(
             category.categoryOfferPercentage,
             this.productOfferPercentage
         );
+
+        // Save the highest percentage to the highestOfferPercentage field
+        this.highestOfferPercentage = highestPercentage;
 
         // Apply the discount to the product price
         const discountMultiplier = 1 - highestPercentage / 100;

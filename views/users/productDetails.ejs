@@ -35,7 +35,11 @@
                     </h4>
 
                     <span class="mtext-106 cl2">
-                        ₹ <%= product.productPrice %>
+                        <% if(product.productPrice===product.discountedPrice) { %>
+                            ₹<%= product.productPrice %>
+                                <% }else{ %>
+                            <del style="color: red;">₹<%= product.productPrice %></del> <span style="color: green;"><%= product.highestOfferPercentage %>%off</span>  &nbsp; &nbsp; &nbsp; ₹<%= product.discountedPrice %>
+                                    <% } %>
                     </span>
 
                     <p class="stext-102 cl3 p-t-23">

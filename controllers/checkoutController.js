@@ -174,7 +174,7 @@ module.exports = {
             // Calculate the total order amount based on the cart contents
             let totalAmount = 0;
             for (const item of cartItems.items) {
-                totalAmount += item.productId.productPrice * item.quantity;
+                totalAmount += item.productId.discountedPrice * item.quantity;
             }
             console.log(`totalAmount: ${totalAmount}`)
 
@@ -216,7 +216,7 @@ module.exports = {
                 products: cartItems.items.map(item => ({
                     productId: item.productId._id,
                     quantity: item.quantity,
-                    price: item.productId.productPrice,
+                    price: item.productId.discountedPrice,
                     orderStatus: 'Placed', // Set the initial status for each product as 'Placed'
                     returnOrder: {
                         reason: "none",
