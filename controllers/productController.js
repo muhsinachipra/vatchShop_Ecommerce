@@ -295,38 +295,44 @@ module.exports = {
 
     loadUserProducts: async (req, res) => {
         try {
-            const { category: selectedCategory, sort } = req.query;
+            const { category: selectedCategory, sort, search } = req.query;
             const categories = await Category.find({ isListed: true });
             const filterCriteria = { isListed: true };
-
+    
             if (selectedCategory) {
                 const categoryObject = await Category.findOne({
                     categoryName: { $regex: new RegExp(".*" + selectedCategory + ".*", "i") },
                 });
-
+    
                 if (categoryObject) {
                     filterCriteria.productCategory = categoryObject._id;
                 }
             }
-
+    
+            // Add search functionality
+            if (search) {
+                filterCriteria.productName = { $regex: new RegExp(".*" + search + ".*", "i") };
+            }
+    
             let sortOption = {};
-
+    
             if (sort === "lowtohigh") {
                 sortOption = { discountedPrice: 1 };
             } else if (sort === "hightolow") {
                 sortOption = { discountedPrice: -1 };
             }
-
+    
             const products = await Product.find(filterCriteria)
                 .populate('productCategory')
                 .sort(sortOption);
-
-            res.render('productView', { product: products, category: categories, currentSort: sort, selectedCategory });
+    
+            res.render('productView', { product: products, category: categories, currentSort: sort, selectedCategory, search });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Internal Server Error');
         }
     },
+    
 
     loadUserProductDetails: async (req, res) => {
 

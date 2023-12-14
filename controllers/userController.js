@@ -287,7 +287,7 @@ module.exports = {
 
     loadHome: async (req, res) => {
         try {
-            const { category: selectedCategory, sort } = req.query;
+            const { category: selectedCategory, sort, search } = req.query;
             const categories = await Category.find({ isListed: true });
             const filterCriteria = { isListed: true };
 
@@ -301,6 +301,11 @@ module.exports = {
                 }
             }
 
+            // Add search functionality
+            if (search) {
+                filterCriteria.productName = { $regex: new RegExp(".*" + search + ".*", "i") };
+            }
+
             let sortOption = {};
 
             if (sort === "lowtohigh") {
@@ -311,19 +316,18 @@ module.exports = {
 
             const products = await Product.find(filterCriteria)
                 .populate('productCategory')
-                .sort(sortOption)
-                .limit(8);
+                .sort(sortOption);
 
             const Analog = await Category.findOne({ categoryName: 'Analog' });
             const Smart = await Category.findOne({ categoryName: 'Smart' });
             const Digital = await Category.findOne({ categoryName: 'Digital' });
-    
-            res.render('userHome', { product: products, Digital, Smart, Analog, category: categories, currentSort: sort, selectedCategory });
+
+            res.render('userHome', { product: products, Digital, Smart, Analog, category: categories, currentSort: sort, selectedCategory, search });
         } catch (error) {
             handleDatabaseError(res, error);
         }
     },
-    
+
 
     verifyOTP: async (req, res) => {
         try {
