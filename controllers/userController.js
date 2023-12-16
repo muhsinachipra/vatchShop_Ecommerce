@@ -376,5 +376,5 @@ module.exports = {
         } catch (error) {
             handleDatabaseError(res, error);
         }
-    }
+    },
 };

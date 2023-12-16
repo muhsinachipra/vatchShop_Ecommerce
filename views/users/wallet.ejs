@@ -1,0 +1,117 @@
+<%- include('./layouts/header2.ejs') %>
+
+    <div class="bg2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 m-t-90">
+                    <h2 class="checkout-title mb-3">Add Money</h2>
+                    <div class="form-group">
+                        <label for="company-name">Enter Amount</label>
+                        <input type="text" class="form-control" id="amount" name="amount">
+                        <p id="amount-error" style="color: red;"></p>
+                    </div>
+                    <div class="col-12 text-center mb-3">
+                        <button type="button" id="submitButton" class="btn btn-dark">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        function addToWallet() {
+            const submitBtn = document.getElementById('submitButton');
+            submitBtn.addEventListener('click', async function (event) {
+                event.preventDefault();
+                try {
+                    const amount = document.getElementById('amount').value;
+                    const response = await fetch('/addToWallet', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ amount }), // Wrap amount in an object
+                    });
+                    let responseData; // Declare a variable to store response data
+                    try {
+                        if (response.ok) {
+                            const contentType = response.headers.get('content-type');
+                            if (contentType && contentType.includes('application/json')) {
+                                responseData = await response.json();
+                                razorPayment(responseData.wallet);
+                            } else {
+                                throw new Error('Response was not in JSON format');
+                            }
+                        } else {
+                            responseData = await response.json();
+                        }
+                    } catch (error) {
+                        console.error('Error in response processing:', error);
+                    }
+                } catch (error) {
+                    console.error('There was an error:', error);
+                }
+            });
+        }
+
+        addToWallet();
+
+        // Add razorPayment here within the same script tag
+        function razorPayment(wallet) {
+            var options = {
+                key: '<%= process.env.RAZORPAY_KEY_ID %>',
+                amount: parseInt(wallet.amount),
+                currency: "INR",
+                name: "Shopify",
+                description: "Test Transaction",
+                image: "https://cdn.shopify.com/app-store/listing_images/a53cf2ce9b5dabf5dd222b3615c29569/icon/CPXdk7L0lu8CEAE=.png",
+                order_id: wallet.id,
+                handler: function (response) {
+                    verifyPayment(response, wallet);
+                },
+                prefill: {
+                    name: "Gaurav Kumar",
+                    email: "gaurav.kumar@example.com",
+                    contact: "9000090000"
+                },
+                notes: {
+                    address: "Razorpay Corporate Office",
+                },
+                theme: {
+                    color: "#3399cc"
+                },
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        }
+
+
+
+        function verifyPayment(payment, wallet) {
+            $.ajax({
+                url: "/verifyWalletPayment",
+                method: "post",
+                data: {
+                    payment: payment,
+                    wallet: wallet,
+                },
+                success: (response) => {
+                    if (response.success == true) {
+                        window.location.href = "/userProfile";
+
+                    } else {
+                        swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "Payment failed",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+
+    <%- include('./layouts/footer.ejs') %>

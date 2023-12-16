@@ -33,6 +33,8 @@ const cartController = require("../controllers/cartController");
 const profileController = require("../controllers/profileController");
 const checkoutController = require("../controllers/checkoutController");
 const orderController = require("../controllers/orderController");
+const wishlistController = require("../controllers/wishlistController");
+const walletController = require("../controllers/walletController");
 
 
 // user_route.get('/logout',auth.isUserLogin,userController.userLogout)
@@ -83,6 +85,11 @@ user_route.get("/thankyou", auth.isUserLogin, checkoutController.loadThankyou);
 
 user_route.get('/orderdetails/:orderId', auth.isUserLogin, orderController.loadOrderDetails);
 user_route.post('/cancelorder/:productId', orderController.cancelOrderAjax);
+
+user_route.get('/wishlist', auth.isUserLogin, wishlistController.loadWishlist);
+user_route.get('/wallet', auth.isUserLogin, walletController.loadAddWallet);
+user_route.post('/addToWallet', auth.isUserLogin, walletController.addToWallet);
+user_route.post("/verifyWalletPayment", walletController.verifyWalletPayment);
 
 
 module.exports = user_route

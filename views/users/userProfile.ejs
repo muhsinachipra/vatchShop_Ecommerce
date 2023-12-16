@@ -58,6 +58,10 @@
                                         Addresses</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link" id="tab-wallet-link" data-toggle="tab" href="#tab-wallet"
+                                        role="tab" aria-controls="tab-wallet" aria-selected="false">Wallet</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="/profile/coupons">Coupons</a>
                                 </li>
                                 <li class="nav-item">
@@ -296,6 +300,71 @@
                                                         <% } %>
                                     </div>
                                 </div><!-- END MANAGE ADDRESS -->
+
+                                <!-- WALLET -->
+                                <div class="tab-pane fade" id="tab-wallet" role="tabpanel"
+                                    aria-labelledby="tab-wallet-link">
+
+                                    <a href="/wallet">
+                                        <div class="card col-md-5 col-10 m-2 shadow-sm" id="walletDiv"
+                                            style="border-radius: 7px; background: #F3F3F9; cursor: pointer;  height: 86px;">
+                                            <div class="card-body" style="height: 190px;">
+                                                <div class="d-flex justify-content-center mt-1 py-4">
+
+                                                    <h5 class="m-0 align-self-center" style="font-weight: 300;">Add Into Wallet</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                    <div class="row">
+                                        <% if (address) { %>
+                                            <% for (let i=0; i < address.address.length; i++) { %>
+                                                <div class="col-md-6 col-12 mb-3 mt-3">
+                                                    <div class="card p-4"
+                                                        style="background: #F3F3F9; border-radius: 10px;">
+                                                        <div class="card-body">
+                                                            <h6 class="card-title" style="font-size: 15px;">
+                                                                <%= address.address[i].fullName %>
+                                                            </h6>
+                                                            <p class="card-text mt-3">
+                                                                Number: <%= address.address[i].mobile %>
+                                                            </p>
+                                                            <p class="card-text">
+                                                                Location: <%= address.address[i].state %>, <%=
+                                                                        address.address[i].district %>, <%=
+                                                                            address.address[i].city %>
+                                                            </p>
+                                                            <p class="card-text">
+                                                                Pincode: <%= address.address[i].pincode %>
+                                                            </p>
+
+                                                            <hr class="my-3">
+                                                            <div class="d-flex justify-content-between">
+                                                                <a href="/editAddress?id=<%= address.address[i]._id %>">
+                                                                    <button class="btn btn-outline-primary-2"
+                                                                        type="button" id="editBTN"
+                                                                        data-bs-toggle="modal" data-bs-target="">
+                                                                        Edit
+                                                                    </button>
+                                                                </a>
+                                                                <a
+                                                                    onclick="removeAddress('<%=address.address[i]._id%>')">
+                                                                    <button class="btn btn-outline-primary-2"
+                                                                        type="button" data-bs-toggle="modal"
+                                                                        data-bs-target="">
+                                                                        Remove
+                                                                    </button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                                    <% } else { %>
+                                                        <% } %>
+                                    </div>
+                                </div><!-- END WALLET -->
 
                             </div>
                         </div><!-- End .col-lg-9 -->
