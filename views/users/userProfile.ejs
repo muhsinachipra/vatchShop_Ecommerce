@@ -1,5 +1,25 @@
 <%- include('./layouts/header.ejs') %>
 
+    <style>
+        .addWal {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            /* or use "space-around" or "space-evenly" for additional spacing */
+        }
+
+        .cardo {
+            width: 390px;
+            border-radius: 7px;
+            background: #F3F3F9;
+            cursor: pointer;
+            height: 86px;
+            border-radius: 7px;
+            background: #F3F3F9;
+            cursor: pointer;
+            height: 86px;
+        }
+    </style>
 
     <link rel="stylesheet" href="/car/userAssets/css/profile.css">
 
@@ -79,6 +99,10 @@
                                     <h6>My Profile</h6>
 
                                     <form action="#">
+                                        <label>Your Referal Link</label>
+                                        <input type="email" class="form-control" value="<%= user.referalCode %>"
+                                            disabled>
+
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <label>First Name</label>
@@ -301,68 +325,69 @@
                                     </div>
                                 </div><!-- END MANAGE ADDRESS -->
 
+
                                 <!-- WALLET -->
                                 <div class="tab-pane fade" id="tab-wallet" role="tabpanel"
                                     aria-labelledby="tab-wallet-link">
+                                    <div class="addWal">
+                                        <a href="/wallet">
+                                            <div class="card cardo shadow-sm" id="walletDiv">
+                                                <div class="card-body" style="height: 190px;">
+                                                    <div class="d-flex justify-content-center mt-1 py-4">
 
-                                    <a href="/wallet">
-                                        <div class="card col-md-5 col-10 m-2 shadow-sm" id="walletDiv"
-                                            style="border-radius: 7px; background: #F3F3F9; cursor: pointer;  height: 86px;">
+                                                        <h5 class="m-0 align-self-center" style="font-weight: 300;">Add
+                                                            Into Wallet</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                        <div class="card cardo shadow-sm">
                                             <div class="card-body" style="height: 190px;">
                                                 <div class="d-flex justify-content-center mt-1 py-4">
-
-                                                    <h5 class="m-0 align-self-center" style="font-weight: 300;">Add Into Wallet</h5>
+                                                    <% if (wallet) { %>
+                                                        <h5 class="m-0 align-self-center" style="font-weight: 300;">
+                                                            Total Amount:
+                                                            <%= wallet.totalAmount %>
+                                                        </h5>
                                                 </div>
                                             </div>
                                         </div>
-                                    </a>
-
+                                    </div>
                                     <div class="row">
-                                        <% if (address) { %>
-                                            <% for (let i=0; i < address.address.length; i++) { %>
-                                                <div class="col-md-6 col-12 mb-3 mt-3">
-                                                    <div class="card p-4"
-                                                        style="background: #F3F3F9; border-radius: 10px;">
-                                                        <div class="card-body">
-                                                            <h6 class="card-title" style="font-size: 15px;">
-                                                                <%= address.address[i].fullName %>
-                                                            </h6>
-                                                            <p class="card-text mt-3">
-                                                                Number: <%= address.address[i].mobile %>
+                                        <% for (let i= wallet.walletHistory.length -1; i >= 0; i--) { %>
+                                            <div class="col-md-6 col-12 mb-3 mt-3">
+                                                <div class="card p-4" style="background: #F3F3F9; border-radius: 10px;">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title" style="font-size: 15px;">
+                                                            Transaction Amount: <%=
+                                                                wallet.walletHistory[i].transactionAmount %>
+                                                        </h6>
+                                                        <p class="card-text mt-3">
+                                                            transactionId: <%= wallet.walletHistory[i].transactionId %>
+                                                        </p>
+                                                        <% if(wallet.walletHistory[i].transactionType==='credit' ){ %>
+                                                            <p class="card-text" style="color: green;">
+                                                                transactionType: <%=
+                                                                    wallet.walletHistory[i].transactionType %>
                                                             </p>
-                                                            <p class="card-text">
-                                                                Location: <%= address.address[i].state %>, <%=
-                                                                        address.address[i].district %>, <%=
-                                                                            address.address[i].city %>
-                                                            </p>
-                                                            <p class="card-text">
-                                                                Pincode: <%= address.address[i].pincode %>
-                                                            </p>
+                                                            <% }else{ %>
+                                                                <p class="card-text" style="color: red;">
+                                                                    transactionType: <%=
+                                                                        wallet.walletHistory[i].transactionType %>
+                                                                </p>
+                                                                <% } %>
+                                                                    <p class="card-text">
+                                                                        transactionDate: <%=
+                                                                            wallet.walletHistory[i].transactionDate %>
+                                                                    </p>
 
-                                                            <hr class="my-3">
-                                                            <div class="d-flex justify-content-between">
-                                                                <a href="/editAddress?id=<%= address.address[i]._id %>">
-                                                                    <button class="btn btn-outline-primary-2"
-                                                                        type="button" id="editBTN"
-                                                                        data-bs-toggle="modal" data-bs-target="">
-                                                                        Edit
-                                                                    </button>
-                                                                </a>
-                                                                <a
-                                                                    onclick="removeAddress('<%=address.address[i]._id%>')">
-                                                                    <button class="btn btn-outline-primary-2"
-                                                                        type="button" data-bs-toggle="modal"
-                                                                        data-bs-target="">
-                                                                        Remove
-                                                                    </button>
-                                                                </a>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
-                                                <% } %>
-                                                    <% } else { %>
-                                                        <% } %>
+                                            </div>
+                                            <% } %>
+                                                <% } else { %>
+                                                    <% } %>
                                     </div>
                                 </div><!-- END WALLET -->
 
@@ -477,6 +502,27 @@
         }
     </script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the active tab from local storage
+            const activeTab = localStorage.getItem("activeTab");
 
+            // Set the active tab if it exists
+            if (activeTab) {
+                const tabElement = document.querySelector(`.nav-link[href="${activeTab}"]`);
+                if (tabElement) {
+                    tabElement.click();
+                }
+            }
+
+            // Listen for tab clicks and update local storage
+            const tabLinks = document.querySelectorAll('.nav-link[data-toggle="tab"]');
+            tabLinks.forEach(function (tabLink) {
+                tabLink.addEventListener("click", function () {
+                    localStorage.setItem("activeTab", this.getAttribute("href"));
+                });
+            });
+        });
+    </script>
 
     <%- include('./layouts/footer.ejs') %>

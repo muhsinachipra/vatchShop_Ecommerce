@@ -251,17 +251,38 @@ module.exports = {
                 creationTime: otpCreationTime,
             };
 
-            const { passwordConfirm, password, mobileno, email, lastName, firstName } = req.body
+            const { referalCode, passwordConfirm, password, mobileno, email, lastName, firstName } = req.body
             req.session.email = email
             const userCheck = await User.findOne({ email });
 
             if (userCheck) {
-                res.render('registration', { message: "Email already exists" });
+                res.json({ success: false, message: "Email already exists" });
             } else {
                 const hashedPassword = await securePassword(password);
 
                 if (firstName && email && lastName && mobileno) {
                     if (password === passwordConfirm) {
+                        if (referalCode) {
+                            console.log('entered referalCode : ', referalCode)
+                            const referringUser = await User.findOne({ referalCode }).populate('wallet');
+                            // const referringUser = await User.findOne({ referalCode });
+                            console.log('referringUser : ', referringUser)
+
+                            if (referringUser) {
+                                const transactionId = randomstring.generate(10);
+                                // Credit the referring user with 100 (or any desired amount)
+                                referringUser.wallet.totalAmount += 100; // Assuming 'totalAmount' is the field representing the wallet balance
+                                referringUser.wallet.walletHistory.push({
+                                    transactionAmount: 100,
+                                    transactionType: 'credit',
+                                    transactionId,
+                                });
+                                await referringUser.wallet.save();
+                            } else {
+                                return res.json({ success: false, message: "Invalid Referal Code" });
+                            }
+                        }
+
                         const user = new User({
                             firstName,
                             lastName,
@@ -272,18 +293,62 @@ module.exports = {
                         const result = await user.save();
 
                         otpSent(email, req.session.otp.code);
-                        res.render("otp");
+                        res.json({ success: true, message: "User registered successfully" });
                     } else {
-                        res.render("registration", { message: "Password doesn't match" });
+                        res.json({ success: false, message: "Password doesn't match" });
                     }
                 } else {
-                    res.render("registration", { message: "Please enter all details" });
+                    res.json({ success: false, message: "Please enter all details" });
                 }
             }
         } catch (error) {
-            handleDatabaseError(res, error);
+            res.json({ success: false, message: "Internal server error" });
         }
     },
+
+    // insertUser: async (req, res) => {
+    //     try {
+    //         const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
+    //         const currentTime = new Date();
+    //         const otpCreationTime = currentTime.getMinutes()
+    //         req.session.otp = {
+    //             code: otp,
+    //             creationTime: otpCreationTime,
+    //         };
+
+    //         const { passwordConfirm, password, mobileno, email, lastName, firstName } = req.body
+    //         req.session.email = email
+    //         const userCheck = await User.findOne({ email });
+
+    //         if (userCheck) {
+    //             res.render('registration', { message: "Email already exists" });
+    //         } else {
+    //             const hashedPassword = await securePassword(password);
+
+    //             if (firstName && email && lastName && mobileno) {
+    //                 if (password === passwordConfirm) {
+    //                     const user = new User({
+    //                         firstName,
+    //                         lastName,
+    //                         email,
+    //                         mobileno,
+    //                         password: hashedPassword
+    //                     });
+    //                     const result = await user.save();
+
+    //                     otpSent(email, req.session.otp.code);
+    //                     res.render("otp");
+    //                 } else {
+    //                     res.render("registration", { message: "Password doesn't match" });
+    //                 }
+    //             } else {
+    //                 res.render("registration", { message: "Please enter all details" });
+    //             }
+    //         }
+    //     } catch (error) {
+    //         handleDatabaseError(res, error);
+    //     }
+    // },
 
     loadHome: async (req, res) => {
         try {

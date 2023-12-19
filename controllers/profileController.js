@@ -5,6 +5,7 @@ const Category = require('../models/categoryModel');
 const Admin = require('../models/adminModel');
 const Address = require('../models/addressModel');
 const Order = require('../models/orderModel');
+const Wallet = require('../models/walletModel');
 
 
 const { ObjectId } = require('mongoose').Types;
@@ -22,10 +23,11 @@ module.exports = {
             const userData = await User.findById({ _id: id })
             const userAddress = await Address.findOne({ userId: id })
             const orderData = await Order.find({ 'user': id }).sort({ orderDate: -1 });
-
+            const walletData = await Wallet.findOne({ userId: id })
+            console.log('walletData : ',walletData)
             // Check if userData is not null or undefined
             if (userData) {
-                res.render('userProfile', { user: userData, address: userAddress, orders: orderData, error: null });
+                res.render('userProfile', { user: userData, address: userAddress, orders: orderData, error: null, wallet: walletData });
             } else {
                 console.log('User Data is null or undefined');
                 res.render('userProfile', { user: id, orders: [], error: 'User Data is null or undefined' });

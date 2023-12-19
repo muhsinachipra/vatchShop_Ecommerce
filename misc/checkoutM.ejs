@@ -190,7 +190,7 @@
                                             <th>Product</th>
                                             <th>Image</th>
                                             <th>Quantity</th>
-                                            <th>Total</th>
+                                            <th>SubTotal</th>
                                         </thead>
                                         <tbody>
                                             <% if (cart && cart.items && cart.items.length> 0) { %>
@@ -230,12 +230,10 @@
                                         </tbody>
                                     </table>
 
-                                    <div>
-                                        <h3>Sub Total</h3>
+                                    <div class="afterApplingTheCoupon" style="display: none;">
+                                        <h3>Discound Price</h3>
                                         ₹ <%= cart.subTotal %>
                                     </div>
-
-                                    <input type="hidden" id="subpass" value="<%= cart.subTotal %>">
 
                                     <div class="payment-options">
                                         <h3>Select Payment Option</h3>
@@ -275,6 +273,8 @@
         </div>
     </div>
     <!-- </form> -->
+
+
 
     <script>
 
@@ -449,6 +449,10 @@
         }
 
     </script>
+
+
+
+
     <script>
         document
             .getElementById("addAddressButton")
@@ -459,6 +463,36 @@
                 window.location.href = "/checkoutAddress";
             });
     </script>
+
+    <!-- <script>
+        function validateCheckoutForm() {
+            // Check if at least one address option is selected
+            const addressOptions = document.querySelectorAll(
+                'input[name="addressOption"]'
+            );
+            let isAddressSelected = false;
+
+            addressOptions.forEach((option) => {
+                if (option.checked) {
+                    isAddressSelected = true;
+                }
+            });
+
+            if (!isAddressSelected) {
+                // No address is selected, show a SweetAlert message
+                Swal.fire({
+                    title: "Please add an address before placing the order.",
+                    icon: "error",
+                });
+
+                return false; // Prevent the form from submitting
+            }
+
+            return true; // Allow the form to submit
+        }
+    </script> -->
+
+
     <script>
         // Get the modal and buttons
         const modal = document.getElementById('myModal');
@@ -508,10 +542,9 @@
             try {
                 // Get the coupon code input element
                 const couponCodeInput = document.getElementById('c_code');
+
                 // Get the value of the coupon code
                 const couponCode = couponCodeInput.value;
-                
-                const subTotal = document.getElementById('subpass').value;
 
                 // Check if the coupon code is not empty
                 if (!couponCode.trim()) {
@@ -521,12 +554,12 @@
                 }
 
                 // Send a request to the server to apply the coupon
-                const response = await fetch('/applyCoupon', {
+                const response = await fetch('/applyDiscount', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ couponCode, subTotal }),
+                    body: JSON.stringify({ couponCode }),
                 });
 
                 // Parse the server response
@@ -544,7 +577,11 @@
                         timer: 1500, // You can adjust the timer duration
                     });
 
-                    window.location.reload();
+                    const afterApplyingCouponDiv = document.querySelector('.afterApplingTheCoupon');
+                    afterApplyingCouponDiv.style.display = 'block';
+
+                    afterApplyingCouponDiv.innerHTML = `Discount Price: ₹ ${updatedPrice}`;
+                    // window.location.reload();
                 } else {
                     // Coupon application failed, you can handle the error or show an error message
                     console.error('Error applying coupon:', responseData.error);
@@ -563,5 +600,49 @@
             }
         }
     </script>
+
+
+    <!-- <script>
+        async function applyCoupon() {
+            try {
+                // Get the coupon code input element
+                const couponCodeInput = document.getElementById('c_code');
+
+                // Get the value of the coupon code
+                const couponCode = couponCodeInput.value;
+
+                // Fetch coupon details from the server
+                const response = await fetch(`/getCouponDetails?code=${couponCode}`);
+                const couponDetails = await response.json();
+
+                // Check if a valid coupon is selected
+                if (couponDetails && couponDetails.discountPercentage) {
+                    // Update the table with the discounted prices
+                    const tableRows = document.querySelectorAll('#orderTable tbody tr');
+
+                    tableRows.forEach(row => {
+                        // Get the original price and quantity from the row
+                        const originalPrice = parseFloat(row.querySelector('td:nth-child(4)').textContent.trim().slice(1));
+                        const quantity = parseInt(row.querySelector('td:nth-child(3)').textContent.trim());
+
+                        // Calculate the discounted price
+                        const discountedPrice = (originalPrice * (100 - couponDetails.discountPercentage) / 100) * quantity;
+
+                        // Update the price in the row
+                        row.querySelector('td:nth-child(4)').textContent = `₹ ${discountedPrice.toFixed(2)}`;
+                    });
+
+                    // Inform the user that the coupon has been applied (you can customize this part)
+                    alert(`Coupon "${couponCode}" applied successfully!`);
+                } else {
+                    // Inform the user that the entered coupon code is not valid (you can customize this part)
+                    alert('Invalid coupon code. Please enter a valid code.');
+                }
+            } catch (error) {
+                console.error('Error applying coupon:', error);
+                // Handle the error as needed
+            }
+        }
+    </script> -->
 
     <%- include('./layouts/footer.ejs') %>

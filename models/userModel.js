@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
+const uuid = require("uuid");
 
 const userSchema = new mongoose.Schema({
-
     firstName: {
         type: String,
         required: true
@@ -33,7 +33,21 @@ const userSchema = new mongoose.Schema({
     token: {
         type: String,
         default: ''
-    }
-})
+    },
+    referalCode: {
+        type: String,
+    },
+    wallet: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Wallet',
+    },
+});
 
-module.exports = mongoose.model('User', userSchema)
+// Middleware to generate a random string for referalCode before saving the user
+userSchema.pre("save", function (next) {
+    // Generate a random string using uuid
+    this.referalCode = uuid.v4();
+    next();
+});
+
+module.exports = mongoose.model('User', userSchema);

@@ -7,7 +7,7 @@
                     <h2 class="checkout-title mb-3">Add Money</h2>
                     <div class="form-group">
                         <label for="company-name">Enter Amount</label>
-                        <input type="text" class="form-control" id="amount" name="amount">
+                        <input type="text" class="form-control" id="amount" name="amount" oninput="validateAmount()">
                         <p id="amount-error" style="color: red;"></p>
                     </div>
                     <div class="col-12 text-center mb-3">
@@ -16,10 +16,27 @@
                 </div>
             </div>
         </div>
-        </div>
+    </div>
     </div>
 
     <script>
+        function validateAmount() {
+            const amountInput = document.getElementById('amount');
+            const amountError = document.getElementById('amount-error');
+            const amountValue = amountInput.value.trim();
+
+            // Regular expression to check if the value is a valid number
+            const validNumberRegex = /^\d+$/;
+
+            if (validNumberRegex.test(amountValue)) {
+                // If the input is a valid number, clear the error message
+                amountError.textContent = '';
+            } else {
+                // If the input is not a valid number, display an error message
+                amountError.textContent = 'Please enter a valid number.';
+            }
+        }
+
         function addToWallet() {
             const submitBtn = document.getElementById('submitButton');
             submitBtn.addEventListener('click', async function (event) {

@@ -40,7 +40,7 @@ cartSchema.methods.calculateSubTotal = async function () {
         this.items.forEach(item => {
             const product = products.find(product => product._id.equals(item.productId));
             if (product) {
-                total += item.quantity * product.productPrice;
+                total += item.quantity * product.discountedPrice;
             }
         });
 

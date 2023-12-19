@@ -154,5 +154,51 @@ module.exports = {
             console.log(error.message);
             res.status(500).send('Internal Server Error');
         }
-    }
+    },
+
+    applyCoupon: async (req, res) => {
+        try {
+            const { couponCode, subTotal } = req.body;
+            const userId = req.session.userId;
+            const coupon = await Coupon.findOne({ code: couponCode });
+
+            if (!coupon) {
+                return res.status(400).json({ error: 'Invalid coupon code. Please enter a valid code.' });
+            }
+
+            if (coupon.user && coupon.user.includes(userId)) {
+                return res.status(400).json({ error: 'Coupon has already been used.' });
+            }
+
+            if (subTotal <= 1000) {
+                return res.status(400).json({ error: 'Subtotal must be above 1000 to apply the coupon.' });
+            }
+
+            const cart = await Cart.findOne({ userId });
+
+            if (!cart) {
+                return res.status(400).json({ error: 'Cart not found for the user.' });
+            }
+
+            const newSubtotal = (cart.subTotal * (100 - coupon.discountPercentage)) / 100;
+
+            // Save user ID to coupon.user for future use (user can only use the coupon one time)
+            coupon.user = coupon.user ? [...coupon.user, userId] : [userId];
+            await coupon.save();
+
+            const discountedCart = await Cart.findOneAndUpdate(
+                { userId },
+                { $set: { subTotal: newSubtotal } },
+                { new: true }
+            );
+
+            return res.json({ message: 'Discount applied successfully.', updatedCart: discountedCart });
+
+        } catch (error) {
+            console.error('Error applying discount:', error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    },
+
+
 }

@@ -106,45 +106,6 @@ module.exports = {
         }
     },
 
-    applyDiscount: async (req, res) => {
-        try {
-
-            const { couponCode } = req.body;
-
-            // Fetch coupon details from the database based on the provided coupon code
-            const coupon = await Coupon.findOne({ code: couponCode });
-
-            // Check if the coupon is valid
-            if (!coupon) {
-                return res.status(400).json({ error: 'Invalid coupon code. Please enter a valid code.' });
-            }
-
-            // Fetch the user's cart
-            const userId = req.session.userId;
-            const cart = await Cart.findOne({ userId });
-
-            // Check if the cart exists
-            if (!cart) {
-                return res.status(400).json({ error: 'Cart not found for the user.' });
-            }
-
-            const newSubtotal = (cart.subTotal * (100 - coupon.discountPercentage)) / 100;
-
-            // Update the existing cart's subTotal in the database and get the updated document
-            const discountedCart = await Cart.findOneAndUpdate(
-                { userId },
-                { $set: { subTotal: newSubtotal } },
-                { new: true } // This option ensures that the updated document is returned
-            );
-
-            return res.json({ message: 'Discount applied successfully.', updatedCart: discountedCart });
-
-        } catch (error) {
-            console.error('Error applying discount:', error);
-            return res.status(500).json({ error: 'Internal Server Error' });
-        }
-    },
-
     placeOrder: async (req, res) => {
         try {
             console.log('Request Body from place Order:', req.body);
@@ -172,11 +133,7 @@ module.exports = {
             }
 
             // Calculate the total order amount based on the cart contents
-            let totalAmount = 0;
-            for (const item of cartItems.items) {
-                totalAmount += item.productId.discountedPrice * item.quantity;
-            }
-            console.log(`totalAmount: ${totalAmount}`)
+            let totalAmount = cartItems.subTotal;
 
             // Parse totalAmount as a number
             const numericTotal = parseFloat(totalAmount);

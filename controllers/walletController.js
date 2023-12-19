@@ -101,6 +101,11 @@ module.exports = {
 
             await wallet.save();
 
+            // Associate the wallet ID with the user
+            const user = await User.findById(userId);
+            user.wallet = wallet._id;
+            const usersavedwallet = await user.save();
+
             res.json({ success: true });
         } catch (error) {
             console.error(error);

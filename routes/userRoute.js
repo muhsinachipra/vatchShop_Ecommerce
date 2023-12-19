@@ -35,6 +35,7 @@ const checkoutController = require("../controllers/checkoutController");
 const orderController = require("../controllers/orderController");
 const wishlistController = require("../controllers/wishlistController");
 const walletController = require("../controllers/walletController");
+const couponController = require("../controllers/couponController");
 
 
 // user_route.get('/logout',auth.isUserLogin,userController.userLogout)
@@ -79,7 +80,7 @@ user_route.post("/verifyPayment", checkoutController.verifyPayment);
 user_route.get('/checkoutAddress', auth.isUserLogin, checkoutController.checkoutLoadAddress);
 user_route.post('/checkoutAddAddress', checkoutController.checkoutAddAddress);
 
-user_route.post('/applyDiscount', checkoutController.applyDiscount);
+user_route.post('/applyCoupon', couponController.applyCoupon);
 
 user_route.get("/thankyou", auth.isUserLogin, checkoutController.loadThankyou);
 

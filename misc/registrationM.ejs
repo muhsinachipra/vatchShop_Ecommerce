@@ -23,9 +23,8 @@
 									</p>
 								</div> -->
 							</div>
-							<form id="registration-form" class="signin-form"
-								onsubmit="return validateForm() && submitForm(event)">
-								<!-- <form id="registration-form" action="/register" class="signin-form" method="post"
+							<form id="registration-form" class="signin-form" onsubmit="submitForm(event)">
+							<!-- <form id="registration-form" action="/register" class="signin-form" method="post"
 								onsubmit="return validateForm()"> -->
 								<div class="form-group mt-3">
 									<input type="text" class="form-control" id="firstName" name="firstName" required>
@@ -52,9 +51,8 @@
 
 								</div>
 								<div class="form-group mt-3">
-									<input type="text" class="form-control" id="referalCode" name="referalCode"
-										placeholder="referalCode (Only If Any)">
-									<label for="referalCode"></label>
+									<input type="text" class="form-control" id="referalCode" name="referalCode">
+									<label class="form-control-placeholder" for="referalCode">referalCode (Only If Any)</label>
 									<span id="referalCode-error" class="text-danger"></span>
 
 								</div>
@@ -106,60 +104,58 @@
 			</div>
 		</div>
 	</section>
+
 	<script>
 		async function submitForm(event) {
-			event.preventDefault();
-			// Check if the form is valid using the validateForm function
-			if (validateForm()) {
-				// Get form data
-				const formData = new FormData(document.getElementById('registration-form'));
-				if (formData) {
-					try {
-						const response = await fetch('/register', {
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify(Object.fromEntries(formData)),
-						});
-						const result = await response.json();
-
-						if (response.ok) {
-							// Handle success
-							console.log(result);
-
-							// Check if the server response indicates success
-							if (result.success) {
-								// Show SweetAlert2 success message
-								Swal.fire({
-									icon: 'success',
-									title: 'Success!',
-									text: 'Your registration was successful!',
-								}).then(() => {
-									// Redirect to the home page
-									window.location.href = '/login'; // Update the URL as needed
-								});
-							} else {
-								// Display an error message to the user
-								Swal.fire({
-									icon: 'error',
-									title: 'Error!',
-									text: result.message,
-								});
-							}
-						} else {
-							// Handle error
-							console.error(result);
-							// Display an error message to the user
-						}
-					} catch (error) {
-						console.error(error);
-						// Handle fetch error
-					}
-				}
+		  event.preventDefault();
+	  
+		  // Get form data
+		  const formData = new FormData(document.getElementById('registration-form'));
+	  
+		  // Validate form data
+		  const isValid = await validateForm(formData);
+	  
+		  if (isValid) {
+			// Submit the form data using Fetch API
+			try {
+			  const response = await fetch('/register', {
+				method: 'POST',
+				headers: {
+				  'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(Object.fromEntries(formData)),
+			  });
+	  
+			  const result = await response.json();
+	  
+			  if (response.ok) {
+				// Handle success
+				console.log(result);
+				// Redirect or show a success message as needed
+			  } else {
+				// Handle error
+				console.error(result);
+				// Display an error message to the user
+			  }
+			} catch (error) {
+			  console.error(error);
+			  // Handle fetch error
 			}
+		  }
 		}
-
+	  
+		// Validate form function
+		async function validateForm(formData) {
+		  // Add your existing validation logic here
+		  // You may need to adjust it based on how you want to handle validation errors
+		  // Return true if the form is valid, false otherwise
+		  return validateForm();
+		}
+	  </script>
+	  
+	<!-- <script>
+		// register validation
+	
 		function validateForm() {
 			const firstName = document.getElementById('firstName').value;
 			const lastName = document.getElementById('lastName').value;
@@ -167,58 +163,58 @@
 			const email = document.getElementById('email').value;
 			const passwordConfirm = document.getElementById('passwordConfirm').value;
 			const password = document.getElementById('password').value;
-
+	
 			document.getElementById('password-error').textContent = '';
 			document.getElementById('passwordConfirm-error').textContent = '';
 			document.getElementById('email-error').textContent = '';
 			document.getElementById('firstName-error').textContent = '';
 			document.getElementById('lastName-error').textContent = '';
 			document.getElementById('mobileno-error').textContent = '';
-
+	
 			const passwordRegex = /^(?=.*[!@#$%^&*]).{6,}$/;
-
+	
 			// Validate password
 			if (!password || !passwordRegex.test(password)) {
 				document.getElementById('password-error').textContent = 'Password must be at least 6 characters and contain a special character.';
 				return false;
 			}
-
+	
 			// Validate password confirmation
 			if (!passwordConfirm || !passwordRegex.test(passwordConfirm) || password !== passwordConfirm) {
 				document.getElementById('passwordConfirm-error').textContent = 'Passwords must match and meet the criteria.';
 				return false;
 			}
-
+	
 			// Validate email
 			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 			if (!emailRegex.test(email)) {
 				document.getElementById('email-error').textContent = 'Please enter a valid email address.';
 				return false;
 			}
-
+	
 			// Validate first name and last name (should be alphabets)
 			const nameRegex = /^[A-Za-z]+$/;
 			if (!nameRegex.test(firstName)) {
 				document.getElementById('firstName-error').textContent = 'First name should only contain alphabets.';
 				return false;
 			}
-
+	
 			if (!nameRegex.test(lastName)) {
 				document.getElementById('lastName-error').textContent = 'Last name should only contain alphabets.';
 				return false;
 			}
-
+	
 			// Validate mobile number (optional, you can adjust the regex according to your needs)
 			const mobileRegex = /^[0-9]{10}$/;
 			if (!mobileRegex.test(mobileno)) {
 				document.getElementById('mobileno-error').textContent = 'Please enter a valid 10-digit mobile number.';
 				return false;
 			}
-
+	
 			// All validations passed, allow form submission
 			return true;
 		}
-	</script>
+	</script> -->
 
 
 	<%- include('./layouts/footer.ejs') %>
