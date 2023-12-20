@@ -10,11 +10,9 @@
 
                         <div class="slick3 gallery-lb">
                             <% product.productImage.forEach(function(image, index) { %>
-                                <div class="item-slick3"
-                                    data-thumb="/car/ProductImages/<%= image %>">
+                                <div class="item-slick3" data-thumb="/car/ProductImages/<%= image %>">
                                     <div class="wrap-pic-w pos-relative main-image-<%= index %>">
-                                        <img id="main-img-<%= index %>"
-                                            src="/car/ProductImages/<%= image %>"
+                                        <img id="main-img-<%= index %>" src="/car/ProductImages/<%= image %>"
                                             alt="IMG-PRODUCT">
                                         <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
                                             href="/car/ProductImages/<%= image %>">
@@ -38,8 +36,11 @@
                         <% if(product.productPrice===product.discountedPrice) { %>
                             ₹<%= product.productPrice %>
                                 <% }else{ %>
-                            <del style="color: red;">₹<%= product.productPrice %></del> <span style="color: green;"><%= product.highestOfferPercentage %>%off</span>  &nbsp; &nbsp; &nbsp; ₹<%= product.discountedPrice %>
-                                    <% } %>
+                                    <del style="color: red;">₹<%= product.productPrice %></del> <span
+                                        style="color: green;">
+                                        <%= product.highestOfferPercentage %>%off
+                                    </span> &nbsp; &nbsp; &nbsp; ₹<%= product.discountedPrice %>
+                                        <% } %>
                     </span>
 
                     <p class="stext-102 cl3 p-t-23">
@@ -109,30 +110,16 @@
                         </div>
                     </div>
 
-                    <!--  -->
+                    <!-- Add To Wishlist -->
                     <div class="flex-w flex-m p-l-100 p-t-40 respon7">
                         <div class="flex-m bor9 p-r-10 m-r-11">
                             <a href="#"
                                 class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
                                 data-tooltip="Add to Wishlist">
-                                <i class="zmdi zmdi-favorite"></i>
+                                <i class="zmdi zmdi-favorite" onclick="addToWishlist('<%= product._id %>')"></i>
                             </a>
                         </div>
-
-                        <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                            data-tooltip="Facebook">
-                            <i class="fa fa-facebook"></i>
-                        </a>
-
-                        <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                            data-tooltip="Twitter">
-                            <i class="fa fa-twitter"></i>
-                        </a>
-
-                        <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                            data-tooltip="Google Plus">
-                            <i class="fa fa-google-plus"></i>
-                        </a>
+                        <span style="color: rgb(100, 142, 202); font-family: Poppins-Regular;">Add To Wishlist</span>
                     </div>
                 </div>
             </div>
@@ -185,6 +172,27 @@
                 } else {
                     Swal("failed to add ")
 
+                }
+            }).fail(() => {
+                alert('An error occurred');
+            });
+        }
+    </script>
+    <script>
+        function addToWishlist(id) {
+            $.ajax({
+                url: "/addtowishlist",
+                method: "post",
+                data: { id: id },
+            }).done((data) => {
+                if (data.success) {
+                    Swal.fire('Product Added To Wishlist')
+                } else if (data.loginRequired) {
+                    Swal.fire('You Have To Login First')
+                } else if (data.alreadyExist) {
+                    Swal.fire('Product Already Exists In The List')
+                } else {
+                    Swal("Failed To Add ")
                 }
             }).fail(() => {
                 alert('An error occurred');

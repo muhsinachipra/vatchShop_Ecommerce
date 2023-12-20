@@ -13,6 +13,7 @@ const path = require("path")
 module.exports = {
     addToCart: async (req, res) => {
         try {
+            console.log('entered addToCart')
             if (req.session.userId) {
                 const productId = req.body.id;
                 const userId = req.session.userId;

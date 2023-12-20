@@ -115,6 +115,27 @@ module.exports = {
 
             // Save the updated order
             await order.save();
+
+
+
+            // for refund
+
+            // const refundUser = await User.findOne({ _id: order.user }).populate('wallet');
+
+            // if (refundUser) {
+            //     const transactionId = randomstring.generate(10);
+            //     // Credit the referring user with 100 (or any desired amount)
+            //     refundUser.wallet.totalAmount += 100; // Assuming 'totalAmount' is the field representing the wallet balance
+            //     refundUser.wallet.walletHistory.push({
+            //         transactionAmount: 100,
+            //         transactionType: 'credit',
+            //         transactionId,
+            //     });
+            //     await refundUser.wallet.save();
+
+            // for refund
+
+
             // Respond with JSON indicating success
             res.json({ success: true, message: 'Order canceled successfully' });
         } catch (error) {

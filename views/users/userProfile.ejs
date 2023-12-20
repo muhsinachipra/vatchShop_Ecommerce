@@ -81,9 +81,9 @@
                                     <a class="nav-link" id="tab-wallet-link" data-toggle="tab" href="#tab-wallet"
                                         role="tab" aria-controls="tab-wallet" aria-selected="false">Wallet</a>
                                 </li>
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a class="nav-link" href="/profile/coupons">Coupons</a>
-                                </li>
+                                </li> -->
                                 <li class="nav-item">
                                     <a class="nav-link" href="/logout">Sign Out</a>
                                 </li>
@@ -366,7 +366,13 @@
                                                         <p class="card-text mt-3">
                                                             transactionId: <%= wallet.walletHistory[i].transactionId %>
                                                         </p>
-                                                        <% if(wallet.walletHistory[i].transactionType==='credit' ){ %>
+
+                                                        <p class="card-text">
+                                                            transactionType: <%=
+                                                                wallet.walletHistory[i].transactionType %>
+                                                        </p>
+
+                                                        <!-- <% if(wallet.walletHistory[i].transactionType==='credit' ){ %>
                                                             <p class="card-text" style="color: green;">
                                                                 transactionType: <%=
                                                                     wallet.walletHistory[i].transactionType %>
@@ -376,12 +382,12 @@
                                                                     transactionType: <%=
                                                                         wallet.walletHistory[i].transactionType %>
                                                                 </p>
-                                                                <% } %>
+                                                                <% } %> -->
+
                                                                     <p class="card-text">
                                                                         transactionDate: <%=
                                                                             wallet.walletHistory[i].transactionDate %>
                                                                     </p>
-
                                                     </div>
                                                 </div>
                                             </div>
