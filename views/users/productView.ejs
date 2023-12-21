@@ -1,8 +1,51 @@
-<%- include('./layouts/header.ejs') %>
+<%- include('./layouts/header2.ejs') %>
+
+<style>
+	.pagination {
+		display: flex;
+		justify-content: center;
+		margin-top: 20px;
+	}
+
+	.list {
+		display: flex;
+		list-style: none;
+		padding: 0;
+	}
+
+	.page-btn {
+		margin-right: 5px;
+	}
+
+	.page-btn a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+		color: #000000;
+		width: 2.5rem;
+		height: 2.5rem;
+		border: 1px solid #dddddd;
+		border-radius: 50%;
+		transition: color 128ms ease-out, background-color 128ms ease-out;
+
+		&:hover,
+		&:focus,
+		&:active {
+			background-color: #dfdfdf;
+		}
+
+		&.active {
+			color: #ffffff;
+			background-color: #1b95ff;
+		}
+	}
+</style>
+
 
 	<!-- Product -->
-	<div class="bg0 m-t-70 p-b-140">
-		<div class="container  pt-5 mt-5">
+	<div class="bg0 p-b-140">
+		<div class="container  pt-5">
 			<div class="flex-w flex-sb-m p-b-52">
 				<div class="flex-w flex-l-m filter-tope-group m-tb-10">
 					<a href="/productView" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5">
@@ -97,6 +140,7 @@
 										Quick View
 									</a>
 								</div>
+								
 								<div class="block2-txt flex-w flex-t p-t-14">
 									<div class="block2-txt-child1 flex-col-l">
 										<a href="/productDetails?id=<%= item._id %>"
@@ -115,7 +159,10 @@
 										</span>
 									</div>
 									<div class="block2-txt-child2 flex-r p-t-3">
-										<!-- Add to wishlist button here if needed -->
+										<a class="btn-addwish-b2 dis-block pos-relative"  onclick="addToWishlist('<%= item._id %>')">
+											<img class="icon-heart1 dis-block trans-04" src="/car/userAssets/images/icons/icon-heart-01.png" alt="ICON">
+											<img class="icon-heart2 dis-block trans-04 ab-t-l" src="/car/userAssets/images/icons/icon-heart-02.png" alt="ICON">
+										</a>
 									</div>
 								</div>
 							</div>
@@ -125,12 +172,11 @@
 
 			</div>
 
-			<!-- Bootstrap-styled Pagination -->
-			<nav aria-label="Page navigation">
-				<ul class="pagination justify-content-center">
+			<nav aria-label="Page navigation" class="pagination">
+				<ul class="list">
 					<% for (let i=1; i <=totalPages; i++) { %>
-						<li class="page-item <%= currentPage === i ? 'active' : '' %>">
-							<a class="flex-c-m stext-101 cl0 size-108 bg1 bor1 hov-btn2 p-lr-15 trans-04"
+						<li class="page-btn <%= currentPage === i ? 'active' : '' %>">
+							<a class="page-link"
 								href="/productView?page=<%= i %>&category=<%= selectedCategory %>&sort=<%= currentSort || '' %>&search=<%= search || '' %>">
 								<%= i %>
 							</a>
@@ -139,9 +185,7 @@
 				</ul>
 			</nav>
 
-
 		</div>
 	</div>
-
 
 	<%- include('./layouts/footer.ejs') %>

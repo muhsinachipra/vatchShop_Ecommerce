@@ -1,0 +1,157 @@
+<!-- Add the Razorpay script at the end of the body -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!-- Add the Razorpay script at the end of the body -->
+
+<!--===============================================================================================-->
+<script src="/car/userAssets/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+<script src="/car/userAssets/vendor/bootstrap/js/popper.js"></script>
+<script src="/car/userAssets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="/car/userAssets/vendor/select2/select2.min.js"></script>
+<script>
+    $(".js-select2").each(function () {
+        $(this).select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $(this).next('.dropDownSelect2')
+        });
+    })
+</script>
+<!--===============================================================================================-->
+<script src="/car/userAssets/vendor/daterangepicker/moment.min.js"></script>
+<script src="/car/userAssets/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+<script src="/car/userAssets/vendor/slick/slick.min.js"></script>
+<script src="/car/userAssets/js/slick-custom.js"></script>
+<!--===============================================================================================-->
+<script src="/car/userAssets/vendor/parallax100/parallax100.js"></script>
+<script>
+    $('.parallax100').parallax100();
+</script>
+<!--===============================================================================================-->
+<script src="/car/userAssets/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<script>
+    $('.gallery-lb').each(function () {
+        $(this).magnificPopup({
+            delegate: 'a',
+            type: 'image',
+            gallery: {
+                enabled: true
+            },
+            mainClass: 'mfp-fade'
+        });
+    });
+</script>
+<!--===============================================================================================-->
+<script src="/car/userAssets/vendor/isotope/isotope.pkgd.min.js"></script>
+<!--===============================================================================================-->
+<script src="/car/userAssets/vendor/sweetalert/sweetalert.min.js"></script>
+<script>
+    $('.js-addwish-b2').on('click', function (e) {
+        e.preventDefault();
+    });
+
+    $('.js-addwish-b2').each(function () {
+        var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
+        $(this).on('click', function () {
+            swal(nameProduct, "is added to wishlist !", "success");
+            $(this).addClass('js-addedwish-b2');
+            $(this).off('click');
+        });
+    });
+
+    $('.js-addwish-detail').each(function () {
+        var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
+        $(this).on('click', function () {
+            swal(nameProduct, "is added to wishlist !", "success");
+            $(this).addClass('js-addedwish-detail');
+            $(this).off('click');
+        });
+    });
+
+    $('.js-addcart-detail').each(function () {
+        var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+        $(this).on('click', function () {
+            swal(nameProduct, "is added to cart !", "success");
+        });
+    });
+</script>
+<!--===============================================================================================-->
+<script src="/car/userAssets/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script>
+    $('.js-pscroll').each(function () {
+        $(this).css('position', 'relative');
+        $(this).css('overflow', 'hidden');
+        var ps = new PerfectScrollbar(this, {
+            wheelSpeed: 1,
+            scrollingThreshold: 1000,
+            wheelPropagation: false,
+        });
+        $(window).on('resize', function () {
+            ps.update();
+        })
+    });
+</script>
+<!--===============================================================================================-->
+<script src="/car/userAssets/js/main.js"></script>
+
+<!-- login page style -->
+<script src="/car/userAssets/login/js/jquery.min.js"></script>
+<script src="/car/userAssets/login/js/popper.js"></script>
+<script src="/car/userAssets/login/js/bootstrap.min.js"></script>
+<script src="/car/userAssets/login/js/main.js"></script>
+<!-- login page style -->
+
+<!-- userProfile page script -->
+<script src="/car/userAssets/validation/validEditProfile.js"></script>
+<script src="/car/userAssets/validation/validAddress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- userProfile page script -->
+
+<!--  Bootstrap JS library -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--  Popper.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+<!-- Bootstrap JS library -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- item count function -->
+<script>
+    $(document).ready(function () {
+        // Function to update item count
+        function updateItemCount(apiEndpoint, countElement, countElement2) {
+            // Make an AJAX request to get the current item count
+            $.ajax({
+                url: apiEndpoint,
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Update the item count on success
+                    $(countElement).attr('data-notify', data.totalItems);
+                    $(countElement2).attr('data-notify', data.totalItems);
+                },
+                error: function () {
+                    console.error('Error fetching data');
+                }
+            });
+        }
+
+        // Call the updateItemCount function for cart on page load
+        updateItemCount('/cartCount', '#cartItemCount', '#cartItemCount2');
+
+        // Call the updateItemCount function for wishlist on page load
+        updateItemCount('/wishlistCount', '#wishlistItemCount', '#wishlistItemCount2');
+
+        // You can also call these functions whenever the counts need to be updated
+        // For example, after adding or removing items from the cart or wishlist
+    });
+</script>
+
+
+</body>
+
+</html>

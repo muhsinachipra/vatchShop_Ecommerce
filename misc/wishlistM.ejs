@@ -28,23 +28,34 @@
 									<th class="column-1">Product</th>
 									<th class="column-2"></th>
 									<th class="column-3">Price</th>
-									<th class="column-4">Offer</th>
-									<th class="column-5">Discount Price</th>
+									<th class="column-4">Discount Price</th>
+									<th class="column-5"></th>
 								</tr>
 
-								<% if (wishlistItems && wishlistItems.length> 0) { %>
-									<% wishlistItems.forEach((item, index)=> { %>
+								<% if (wishlistProducts && wishlistProducts.length> 0) { %>
+									<% wishlistProducts.forEach((item, index)=> { %>
 
 										<tr class="table_row">
 											<td class="column-1">
 												<div class="how-itemcart1">
-													<img src="/car/ProductImages/<%= item.productId.productImage[0] %>" alt="IMG">
+													<a href="/productDetails?id=<%= item._id %>">
+													<img src="/car/ProductImages/<%= item.productImage[0] %>"
+														alt="IMG">
+													</a>
 												</div>
 											</td>
-											<td class="column-2"><%=item.productId.productName%></td>
-											<td class="column-3">₹ <%=item.productId.productPrice%></td>
-											<td class="column-4"><%=item.productId.highestOfferPercentage%> %</td>
-											<td class="column-5">₹ <%=item.productId.discountedPrice%></td>
+											<td class="column-2">
+												<%=item.productName%>
+											</td>
+											<td class="column-3">₹ <%=item.productPrice%>
+											</td>
+											<td class="column-4">
+												₹ <%=item.discountedPrice%>
+											</td>
+											<td class="column-5">
+												<a class=" btn  text-black "
+                                                        onclick="removeProduct('<%=item._id%>')">Remove</a>
+											</td>
 										</tr>
 										<% }) %>
 											<% } else { %>
@@ -56,7 +67,7 @@
 												</tr>
 												<% } %>
 
-													<tr class="table_row">
+													<!-- <tr class="table_row">
 														<td class="column-1">
 															<div class="how-itemcart1">
 																<img src="/car/userAssets/images/item-cart-05.jpg"
@@ -82,7 +93,7 @@
 															</div>
 														</td>
 														<td class="column-5">$ 16.00</td>
-													</tr>
+													</tr> -->
 							</table>
 						</div>
 					</div>
@@ -92,4 +103,44 @@
 		</div>
 	</form>
 
+	<script>
+		function removeProduct(proId) {
+            // Display a confirmation dialog
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won\'t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, remove it!'
+            }).then((result) => {
+                // Check if the user confirmed the action
+                if (result.isConfirmed) {
+                    // User confirmed, proceed with removal
+                    $.ajax({
+                        url: '/removeFromWishlist',
+                        method: 'post',
+                        encoded: true,
+                        data: {
+                            product: proId,
+                        },
+                    }).done((data) => {
+                        if (data.success) {
+
+                            location.reload();
+                        } else {
+                            // Handle unsuccessful removal
+                            Swal.fire(
+                                'Error!',
+                                'Failed to remove the product.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+                // If the user clicked "Cancel", do nothing
+            });
+        }
+	</script>
 	<%- include('./layouts/footer.ejs') %>

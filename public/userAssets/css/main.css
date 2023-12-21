@@ -506,6 +506,8 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
   height: 15px;
   padding: 0 3px;
   background-color: #717fe0;
+
+  border-radius: 50%; /* Make it circular */
 }
 
 /*---------------------------------------------*/

@@ -443,33 +443,58 @@
 <!-- Bootstrap JS library -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- cart item count function -->
+<!-- item count function -->
 <script>
     $(document).ready(function () {
-        // Function to update cart item count
-        function updateCartItemCount() {
-            // Make an AJAX request to get the current cart information
+        // Function to update item count
+        function updateItemCount(apiEndpoint, countElement, countElement2) {
+            // Make an AJAX request to get the current item count
             $.ajax({
-                url: '/cartCount', // Replace with your actual API endpoint for fetching cart data
+                url: apiEndpoint,
                 method: 'GET',
                 dataType: 'json',
                 success: function (data) {
-                    // Update the cart item count on success
-                    $('#cartItemCount').attr('data-notify', data.totalItems);
-                    $('#cartItemCount2').attr('data-notify', data.totalItems);
+                    // Update the item count on success
+                    $(countElement).attr('data-notify', data.totalItems);
+                    $(countElement2).attr('data-notify', data.totalItems);
                 },
                 error: function () {
-                    console.error('Error fetching cart data');
+                    console.error('Error fetching data');
                 }
             });
         }
 
-        // Call the updateCartItemCount function on page load
-        updateCartItemCount();
+        // Call the updateItemCount function for cart on page load
+        updateItemCount('/cartCount', '#cartItemCount', '#cartItemCount2');
 
-        // You can also call this function whenever the cart is updated
-        // For example, after adding or removing items from the cart
+        // Call the updateItemCount function for wishlist on page load
+        updateItemCount('/wishlistCount', '#wishlistItemCount', '#wishlistItemCount2');
+
+        // You can also call these functions whenever the counts need to be updated
+        // For example, after adding or removing items from the cart or wishlist
     });
+</script>
+<!-- addToWishlist -->
+<script>
+    function addToWishlist(id) {
+        $.ajax({
+            url: "/addtowishlist",
+            method: "post",
+            data: { id: id },
+        }).done((data) => {
+            if (data.success) {
+                Swal.fire('Product Added To Wishlist')
+            } else if (data.loginRequired) {
+                Swal.fire('You Have To Login First')
+            } else if (data.alreadyExist) {
+                Swal.fire('Product Already Exists In The List')
+            } else {
+                Swal("Failed To Add ")
+            }
+        }).fail(() => {
+            alert('An error occurred');
+        });
+    }
 </script>
 
 </body>

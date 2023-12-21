@@ -1,6 +1,6 @@
-<%- include('./layouts/header.ejs') %>
+<%- include('./layouts/header2.ejs') %>
 
-    <div class="container pt-5 mt-5">
+    <div class="container mt-5">
         <div class="row">
             <div class="col-md-6 col-lg-7 p-b-30">
                 <div class="p-l-25 p-r-30 p-lr-0-lg">
@@ -178,26 +178,6 @@
             });
         }
     </script>
-    <script>
-        function addToWishlist(id) {
-            $.ajax({
-                url: "/addtowishlist",
-                method: "post",
-                data: { id: id },
-            }).done((data) => {
-                if (data.success) {
-                    Swal.fire('Product Added To Wishlist')
-                } else if (data.loginRequired) {
-                    Swal.fire('You Have To Login First')
-                } else if (data.alreadyExist) {
-                    Swal.fire('Product Already Exists In The List')
-                } else {
-                    Swal("Failed To Add ")
-                }
-            }).fail(() => {
-                alert('An error occurred');
-            });
-        }
-    </script>
+    
 
     <%- include('./layouts/footer.ejs') %>

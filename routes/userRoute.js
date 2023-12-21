@@ -89,6 +89,8 @@ user_route.post('/cancelorder/:productId', orderController.cancelOrderAjax);
 
 user_route.get('/wishlist', auth.isUserLogin, wishlistController.loadWishlist);
 user_route.post('/addtowishlist', wishlistController.addToWishlist)
+user_route.post('/removeFromWishlist', wishlistController.removeProduct)
+user_route.get('/wishlistCount', wishlistController.wishlistCount)
 
 
 user_route.get('/wallet', auth.isUserLogin, walletController.loadAddWallet);
