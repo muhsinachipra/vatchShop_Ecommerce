@@ -1,22 +1,39 @@
 <%- include('./layouts/header2.ejs') %>
 
-<style>
-    .divv {
-        text-align: center; /* Center-align text within the div */
-        margin: auto; /* Center the div itself horizontally */
-        max-width: 600px; /* Optional: Set a maximum width for the content */
-        padding: 20px; /* Optional: Add padding for better aesthetics */
-    }
-</style>
+    <style>
+        .divv {
+            text-align: center;
+            /* Center-align text within the div */
+            margin: auto;
+            /* Center the div itself horizontally */
+            max-width: 600px;
+            /* Optional: Set a maximum width for the content */
+            padding: 20px;
+            /* Optional: Add padding for better aesthetics */
+            font-family: Poppins-Regular;
+        }
+        .lot {
+            text-align: center;
+        }
+    </style>
 
-<div class="divv">
-    <h1>Thank You for Your Purchase!</h1>
-    <p>Your order has been successfully placed.</p>
-    <p>Order ID: 123456789</p> <!-- Display the actual order ID from your system -->
-    <p>Estimated Delivery Date: <% order.expectedDelivery.toLocaleDateString('en-US', {month: 'short' , day: 'numeric' ,
-            year: 'numeric' }) %>
-    </p> <!-- Display the estimated delivery date -->
-    <p>For any inquiries, please <a href="/contact">contact us</a>.</p>
+    <div class="divv">
+        <h1 style="font-family: Poppins-Regular;">Thank You for Your Purchase!</h1>
+        <p>Your order has been successfully placed.</p>
+    </div>
+
+    <!-- Lottie animation -->
+    <div class="lot">
+        <img src="/car/userAssets/LOTTI.gif" alt="">
+    </div>
+
+    <div class="d-flex justify-content-center">
+    <a href="/">
+        <button
+            class="flex-c-m stext-101 cl0 size-115 mt-5 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+            Home
+        </button>
+    </a>
 </div>
 
     <%- include('./layouts/footer2.ejs') %>

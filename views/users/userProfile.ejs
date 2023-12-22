@@ -99,7 +99,7 @@
                                     <h6>My Profile</h6>
 
                                     <form action="#">
-                                        <label>Your Referal Link</label>
+                                        <label>Your Referal Link (Refer to your friends and earn money)</label>
                                         <input type="email" class="form-control" value="<%= user.referalCode %>"
                                             disabled>
 
@@ -230,7 +230,7 @@
                                             <!-- Loop through user's orders and generate table rows -->
                                             <% if (orders && orders.length> 0) { %>
                                                 <% orders.forEach(order=> { %>
-                                                    <tr class="text-center">
+                                                    <tr class="text-center" onclick="window.location='/orderdetails/<%= order._id %>'">
                                                         <td>
                                                             <%= order._id %>
                                                         </td>
