@@ -300,7 +300,7 @@
                     }
 
                     if (!paymentMethodRadio) {
-                        throw new Error('Payment method not selected');
+                        Swal.fire('Please Select A Payment Method');
                     }
 
                     const addressId = selectedAddress.value;
@@ -368,7 +368,7 @@
                         } else if (error.message === 'Insufficient wallet balance') {
                             Swal.fire('Error', 'Insufficient wallet balance', 'error');
                         } else {
-                            Swal.fire('Order Placement Error', 'An error occurred during order placement', 'error');
+                            Swal.fire('Order Placement Error', error.message , 'error');
                         }
                     }
                 } catch (error) {

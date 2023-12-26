@@ -367,27 +367,22 @@
                                                             transactionId: <%= wallet.walletHistory[i].transactionId %>
                                                         </p>
 
-                                                        <p class="card-text">
-                                                            transactionType: <%=
-                                                                wallet.walletHistory[i].transactionType %>
-                                                        </p>
-
-                                                        <!-- <% if(wallet.walletHistory[i].transactionType==='credit' ){ %>
-                                                            <p class="card-text" style="color: green;">
-                                                                transactionType: <%=
-                                                                    wallet.walletHistory[i].transactionType %>
+                                                        <% if(wallet.walletHistory[i].transactionType==='credit' ){ %>
+                                                            <p class="card-text">
+                                                                transactionType: <span style="color: green;"><%=
+                                                                    wallet.walletHistory[i].transactionType %></span>
                                                             </p>
-                                                            <% }else{ %>
-                                                                <p class="card-text" style="color: red;">
-                                                                    transactionType: <%=
-                                                                        wallet.walletHistory[i].transactionType %>
-                                                                </p>
-                                                                <% } %> -->
+                                                        <% }else{ %>
+                                                            <p class="card-text">
+                                                                transactionType: <span style="color: red;"><%=
+                                                                    wallet.walletHistory[i].transactionType %></span>
+                                                            </p>
+                                                        <% } %>
 
-                                                                    <p class="card-text">
-                                                                        transactionDate: <%=
-                                                                            wallet.walletHistory[i].transactionDate %>
-                                                                    </p>
+                                                        <p class="card-text">
+                                                            transactionDate: <%=
+                                                                wallet.walletHistory[i].transactionDate %>
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>

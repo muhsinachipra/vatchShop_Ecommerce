@@ -63,30 +63,53 @@
                                                         class="col-md-2 text-center d-flex justify-content-center align-items-center">
                                                         <% if (order.products[i].orderStatus !=="Cancelled" ) { %>
                                                             <% if (order.products[i].orderStatus=="Delivered" ) { %>
-                                                                <a href="#"
-                                                                    onclick="confirmAndCancel('<%= order.products[i]._id %>')"
-                                                                    style="color: red;">Return Product</a>
+                                                                <a style="color: green;">Delivered</a>
                                                                 <% } else{%>
+
                                                                     <a href="#"
-                                                                        onclick="confirmAndCancel('<%= order.products[i]._id %>')"
+                                                                        onclick="confirmAndCancel('<%= order.products[i]._id %>','<%= order.products[i].price %>')"
                                                                         style="color: red;">Cancel Order</a>
+
                                                                     <%} %>
                                                                         <% } %>
                                                         <% if (order.products[i].orderStatus ==="Cancelled" ) { %>
-                                                            <a href="#" style="color: red;">Cancelled</a>
+                                                            <a style="color: red;">Cancelled</a>
                                                         <% } %>
                                                     </div>
 
                                                 </div>
                                                 <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
 
-
-                                                
-
+                                                <% if (order.products[i].orderStatus ==="Cancelled" ) { %>
+                                                    <p style="color: red; text-align: center;">The refunded amount will be credited back to your wallet.</p>
+                                                <% } %>
 
                                                 <% if (order.products[i].orderStatus !=="Cancelled" ) { %>
-
+                                                    <% if (order.products[i].orderStatus=="Delivered" ) { %>
                                                     <div class="row d-flex align-items-center"
+                                                        id="status-row-<%= order.products[i]._id %>">
+                                                        <div class="col-md-2">
+                                                            <p class="text-muted mb-0 small">Track Order</p>
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <div class="progress"
+                                                                style="height: 6px; border-radius: 16px;">
+                                                                <div class="progress-bar" role="progressbar"
+                                                                    style="width: 100%; border-radius: 16px; background-color: #a8729a;"
+                                                                    aria-valuenow="80" aria-valuemin="0"
+                                                                    aria-valuemax="100"></div>
+                                                            </div>
+                                                            <div class="d-flex justify-content-around mb-1">
+                                                                <p class="text-muted mt-1 mb-0 small ms-xl-5">
+                                                                    Out for
+                                                                    delivary</p>
+                                                                <p class="text-muted mt-1 mb-0 small ms-xl-5">
+                                                                    Delivered</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <% } else{%>
+                                                        <div class="row d-flex align-items-center"
                                                         id="status-row-<%= order.products[i]._id %>">
                                                         <div class="col-md-2">
                                                             <p class="text-muted mb-0 small">Track Order</p>
@@ -108,8 +131,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <% } %>
+                                                    <% }} %>
                                                     
 
                                             </div>
@@ -139,7 +161,7 @@
                                                     </p>
                                                     <p class="text-muted mb-0"><span class="fw-bold me-4">SubTotal
                                                         </span>
-                                                        ₹ <%= order.totalAmount %>
+                                                        ₹ <%= order.totalAmount.toLocaleString() %>
                                                     </p>
                                                 </div>
 
@@ -157,7 +179,7 @@
                                 <h5
                                     class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">
                                     Total
-                                    payable: <span class="h2 mb-0 ms-2">₹ <%= order.totalAmount %></span></h5>
+                                    payable: <span class="h2 mb-0 ms-2">₹ <%= order.totalAmount.toLocaleString() %></span></h5>
                             </div>
                         </div>
                     </div>
@@ -172,7 +194,7 @@
 
     <script>
 
-        function confirmAndCancel(productId) {
+        function confirmAndCancel(productId, productPrice) {
             console.log('Confirm and Cancel function called');
 
             Swal.fire({
@@ -187,7 +209,7 @@
                 if (result.isConfirmed) {
                     console.log('Confirmed to cancel order');
                     // Send AJAX request to cancel the order
-                    axios.post(`/cancelorder/${productId}`)
+                    axios.post(`/cancelorder/${productId}`, { productPrice: productPrice })
                         .then(response => {
                             console.log('Cancel order AJAX response:', response);
 

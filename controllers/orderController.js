@@ -5,6 +5,8 @@ const Category = require('../models/categoryModel');
 const Admin = require('../models/adminModel');
 const Address = require('../models/addressModel');
 const Order = require('../models/orderModel');
+const Wallet = require('../models/walletModel');
+const randomstring = require('randomstring');
 const axios = require('axios');
 
 const mongoose = require('mongoose');
@@ -68,6 +70,7 @@ module.exports = {
     cancelOrderAjax: async (req, res) => {
         try {
             const productId = req.params.productId;
+            const productPrice = req.body.productPrice;
 
             const order = await Order.findOne({
                 'products._id': productId,
@@ -92,6 +95,20 @@ module.exports = {
                     message: `Order cannot be canceled at this stage due to product "${invalidProduct.productId.productName}" with status "${invalidProduct.orderStatus}"`,
                 });
             }
+
+            const userWallet = await Wallet.findOne({ userId: req.session.userId });
+
+            let transactionId = randomstring.generate(10);
+
+            userWallet.totalAmount += parseInt(productPrice);
+            userWallet.walletHistory.push({
+                transactionAmount: productPrice,
+                transactionType: 'credit',
+                transactionId:transactionId+"_"+"refund",
+            });
+
+            await userWallet.save();
+            order.totalAmount -= productPrice
 
             let productForStockIncrease;
             let canceledQuantity;

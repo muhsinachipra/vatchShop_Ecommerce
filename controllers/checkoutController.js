@@ -6,7 +6,8 @@ const Admin = require('../models/adminModel');
 const Address = require('../models/addressModel');
 const Order = require('../models/orderModel');
 const Coupon = require('../models/couponModel');
-
+const Wallet = require('../models/walletModel');
+const randomstring = require('randomstring');
 
 const { ObjectId } = require('mongoose').Types;
 // const { ObjectId } = require('mongodb');
@@ -52,7 +53,7 @@ module.exports = {
             }
 
             let razoKey = process.env.RAZORPAY_KEY_ID
-            console.log('RAZORPAY_KEY_ID :',razoKey)
+            console.log('RAZORPAY_KEY_ID :', razoKey)
 
             res.render('checkout', { user: userData, address: userAddress, cart: cartData, coupons: couponData, razoKey });
         } catch (error) {
@@ -142,7 +143,7 @@ module.exports = {
 
             if (!userAddrs || !userAddrs.address || userAddrs.address.length === 0) {
                 console.log('User addresses not found');
-                return res.status(400).json({ error: "User addresses not found" });
+                return res.status(400).json({ error: "Address not selected" });
             }
 
             const shipAddress = userAddrs.address.find((address) => {
@@ -285,16 +286,73 @@ module.exports = {
                     }
                     /////////////////////////update stock///////////////////////////////////////
 
-
                     // Handle the Razorpay order response here
                     res.status(200).json({ order });
                 });
 
+            } else if (paymentOption === 'Wallet') {
+                console.log('Entered Wallet block');
+                const userWallet = await Wallet.findOne({ userId });
+                if (!userWallet) {
+                    return res.status(400).json({ error: 'wallet not found' });
+                }
 
+                if (userWallet.totalAmount < numericTotal) {
+                    console.log('Insufficient wallet balance');
+                    return res.status(400).json({ error: "Insufficient wallet balance" });
+                } else {
+                    console.log('Wallet balance is sufficient');
+                    // Use bulkWrite to update stock atomically
+                    const stockUpdateOperations = cartItems.items.map((item) => {
+                        const productId = item.productId._id;
+                        const quantity = parseInt(item.quantity, 10);
+
+                        return {
+                            updateOne: {
+                                filter: { _id: productId, productStock: { $gte: quantity } }, // Ensure enough stock
+                                update: { $inc: { productStock: -quantity } },
+                            },
+                        };
+                    });
+
+                    // Execute the bulkWrite operation
+                    const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
+
+                    // Check if any stock update failed
+                    if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
+                        console.log('Failed to update stock for some products');
+                        // Handle the case where the stock update failed, e.g., redirect to an error page
+                        return res.status(500).json({
+                            success: false,
+                            message: 'Failed to update stock for some products',
+                        });
+                    }
+                    console.log('after stock update');
+                    // Update the user's wallet
+                    // await Wallet.findOneAndUpdate({ userId }, { $inc: { totalAmount: -numericTotal } });
+                    let transactionId = randomstring.generate(10);
+
+                    userWallet.totalAmount -= numericTotal;
+                    userWallet.walletHistory.push({
+                        transactionAmount: numericTotal,
+                        transactionType: 'debit',
+                        transactionId,
+                    });
+
+                    await userWallet.save();
+
+                    console.log('Order placed successfully');
+
+                    order.status = true
+
+                    // Save the order to the database
+                    placeOrder = await order.save();
+                    res.status(200).json({ placeOrder, message: "Order placed successfully" });
+
+                    // Clear the user's cart
+                    await Cart.deleteOne({ userId: req.session.userId });
+                }
             }
-
-
-
 
         } catch (error) {
             console.error(error);
