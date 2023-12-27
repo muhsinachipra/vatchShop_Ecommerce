@@ -1,6 +1,7 @@
 const express = require('express')
 const admin_route = express()
 
+
 const session = require('express-session')
 const config = require('../config/config')
 admin_route.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: true }))
@@ -78,6 +79,6 @@ admin_route.get('/editCoupon', auth.isAdminLogin, couponController.loadEditCoupo
 admin_route.post('/editCoupon', couponController.editCoupon)
 
 admin_route.get('/salesReport', auth.isAdminLogin, adminController.loadSalesReport)
-
+admin_route.get('/exportSalesReport', auth.isAdminLogin, adminController.exportSalesReport);
 
 module.exports = admin_route

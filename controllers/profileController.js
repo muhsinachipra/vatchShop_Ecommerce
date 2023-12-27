@@ -24,7 +24,7 @@ module.exports = {
             const userAddress = await Address.findOne({ userId: id })
             const orderData = await Order.find({ 'user': id }).sort({ orderDate: -1 });
             const walletData = await Wallet.findOne({ userId: id })
-            console.log('walletData : ',walletData)
+            console.log('walletData : ', walletData)
             // Check if userData is not null or undefined
             if (userData) {
                 res.render('userProfile', { user: userData, address: userAddress, orders: orderData, error: null, wallet: walletData });
@@ -38,7 +38,7 @@ module.exports = {
             res.render('userProfile', { user: req.session.userId, address: null, orders: [], error: 'Error fetching user data' });
         }
     },
-    
+
     userLogout: async (req, res) => {
         try {
             if (req.session.userId) {
@@ -85,9 +85,9 @@ module.exports = {
 
             if (isPasswordMatch) {
                 const newSecurePassword = await bcrypt.hash(req.body.newPassword, 10);
-    
+
                 await User.updateOne({ _id: userDetails._id }, { $set: { password: newSecurePassword } });
-    
+
                 return res.status(200).json({ success: true, message: 'Password changed successfully.' });
             } else {
                 return res.status(400).json({ success: false, message: 'Incorrect old password.' });
@@ -112,7 +112,7 @@ module.exports = {
             //         }
 
             //     })
-            
+
         } catch (error) {
             console.log(error);
         }
@@ -219,6 +219,26 @@ module.exports = {
             console.log(error.message);
         }
     },
-    
+    invoiceDownload: async (req, res, next) => {
+        try {
+            const { orderId } = req.query;
+            const orderData = await Order.findById(orderId)
+                .populate("products.productId")
+                .populate("user");
+
+            if (!orderData) {
+                return res.status(404).send("Order not found");
+            }
+
+            const userId = req.session.userId;
+            const userData = await User.findById(userId);
+
+            const date = new Date();
+
+            res.render("invoice", { order: orderData, user: userData, date });
+        } catch (error) {
+            next(error);
+        }
+    },
 
 }

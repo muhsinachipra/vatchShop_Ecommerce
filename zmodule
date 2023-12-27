@@ -1,0 +1,114 @@
+loadSalesReport: async (req, res) => {
+    try {
+
+        const salesData = await Order.aggregate([
+
+            {
+                $match: {
+                    $or: [
+                        {
+                            paymentOption: 'COD',
+                            'products.orderStatus': 'Delivered',
+                            'products.returnOrder.returnStatus': { $ne: 'Refund' },
+                        },
+                        {
+                            paymentOption: { $in: ['Razorpay', 'Wallet'] },
+                            'products.orderStatus': { $in: ['Placed', 'Shipped', 'Out for delivery', 'Delivered'] },
+                            'products.returnOrder.returnStatus': { $ne: 'Refund' },
+                        },
+                    ],
+                    'products.returnOrder.returnStatus': { $ne: 'Refund' },
+                },
+            },
+            {
+                $unwind: "$products",
+            },
+            {
+                $match: {
+                    'products.returnOrder.returnStatus': { $ne: 'Refund' },
+                },
+            },
+            {
+                $lookup: {
+                    from: 'categories',
+                    localField: 'productDetails.productCategory',
+                    foreignField: '_id',
+                    as: 'categoryDetails',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'products.productId',
+                    foreignField: '_id',
+                    as: 'productDetails',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'user',
+                    foreignField: '_id',
+                    as: 'userData',
+                },
+            },
+            {
+                $project: {
+                    _id: 1,
+                    orderDate: 1,
+                    totalAmount: 1,
+                    paymentOption: 1,
+                    'products.productId': 1,
+                    'products.orderStatus': 1,
+                    'products.quantity': 1,
+                    'products.price': 1,
+                    'productDetails.productName': 1,
+                    'productDetails.productCategory': 1,
+                    'productDetails.discountedPrice': 1,
+                    'categoryDetails.categoryName': 1,
+                    'userData.firstName': 1,
+                },
+            },
+        ]);
+
+        console.log("Sales Data:", salesData);
+
+        res.render('salesReport', { salesData });
+    } catch (error) {
+        handleDatabaseError(res, error);
+    }
+}
+
+
+
+
+
+
+
+
+  // // Create a CSV file
+            // const csvWriter = createCsvWriter({
+            //     path: `${__dirname}/../public/downloads/sales_report.csv`,
+            //     // path: 'sales_report.csv',
+            //     header: [
+            //         { id: '_id', title: 'Order ID' },
+            //         { id: 'userData[0].firstName', title: 'Username' },
+            //         { id: 'productDetails[0].productName', title: 'Product' },
+            //         { id: 'products.price', title: 'Price' },
+            //         { id: 'products.quantity', title: 'Qty' },
+            //         { id: 'orderDate', title: 'Order Date' },
+            //         // Add more headers as needed
+            //     ],
+            // });
+
+            // await csvWriter.writeRecords(salesData);
+
+            // // Send the CSV file as a download
+            // const file = `${__dirname}/../public/downloads/sales_report.csv`;
+            // res.download(file, 'sales_report.csv', (err) => {
+            //     // Delete the file after it has been sent
+            //     fs.unlinkSync(file);
+            //     if (err) {
+            //         console.error(err);
+            //     }
+            // });

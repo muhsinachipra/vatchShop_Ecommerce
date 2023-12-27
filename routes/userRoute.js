@@ -64,6 +64,7 @@ user_route.get('/cartCount', cartController.cartCount)
 user_route.post('/remove-product', cartController.removeProduct)
 
 user_route.get('/userProfile', auth.isUserLogin, profileController.loadProfile)
+user_route.get('/invoice',auth.isUserLogin,profileController.invoiceDownload)
 user_route.get('/logout', profileController.userLogout)
 user_route.post('/updateUser', profileController.updateUser);
 user_route.post('/profileResetPassword', profileController.profileResetPassword);

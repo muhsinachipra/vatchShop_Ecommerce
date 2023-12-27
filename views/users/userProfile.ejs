@@ -224,6 +224,7 @@
                                                 <th>Expected Delivery</th>
                                                 <th>Total Amount</th>
                                                 <th>Order Details</th>
+                                                <th>Download</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -246,6 +247,10 @@
                                                         <td>
                                                             <a href="/orderdetails/<%= order._id %>"
                                                                 class="btn-small d-block">View</a>
+                                                        </td>
+                                                        <td>
+                                                            <a href="/invoice?orderId=<%= order._id %>"
+                                                                class="btn-small d-block">Invoice</a>
                                                         </td>
                                                     </tr>
                                                     <% }); %>
