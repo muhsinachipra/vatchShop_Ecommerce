@@ -56,6 +56,10 @@ admin_route.get('/edit_category', auth.isAdminLogin, adminController.loadEditCat
 admin_route.post('/editCategoryFetch', adminController.editCategory)
 admin_route.get('/unlist_category', auth.isAdminLogin, adminController.unlistCategory)
 
+//=============================== SalesReport related ========================================//
+admin_route.get('/salesReport', auth.isAdminLogin, adminController.loadSalesReport)
+admin_route.get('/exportSalesReport', auth.isAdminLogin, adminController.exportSalesReport);
+
 //==================== product related ======================================//
 admin_route.get('/addProduct', auth.isAdminLogin, productController.loadAddProduct)
 admin_route.post('/addProduct', upload.array('productImage', 3), productController.addProduct)
@@ -78,7 +82,15 @@ admin_route.delete('/deleteCoupon/:id', couponController.deleteCoupon)
 admin_route.get('/editCoupon', auth.isAdminLogin, couponController.loadEditCoupon)
 admin_route.post('/editCoupon', couponController.editCoupon)
 
-admin_route.get('/salesReport', auth.isAdminLogin, adminController.loadSalesReport)
-admin_route.get('/exportSalesReport', auth.isAdminLogin, adminController.exportSalesReport);
+admin_route.get('/500', auth.isAdminLogin, adminController.load500)
+admin_route.get('/404', auth.isAdminLogin, adminController.load404)
+
+admin_route.use((err, req, res, next) => {
+    res.status(500).render("500");
+});
+
+admin_route.use((req, res, next) => {
+    res.status(404).render("404");
+})
 
 module.exports = admin_route

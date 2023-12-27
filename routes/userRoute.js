@@ -64,7 +64,7 @@ user_route.get('/cartCount', cartController.cartCount)
 user_route.post('/remove-product', cartController.removeProduct)
 
 user_route.get('/userProfile', auth.isUserLogin, profileController.loadProfile)
-user_route.get('/invoice',auth.isUserLogin,profileController.invoiceDownload)
+user_route.get('/invoice', auth.isUserLogin, profileController.invoiceDownload)
 user_route.get('/logout', profileController.userLogout)
 user_route.post('/updateUser', profileController.updateUser);
 user_route.post('/profileResetPassword', profileController.profileResetPassword);
@@ -80,10 +80,9 @@ user_route.post("/placeOrder", checkoutController.placeOrder);
 user_route.post("/verifyPayment", checkoutController.verifyPayment);
 user_route.get('/checkoutAddress', auth.isUserLogin, checkoutController.checkoutLoadAddress);
 user_route.post('/checkoutAddAddress', checkoutController.checkoutAddAddress);
+user_route.get("/thankyou", auth.isUserLogin, checkoutController.loadThankyou);
 
 user_route.post('/applyCoupon', couponController.applyCoupon);
-
-user_route.get("/thankyou", auth.isUserLogin, checkoutController.loadThankyou);
 
 user_route.get('/orderdetails/:orderId', auth.isUserLogin, orderController.loadOrderDetails);
 user_route.post('/cancelorder/:productId', orderController.cancelOrderAjax);
@@ -98,5 +97,12 @@ user_route.get('/wallet', auth.isUserLogin, walletController.loadAddWallet);
 user_route.post('/addToWallet', auth.isUserLogin, walletController.addToWallet);
 user_route.post("/verifyWalletPayment", walletController.verifyWalletPayment);
 
+user_route.use((err, req, res, next) => {
+    res.status(500).render("500");
+});
+
+user_route.use((req, res, next) => {
+    res.status(404).render("404");
+})
 
 module.exports = user_route

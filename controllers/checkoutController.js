@@ -29,7 +29,7 @@ const instance = new Razorpay({
 
 
 module.exports = {
-    loadCheckout: async (req, res) => {
+    loadCheckout: async (req, res, next) => {
         try {
             const userId = req.session.userId;
             const userData = await User.findById({ _id: userId })
@@ -57,20 +57,19 @@ module.exports = {
 
             res.render('checkout', { user: userData, address: userAddress, cart: cartData, coupons: couponData, razoKey });
         } catch (error) {
-            console.log(error.message);
-            res.status(500).send('Internal Server Error');
+            next(error);
         }
     },
-    checkoutLoadAddress: async (req, res) => {
+    checkoutLoadAddress: async (req, res, next) => {
         try {
             const userId = req.session.userId
 
             res.render('checkoutAddress', { user: userId })
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
-    checkoutAddAddress: async (req, res) => {
+    checkoutAddAddress: async (req, res, next) => {
         try {
             let userAddress = await Address.findOne({ userId: req.session.userId });
             if (!userAddress) {
@@ -103,11 +102,11 @@ module.exports = {
 
             res.redirect('/checkout');
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
 
-    placeOrder: async (req, res) => {
+    placeOrder: async (req, res, next) => {
         try {
             console.log('Request Body from place Order:', req.body);
 
@@ -355,11 +354,10 @@ module.exports = {
             }
 
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ success: false, message: 'Failed to place the order' });
+            next(error);
         }
     },
-    verifyPayment: async (req, res) => {
+    verifyPayment: async (req, res, next) => {
         try {
             console.log("Received payment verification request");
             console.log("Request Body from verify payment:", req.body);
@@ -402,39 +400,17 @@ module.exports = {
 
             res.json({ codsuccess: true, orderid: orderId });
         } catch (error) {
-            console.log("Error:", error);
-            res.status(500).json({ error });
+            next(error);
         }
     },
-    loadThankyou: async (req, res) => {
+    loadThankyou: async (req, res, next) => {
         try {
             const userId = req.session.userId
             const order = await Order.findOne({ user: userId })
             res.render('thankyou', { user: userId, order })
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
-    // getCouponDetails: async (req, res) => {
-    //     try {
-    //         const couponCode = req.query.code;
-
-    //         // Fetch coupon details from the database based on the code
-    //         const couponDetails = await Coupon.findOne({ code: couponCode });
-
-    //         if (couponDetails) {
-    //             // Return the coupon details as JSON
-    //             res.json({
-    //                 discountPercentage: couponDetails.discountPercentage,
-    //             });
-    //         } else {
-    //             // If the coupon is not found, return an empty response
-    //             res.json({});
-    //         }
-    //     } catch (error) {
-    //         console.error('Error fetching coupon details:', error);
-    //         res.status(500).json({ error: 'Internal Server Error' });
-    //     }
-    // }
 
 }

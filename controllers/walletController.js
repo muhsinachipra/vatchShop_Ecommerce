@@ -17,14 +17,14 @@ const instance = new Razorpay({
 
 
 module.exports = {
-    loadAddWallet: async (req, res) => {
+    loadAddWallet: async (req, res, next) => {
         try {
             res.render('wallet', { user: req.session.userId });
         } catch (error) {
-            console.error(error);
+            next(error);
         }
     },
-    addToWallet: async (req, res) => {
+    addToWallet: async (req, res, next) => {
         try {
             const { amount } = req.body;
             const userId = req.session.userId;
@@ -47,12 +47,11 @@ module.exports = {
                 res.status(200).json({ wallet });
             });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ success: false, message: 'Failed to add to wallet' });
+            next(error);
         }
     },
 
-    verifyWalletPayment: async (req, res) => {
+    verifyWalletPayment: async (req, res, next) => {
         try {
             const details = req.body;
 
@@ -108,8 +107,7 @@ module.exports = {
 
             res.json({ success: true });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error });
+            next(error);
         }
     },
 }

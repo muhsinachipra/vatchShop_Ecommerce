@@ -8,16 +8,16 @@ const sharp = require('sharp');
 const path = require('path');
 
 module.exports = {
-    loadAddProduct: async (req, res) => {
+    loadAddProduct: async (req, res, next) => {
         try {
             const category = await Category.find({})
             res.render('addProduct', { category: category })
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
 
-    addProduct: async (req, res) => {
+    addProduct: async (req, res, next) => {
         try {
             const { productName, productBrand, productDescription, productCategory, productPrice, productStock, productOfferPercentage } = req.body;
             const category = await Category.find({})
@@ -80,11 +80,11 @@ module.exports = {
                 res.render('addProduct', { message: 'Something went wrong' });
             }
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
 
-    loadViewProducts: async (req, res) => {
+    loadViewProducts: async (req, res, next) => {
         try {
             const page = req.query.page || 1; // Get the current page from query parameters
             const pageSize = 4; // Set your desired page size
@@ -114,12 +114,11 @@ module.exports = {
 
             res.render('viewProduct', { data: products, currentPage: page, totalPages: totalPages });
         } catch (error) {
-            console.error(error);
-            res.status(500).send('Internal Server Error');
+            next(error);
         }
     },
 
-    unlistProduct: async (req, res) => {
+    unlistProduct: async (req, res, next) => {
         try {
             const id = req.query.id;
             const pro = await Product.findById(id);
@@ -130,11 +129,11 @@ module.exports = {
             }
             res.redirect('/admin/viewProduct')
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
 
-    deleteProduct: async (req, res) => {
+    deleteProduct: async (req, res, next) => {
         try {
             const id = req.query.id;
 
@@ -143,11 +142,11 @@ module.exports = {
 
             res.redirect('/admin/viewProduct')
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
 
-    loadEditProduct: async (req, res) => {
+    loadEditProduct: async (req, res, next) => {
         try {
             const id = req.query.id;
             const pro = await Product.findById(id).populate('productCategory');
@@ -155,11 +154,11 @@ module.exports = {
 
             res.render('editProduct', { product: pro, category: cat })
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
 
-    // editProduct: async (req, res) => {
+    // editProduct: async (req, res, next) => {
     //     try {
     //         const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand } = req.body;
 
@@ -206,11 +205,11 @@ module.exports = {
     //         });
     //         res.redirect('/admin/viewProduct');
     //     } catch (error) {
-    //         console.log(error.message);
+    //         next(error);
     //     }
     // },
 
-    editProduct: async (req, res) => {
+    editProduct: async (req, res, next) => {
         try {
             const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand, productOfferPercentage } = req.body;
 
@@ -289,55 +288,55 @@ module.exports = {
 
             res.redirect('/admin/viewProduct');
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
 
-    loadUserProducts: async (req, res) => {
+    loadUserProducts: async (req, res, next) => {
         try {
             const { category: selectedCategory, sort, search, page } = req.query;
             const categories = await Category.find({ isListed: true });
-    
+
             // Define the number of items per page
             const itemsPerPage = 8;
-    
+
             // Calculate the skip value based on the current page
             const skip = (page - 1) * itemsPerPage || 0;
-    
+
             const filterCriteria = { isListed: true };
-    
+
             if (selectedCategory) {
                 const categoryObject = await Category.findOne({
                     categoryName: { $regex: new RegExp(".*" + selectedCategory + ".*", "i") },
                 });
-    
+
                 if (categoryObject) {
                     filterCriteria.productCategory = categoryObject._id;
                 }
             }
-    
+
             // Add search functionality
             if (search) {
                 filterCriteria.productName = { $regex: new RegExp(".*" + search + ".*", "i") };
             }
-    
+
             let sortOption = {};
-    
+
             if (sort === "lowtohigh") {
                 sortOption = { discountedPrice: 1 };
             } else if (sort === "hightolow") {
                 sortOption = { discountedPrice: -1 };
             }
-    
+
             // Fetch total number of products without pagination
             const totalProducts = await Product.countDocuments(filterCriteria);
-    
+
             const products = await Product.find(filterCriteria)
                 .populate('productCategory')
                 .sort(sortOption)
                 .skip(skip)
                 .limit(itemsPerPage);
-    
+
             res.render('productView', {
                 product: products,
                 category: categories,
@@ -348,14 +347,11 @@ module.exports = {
                 totalPages: Math.ceil(totalProducts / itemsPerPage), // Calculate the total pages
             });
         } catch (error) {
-            console.log(error.message);
-            res.status(500).send('Internal Server Error');
+            next(error);
         }
     },
-    
-    
 
-    loadUserProductDetails: async (req, res) => {
+    loadUserProductDetails: async (req, res, next) => {
 
         try {
             const id = req.query.id;
@@ -363,7 +359,7 @@ module.exports = {
 
             res.render('productDetails', { product: pro })
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
 

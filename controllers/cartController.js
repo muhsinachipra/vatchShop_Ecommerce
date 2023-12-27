@@ -11,7 +11,7 @@ const path = require("path")
 
 
 module.exports = {
-    addToCart: async (req, res) => {
+    addToCart: async (req, res, next) => {
         try {
             console.log('entered addToCart')
             if (req.session.userId) {
@@ -74,11 +74,10 @@ module.exports = {
                 res.json({ loginRequired: true });
             }
         } catch (error) {
-            console.log(error);
-            res.status(500).json({ error: 'An error occurred' });
+            next(error);
         }
     },
-    loadCart: async (req, res) => {
+    loadCart: async (req, res, next) => {
         try {
             if (req.session.userId) {
                 const userId = req.session.userId;
@@ -104,12 +103,10 @@ module.exports = {
 
             }
         } catch (error) {
-            // Handle any errors by rendering the 'error' view
-            console.log(error);
-            res.status(500).json({ error: 'An error occurred' });
+            next(error);
         }
     },
-    cartQuantity: async (req, res) => {
+    cartQuantity: async (req, res, next) => {
         const user_id = req.body.user;
         const product_Id = req.body.product;
         const number = parseInt(req.body.count);
@@ -152,11 +149,10 @@ module.exports = {
             return res.status(200).json({ changeSuccess: true, message: 'Quantity updated successfully', cart });
 
         } catch (error) {
-            console.error(error);
-            return res.status(500).json({ changeSuccess: false, message: 'Internal server error' });
+            next(error);
         }
     },
-    removeProduct: async (req, res) => {
+    removeProduct: async (req, res, next) => {
         try {
             const proId = req.body.product;
             const user = req.session.userId;
@@ -174,11 +170,10 @@ module.exports = {
                 res.json({ error: 'Product not found in the cart' });
             }
         } catch (error) {
-            console.log(error);
-            res.status(500).json({ error: 'An error occurred' });
+            next(error);
         }
     },
-    cartCount: async (req, res) => {
+    cartCount: async (req, res, next) => {
         try {
             const userId = req.session.userId;
 
@@ -193,8 +188,7 @@ module.exports = {
                 res.json({ totalItems: 0 }); // If no cart is found, assume 0 items
             }
         } catch (error) {
-            console.log(error);
-            res.status(500).json({ error: 'An error occurred' });
+            next(error);
         }
     }
 }

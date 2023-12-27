@@ -10,23 +10,17 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const ExcelJS = require('exceljs');
 const { Parser } = require('json2csv');
 
-const handleDatabaseError = (res, error) => {
-    console.error(error.message);
-    res.status(500).send('Internal Server Error');
-};
-
 
 module.exports = {
-    loadLogin: async (req, res) => {
+    loadLogin: async (req, res, next) => {
         try {
-
             res.render('login');
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    verifyLogin: async (req, res) => {
+    verifyLogin: async (req, res, next) => {
         try {
             const { email, password } = req.body;
             const adminData = await Admin.findOne({ email });
@@ -46,27 +40,26 @@ module.exports = {
 
             res.render('login', { message: 'email or password is incorrect' });
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    adminLogout: async (req, res) => {
+    adminLogout: async (req, res, next) => {
         try {
             if (req.session.admin_id) {
                 delete req.session.admin_id;
             }
             res.redirect('/admin')
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    loadDashboard: async (req, res) => {
+    loadDashboard: async (req, res, next) => {
         try {
             const totalUsers = await User.countDocuments();
             const totalOrders = await Order.countDocuments();
 
-            // Calculate total revenue using aggregation
             const totalRevenueResult = await Order.aggregate([
                 {
                     $group: {
@@ -76,13 +69,10 @@ module.exports = {
                 }
             ]);
 
-            // Extract the totalRevenue from the result
             const totalRevenue = totalRevenueResult.length > 0 ? totalRevenueResult[0].totalRevenue : 0;
 
-            // Calculate Average Order Value (AOV)
             const averageOrderValue = totalOrders !== 0 ? totalRevenue / totalOrders : 0;
 
-            // for top 3 products
             const allProducts = await Product.find({}, 'productName');
 
             const revenuePerProduct = await Order.aggregate([
@@ -197,11 +187,11 @@ module.exports = {
                 top3Products
             });
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    loadUsers: async (req, res) => {
+    loadUsers: async (req, res, next) => {
         try {
 
             var search = '';
@@ -209,8 +199,8 @@ module.exports = {
                 search = req.query.search
             }
 
-            const page = req.query.page || 1; // Get the current page from query parameters
-            const pageSize = 4; // Set your desired page size for both regular and search results
+            const page = req.query.page || 1;
+            const pageSize = 4;
 
             const skip = (page - 1) * pageSize;
 
@@ -235,11 +225,11 @@ module.exports = {
             res.render('Users', { users, currentPage: page, totalPages: totalPages });
 
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    blockUser: async (req, res) => {
+    blockUser: async (req, res, next) => {
         try {
             const id = req.query.id;
             const user = await User.findById(id);
@@ -251,7 +241,7 @@ module.exports = {
 
             res.redirect('/admin/Users');
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
@@ -259,11 +249,11 @@ module.exports = {
         try {
             res.render('addCategory');
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    addCategory: async (req, res) => {
+    addCategory: async (req, res, next) => {
         try {
             const { categoryName } = req.body;
             const alreadyExists = await Category.findOne({ categoryName: { $regex: categoryName, $options: 'i' } });
@@ -277,14 +267,14 @@ module.exports = {
 
             res.redirect('/admin/addCategory');
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    loadViewCategory: async (req, res) => {
+    loadViewCategory: async (req, res, next) => {
         try {
-            const page = req.query.page || 1; // Get the current page from query parameters
-            const pageSize = 4; // Set your desired page size
+            const page = req.query.page || 1; 
+            const pageSize = 4; 
 
             const skip = (page - 1) * pageSize;
             let categories;
@@ -310,11 +300,11 @@ module.exports = {
 
             res.render('viewCategory', { category: categories, currentPage: page, totalPages: totalPages });
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    unlistCategory: async (req, res) => {
+    unlistCategory: async (req, res, next) => {
         try {
             const id = req.query.id;
             const category = await Category.findById(id);
@@ -326,11 +316,11 @@ module.exports = {
 
             res.redirect('/admin/viewCategory');
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    loadEditCatogory: async (req, res) => {
+    loadEditCatogory: async (req, res, next) => {
         try {
             const id = req.query.id;
             const category = await Category.findById(id);
@@ -341,11 +331,11 @@ module.exports = {
                 res.redirect('/admin/viewCategory');
             }
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    editCategory: async (req, res) => {
+    editCategory: async (req, res, next) => {
         try {
             const { id, categoryName, categoryDescription, categoryOfferPercentage } = req.body;
 
@@ -384,11 +374,11 @@ module.exports = {
 
             return res.status(200).json({ success: 'Category updated successfully' });
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    loadSalesReport: async (req, res) => {
+    loadSalesReport: async (req, res, next) => {
         try {
             const startDate = req.query.startDate;
             const endDate = req.query.endDate;
@@ -474,11 +464,11 @@ module.exports = {
 
             res.render('salesReport', { salesData, startDate, endDate });
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    exportSalesReport: async (req, res) => {
+    exportSalesReport: async (req, res, next) => {
         try {
             const formatTime = (date) => {
                 const options = { hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
@@ -588,7 +578,21 @@ module.exports = {
             res.status(200).send(excel);
 
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
+        }
+    },
+    load500: async (req, res, next) => {
+        try {
+            res.render('500');
+        } catch (error) {
+            next(error);
+        }
+    },
+    load404: async (req, res, next) => {
+        try {
+            res.render('404');
+        } catch (error) {
+            next(error);
         }
     },
 };

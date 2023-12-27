@@ -17,7 +17,7 @@ const path = require("path")
 
 
 module.exports = {
-    loadProfile: async (req, res) => {
+    loadProfile: async (req, res, next) => {
         try {
             const id = req.session.userId
             const userData = await User.findById({ _id: id })
@@ -32,25 +32,23 @@ module.exports = {
                 console.log('User Data is null or undefined');
                 res.render('userProfile', { user: id, orders: [], error: 'User Data is null or undefined' });
             }
-
         } catch (error) {
-            console.log(error);
-            res.render('userProfile', { user: req.session.userId, address: null, orders: [], error: 'Error fetching user data' });
+            next(error);
         }
     },
 
-    userLogout: async (req, res) => {
+    userLogout: async (req, res, next) => {
         try {
             if (req.session.userId) {
                 delete req.session.userId;
             }
             res.redirect('/')
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
 
-    updateUser: async (req, res) => {
+    updateUser: async (req, res, next) => {
         try {
 
             const user_id = req.session.userId
@@ -73,10 +71,10 @@ module.exports = {
             res.redirect('/userProfile')
 
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     },
-    profileResetPassword: async (req, res) => {
+    profileResetPassword: async (req, res, next) => {
 
         try {
             const userDetails = await User.findOne({ _id: req.session.userId })
@@ -114,18 +112,18 @@ module.exports = {
             //     })
 
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     },
-    loadAddress: async (req, res) => {
+    loadAddress: async (req, res, next) => {
         try {
             const userId = req.session.userId
             res.render('address', { user: userId })
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
-    addAddress: async (req, res) => {
+    addAddress: async (req, res, next) => {
         try {
             let userAddress = await Address.findOne({ userId: req.session.userId });
             if (!userAddress) {
@@ -158,10 +156,10 @@ module.exports = {
 
             res.redirect('/userProfile');
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
-    loadEditAddress: async (req, res) => {
+    loadEditAddress: async (req, res, next) => {
         try {
 
             const id = req.query.id
@@ -175,10 +173,10 @@ module.exports = {
 
 
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     },
-    editAddress: async (req, res) => {
+    editAddress: async (req, res, next) => {
         try {
             const user_id = req.session.userId
             const addressId = req.body.id
@@ -199,10 +197,10 @@ module.exports = {
             res.redirect('/userProfile')
 
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
-    deleteAddress: async (req, res) => {
+    deleteAddress: async (req, res, next) => {
         try {
 
             let userAddress = await Address.findOne({ userId: req.session.userId });
@@ -216,7 +214,7 @@ module.exports = {
             await userAddress.save();
             return res.json({ remove: 1 });
         } catch (error) {
-            console.log(error.message);
+            next(error);
         }
     },
     invoiceDownload: async (req, res, next) => {

@@ -20,7 +20,7 @@ const path = require("path")
 
 module.exports = {
 
-    loadOrderDetails: async (req, res) => {
+    loadOrderDetails: async (req, res, next) => {
         try {
             const userId = req.session.userId;
 
@@ -58,16 +58,10 @@ module.exports = {
                 order: order
             });
         } catch (error) {
-            console.error(error.message);
-            res.status(500).json({
-                success: false,
-                message: 'Error fetching order details',
-                error: error.message, // Add this line to provide more details about the error
-            });
+            next(error);
         }
-
     },
-    cancelOrderAjax: async (req, res) => {
+    cancelOrderAjax: async (req, res, next) => {
         try {
             const productId = req.params.productId;
             const productPrice = req.body.productPrice;
@@ -104,7 +98,7 @@ module.exports = {
             userWallet.walletHistory.push({
                 transactionAmount: productPrice,
                 transactionType: 'credit',
-                transactionId:transactionId+"_"+"refund",
+                transactionId: transactionId + "_" + "refund",
             });
 
             await userWallet.save();
@@ -156,11 +150,10 @@ module.exports = {
             // Respond with JSON indicating success
             res.json({ success: true, message: 'Order canceled successfully' });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ success: false, message: 'Failed to cancel the order' });
+            next(error);
         }
     },
-    loadAdminOrder: async (req, res) => {
+    loadAdminOrder: async (req, res, next) => {
         try {
 
             const page = req.query.page || 1; // Get the current page from query parameters
@@ -191,11 +184,10 @@ module.exports = {
                 res.render('orders', { orders: [] });
             }
         } catch (error) {
-            console.log(error);
-            res.render('orders', { orders: [], error: 'Error fetching orders data' });
+            next(error);
         }
     },
-    loadManageOrder: async (req, res) => {
+    loadManageOrder: async (req, res, next) => {
         try {
             let orderId = req.params.orderId;
             const order = await Order.findById(orderId).populate({
@@ -209,11 +201,10 @@ module.exports = {
                 res.render('manageOrder', { order: [] });
             }
         } catch (error) {
-            console.log(error);
-            res.render('manageOrder', { order: [], error: 'Error fetching orders data' });
+            next(error);
         }
     },
-    updateOrderStatus: async (req, res) => {
+    updateOrderStatus: async (req, res, next) => {
         try {
             const productId = req.params.productId;
             const newStatus = req.body.status;
@@ -288,8 +279,7 @@ module.exports = {
             // Redirect back to the order details page or orders page
             res.redirect('/admin/orders');
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ success: false, message: 'Failed to update order status' });
+            next(error);
         }
     },
 }

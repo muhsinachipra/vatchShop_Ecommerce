@@ -7,11 +7,6 @@ const otpGenerator = require("otp-generator");
 const randomstring = require('randomstring');
 
 
-const handleDatabaseError = (res, error) => {
-    console.error(error.message);
-    res.status(500).send('Internal Server Error');
-};
-
 const securePassword = async (password) => {
     try {
         const passwordHash = await bcrypt.hash(password, 10);
@@ -70,35 +65,35 @@ const resetPasswordMail = async (username, email, token) => {
 
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-                console.log(error);
+                next(error);
             } else {
                 console.log("Email Has been Sent:-", info, response);
             }
         })
 
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 };
 
 module.exports = {
-    loadLogin: async (req, res) => {
+    loadLogin: async (req, res, next) => {
         try {
             res.render('login');
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    loginLoad: async (req, res) => {
+    loginLoad: async (req, res, next) => {
         try {
             res.render('login');
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    verifyLogin: async (req, res) => {
+    verifyLogin: async (req, res, next) => {
         try {
             const email = req.body.email;
             const password = req.body.password;
@@ -123,20 +118,19 @@ module.exports = {
                 return res.status(401).json({ error: "Incorrect Password" });
             }
         } catch (error) {
-            console.error('Error in login:', error);
-            return res.status(500).json({ error: 'Internal server error' });
+            next(error);
         }
     },
 
-    loadForget: async (req, res) => {
+    loadForget: async (req, res, next) => {
         try {
             res.render('forgetPassword');
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    forgotVerify: async (req, res) => {
+    forgotVerify: async (req, res, next) => {
         try {
             const email = req.body.email
             const userData = await User.findOne({ email: email })
@@ -156,11 +150,11 @@ module.exports = {
                 res.render('forgetPassword', { message: "User email is Incorrect" })
             }
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     },
 
-    loadForgotPassword: async (req, res) => {
+    loadForgotPassword: async (req, res, next) => {
         try {
             const token = req.query.token;
 
@@ -174,12 +168,12 @@ module.exports = {
                 res.render('forgotPassword', { message: 'Invalid Token' });
             }
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     },
 
     //Resetting Password  
-    forgotPassword: async (req, res) => {
+    forgotPassword: async (req, res, next) => {
         try {
             const id = req.body.id;
             // console.log('User ID from form submission:', id);
@@ -211,37 +205,36 @@ module.exports = {
             res.render("login", { message: "Password Changed Successfully, Proceed To Sign In" });
 
         } catch (error) {
-            console.log(error);
-            res.status(500).send('Internal Server Error');
+            next(error);
         }
     },
 
-    loadRegister: async (req, res) => {
+    loadRegister: async (req, res, next) => {
         try {
             res.render('registration');
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    userLogout: async (req, res) => {
+    userLogout: async (req, res, next) => {
         try {
             req.session.destroy()
             res.redirect('/')
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    loadOtp: async (req, res) => {
+    loadOtp: async (req, res, next) => {
         try {
             res.render('otp');
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    insertUser: async (req, res) => {
+    insertUser: async (req, res, next) => {
         try {
             const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
             const currentTime = new Date();
@@ -302,11 +295,11 @@ module.exports = {
                 }
             }
         } catch (error) {
-            res.json({ success: false, message: "Internal server error" });
+            next(error);
         }
     },
 
-    // insertUser: async (req, res) => {
+    // insertUser: async (req, res, next) => {
     //     try {
     //         const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
     //         const currentTime = new Date();
@@ -346,11 +339,11 @@ module.exports = {
     //             }
     //         }
     //     } catch (error) {
-    //         handleDatabaseError(res, error);
+    //         next(error);
     //     }
     // },
 
-    loadHome: async (req, res) => {
+    loadHome: async (req, res, next) => {
         try {
             const { category: selectedCategory, sort, search } = req.query;
             const categories = await Category.find({ isListed: true });
@@ -389,12 +382,12 @@ module.exports = {
 
             res.render('userHome', { product: products, Digital, Smart, Analog, category: categories, currentSort: sort, selectedCategory, search });
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
 
-    verifyOTP: async (req, res) => {
+    verifyOTP: async (req, res, next) => {
         try {
             const enteredOTP = req.body.otp;
             const storedOTP = req.session.otp.code;
@@ -425,11 +418,11 @@ module.exports = {
                 res.render('otp', { message: "Invalid OTP or OTP has expired" });
             }
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 
-    resendOTP: async (req, res) => {
+    resendOTP: async (req, res, next) => {
         try {
             const newOTP = otpGenerator.generate(6, { upperCase: false, specialChars: false });
             req.session.otp.code = newOTP;
@@ -439,7 +432,7 @@ module.exports = {
 
             res.render("otp", { message: "OTP resent successfully" });
         } catch (error) {
-            handleDatabaseError(res, error);
+            next(error);
         }
     },
 };

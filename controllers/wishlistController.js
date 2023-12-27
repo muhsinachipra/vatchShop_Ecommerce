@@ -16,7 +16,7 @@ const { name } = require('ejs');
 const path = require("path")
 
 module.exports = {
-    loadWishlist: async (req, res) => {
+    loadWishlist: async (req, res, next) => {
         try {
             const userId = req.session.userId;
             const wishlist = await Wishlist.findOne({ userId }).populate('productId');
@@ -30,11 +30,10 @@ module.exports = {
 
             res.render('wishlist', { wishlistProducts });
         } catch (error) {
-            console.log(error.message);
-            res.status(500).send('Internal Server Error');
+            next(error);
         }
     },
-    addToWishlist: async (req, res) => {
+    addToWishlist: async (req, res, next) => {
         try {
             console.log('entered addToWishlist')
             if (req.session.userId) {
@@ -71,11 +70,10 @@ module.exports = {
                 res.json({ loginRequired: true });
             }
         } catch (error) {
-            console.log(error.message);
-            res.status(500).send('Internal Server Error');
+            next(error);
         }
     },
-    removeProduct: async (req, res) => {
+    removeProduct: async (req, res, next) => {
         try {
             const proId = req.body.product;
             const user = req.session.userId;
@@ -93,11 +91,10 @@ module.exports = {
                 res.json({ error: 'Product not found in the wishlist' });
             }
         } catch (error) {
-            console.log(error);
-            res.status(500).json({ error: 'An error occurred' });
+            next(error);
         }
     },
-    // wishlistCount: async (req, res) => {
+    // wishlistCount: async (req, res, next) => {
     //     try {
     //         const userId = req.session.userId;
 
@@ -112,17 +109,16 @@ module.exports = {
     //             res.json({ totalItems: 0 }); // If no cart is found, assume 0 items
     //         }
     //     } catch (error) {
-    //         console.log(error);
-    //         res.status(500).json({ error: 'An error occurred' });
+    //          next(error);
     //     }
     // },
-    wishlistCount: async (req, res) => {
+    wishlistCount: async (req, res, next) => {
         try {
             const userId = req.session.userId;
-    
+
             // Fetch the wishlist data from the database based on the user ID
             const wishlist = await Wishlist.findOne({ userId });
-    
+
             // If the wishlist is found, send the total number of items to the client
             if (wishlist) {
                 const totalItems = wishlist.productId.length;
@@ -131,9 +127,8 @@ module.exports = {
                 res.json({ totalItems: 0 }); // If no wishlist is found, assume 0 items
             }
         } catch (error) {
-            console.log(error);
-            res.status(500).json({ error: 'An error occurred' });
+            next(error);
         }
     }
-    
+
 }   

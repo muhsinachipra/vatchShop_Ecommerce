@@ -20,7 +20,7 @@ const crypto = require("crypto")
 
 
 module.exports = {
-    loadViewCoupon: async (req, res) => {
+    loadViewCoupon: async (req, res, next) => {
         try {
             const page = req.query.page || 1; // Get the current page from query parameters
             const pageSize = 4; // Set your desired page size
@@ -41,19 +41,17 @@ module.exports = {
             }
 
         } catch (error) {
-            console.log(error.message);
-            res.status(500).send('Internal Server Error');
+            next(error);
         }
     },
-    loadAddCoupon: async (req, res) => {
+    loadAddCoupon: async (req, res, next) => {
         try {
             res.render('addCoupon')
         } catch (error) {
-            console.log(error.message);
-            res.status(500).send('Internal Server Error');
+            next(error);
         }
     },
-    addCoupon: async (req, res) => {
+    addCoupon: async (req, res, next) => {
         try {
 
             const code = req.body.code
@@ -81,12 +79,11 @@ module.exports = {
             }
 
         } catch (error) {
-            console.log(error.message);
-            res.status(500).send('Internal Server Error');
+            next(error);
         }
     },
     // Controller function to delete a coupon
-    deleteCoupon: async (req, res) => {
+    deleteCoupon: async (req, res, next) => {
         const couponId = req.params.id;
 
         try {
@@ -99,11 +96,10 @@ module.exports = {
 
             res.json({ message: 'Coupon deleted successfully', deletedCoupon });
         } catch (error) {
-            console.error('Error deleting coupon:', error);
-            res.status(500).json({ error: 'Internal server error' });
+            next(error);
         }
     },
-    loadEditCoupon: async (req, res) => {
+    loadEditCoupon: async (req, res, next) => {
         try {
             const id = req.query.id;
             const coupon = await Coupon.findById(id);
@@ -114,11 +110,10 @@ module.exports = {
                 res.redirect('/admin/viewCoupon');
             }
         } catch (error) {
-            console.log(error.message);
-            res.status(500).send('Internal Server Error');
+            next(error);
         }
     },
-    editCoupon: async (req, res) => {
+    editCoupon: async (req, res, next) => {
         try {
             // Extract coupon data from the request body
             const { originalCode, code, discountPercentage, startDate, expiryDate } = req.body;
@@ -151,12 +146,10 @@ module.exports = {
             res.redirect('/admin/viewCoupon');
 
         } catch (error) {
-            console.log(error.message);
-            res.status(500).send('Internal Server Error');
+            next(error);
         }
     },
-
-    applyCoupon: async (req, res) => {
+    applyCoupon: async (req, res, next) => {
         try {
             const { couponCode, subTotal } = req.body;
             const userId = req.session.userId;
@@ -195,10 +188,8 @@ module.exports = {
             return res.json({ message: 'Discount applied successfully.', updatedCart: discountedCart });
 
         } catch (error) {
-            console.error('Error applying discount:', error);
-            return res.status(500).json({ error: 'Internal Server Error' });
+            next(error);
         }
     },
-
 
 }
