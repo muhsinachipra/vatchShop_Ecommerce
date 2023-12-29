@@ -3,7 +3,7 @@ const Product = require('../models/productModel');
 const Category = require('../models/categoryModel');
 const Wallet = require('../models/walletModel');
 const nodemailer = require('nodemailer');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const otpGenerator = require("otp-generator");
 const randomstring = require('randomstring');
 

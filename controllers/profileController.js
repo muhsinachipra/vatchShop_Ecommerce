@@ -9,9 +9,8 @@ const Wallet = require('../models/walletModel');
 
 
 const { ObjectId } = require('mongoose').Types;
-// const { ObjectId } = require('mongodb');
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { name } = require('ejs');
 const path = require("path")
 
@@ -90,26 +89,6 @@ module.exports = {
             } else {
                 return res.status(400).json({ success: false, message: 'Incorrect old password.' });
             }
-
-            // bcrypt.compare(req.body.oldPassword, userDetails.password)
-            //     .then(async (status) => {
-            //         if (status) {
-            //             const newSecurePassword = await bcrypt.hash(req.body.newPassword, 10);
-
-            //             const change = await User.updateOne(
-            //                 { _id: userDetails._id },
-            //                 { $set: { password: newSecurePassword } }
-            //             );
-            //             console.log(change);
-            //             res.redirect("/userProfile");
-            //             console.log("password changed...");
-            //         } else {
-            //             console.log("wrong old password");
-            //             res.redirect("/userProfile");
-            //             return res.status(200).json({ oldPasswordNoMatch: true });
-            //         }
-
-            //     })
 
         } catch (error) {
             next(error);

@@ -18,13 +18,11 @@ module.exports = {
                 const productId = req.body.id;
                 const userId = req.session.userId;
 
-                // Fetch user details
                 const userData = await User.findById(userId);
                 if (!userData) {
                     return res.status(404).json({ error: 'User not found' });
                 }
 
-                // Fetch product details
                 const productData = await Product.findById(productId);
                 if (!productData) {
                     return res.status(404).json({ error: 'Product not found' });
@@ -35,19 +33,15 @@ module.exports = {
                     return res.json({ outofstock: true });
                 }
 
-                // Fetch user's cart
                 let userCart = await Cart.findOne({ userId: userId });
 
                 if (!userCart) {
-                    // If the user doesn't have a cart, create a new one
-                    userCart = new Cart({ userId: userId, items: [], subTotal: 0 }); // Set a default value for subTotal
+                    userCart = new Cart({ userId: userId, items: [], subTotal: 0 }); 
                 }
 
-                // Check if the product is already in the cart
                 const existingProductIndex = userCart.items.findIndex(product => String(product.productId) === String(productId));
 
                 if (existingProductIndex !== -1) {
-                    // If the product is in the cart, update the quantity
                     const existingProduct = userCart.items[existingProductIndex];
 
                     console.log('Product Stock:', productData.productStock);
@@ -59,14 +53,11 @@ module.exports = {
                         existingProduct.quantity += 1;
                     }
                 } else {
-                    // If the product is not in the cart, add it
                     userCart.items.push({ productId: productId, quantity: 1 });
                 }
 
-                // Update subTotal
                 await userCart.calculateSubTotal();
 
-                // Save the updated cart
                 await userCart.save();
 
                 res.json({ success: true });
@@ -86,15 +77,12 @@ module.exports = {
                 if (cartData && cartData.items.length > 0) {
                     let total = 0;
 
-                    // Calculate total
                     cartData.items.forEach((product) => {
                         total += product.quantity * product.productId.discountedPrice;
                     });
 
-                    // Render the 'cart' view with the calculated total
                     res.render('cart', { user: req.session.userId, userId: userId, cart: cartData.items, total: total });
                 } else {
-                    // If the cart is empty, render 'cart' view with an empty cart array
                     res.render('cart', { user: req.session.userId, cart: [], total: 0 });
                 }
             } else {
@@ -127,7 +115,6 @@ module.exports = {
 
             const productStock = productData.productStock
 
-            // Calculate new quantity and total
             const newQuantity = cartItem.quantity + quantityChange;
             if (newQuantity < 1) {
                 return res.status(400).json({ success: false, message: 'Quantity cannot be less than 1' });
@@ -137,13 +124,10 @@ module.exports = {
                 return res.status(400).json({ success: false, message: 'Only 10 items can be purchased' });
             }
 
-            // Update the quantity and total for the cart item
             cartItem.quantity = newQuantity;
 
-            // Update subTotal
             await cart.calculateSubTotal();
 
-            // Save the updated cart
             await cart.save();
 
             return res.status(200).json({ changeSuccess: true, message: 'Quantity updated successfully', cart });
@@ -157,13 +141,11 @@ module.exports = {
             const proId = req.body.product;
             const user = req.session.userId;
 
-            // Find the user's cart and update it to remove the specified product
             const cartData = await Cart.findOneAndUpdate(
                 { "items.productId": proId },
                 { $pull: { items: { productId: proId } } }
             );
 
-            // Check if the product was found and removed
             if (cartData) {
                 res.json({ success: true });
             } else {
@@ -177,15 +159,13 @@ module.exports = {
         try {
             const userId = req.session.userId;
 
-            // Fetch the cart data from the database based on the user ID
             const cart = await Cart.findOne({ userId });
 
-            // If the cart is found, send the total number of items to the client
             if (cart) {
                 const totalItems = cart.items.reduce((acc, item) => acc + item.quantity, 0);
                 res.json({ totalItems });
             } else {
-                res.json({ totalItems: 0 }); // If no cart is found, assume 0 items
+                res.json({ totalItems: 0 }); 
             }
         } catch (error) {
             next(error);

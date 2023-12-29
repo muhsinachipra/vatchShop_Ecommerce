@@ -2,7 +2,7 @@ const User = require('../models/userModel');
 const Product = require('../models/productModel');
 const Category = require('../models/categoryModel');
 const nodemailer = require('nodemailer');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const otpGenerator = require("otp-generator");
 const randomstring = require('randomstring');
 
@@ -298,50 +298,6 @@ module.exports = {
             next(error);
         }
     },
-
-    // insertUser: async (req, res, next) => {
-    //     try {
-    //         const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
-    //         const currentTime = new Date();
-    //         const otpCreationTime = currentTime.getMinutes()
-    //         req.session.otp = {
-    //             code: otp,
-    //             creationTime: otpCreationTime,
-    //         };
-
-    //         const { passwordConfirm, password, mobileno, email, lastName, firstName } = req.body
-    //         req.session.email = email
-    //         const userCheck = await User.findOne({ email });
-
-    //         if (userCheck) {
-    //             res.render('registration', { message: "Email already exists" });
-    //         } else {
-    //             const hashedPassword = await securePassword(password);
-
-    //             if (firstName && email && lastName && mobileno) {
-    //                 if (password === passwordConfirm) {
-    //                     const user = new User({
-    //                         firstName,
-    //                         lastName,
-    //                         email,
-    //                         mobileno,
-    //                         password: hashedPassword
-    //                     });
-    //                     const result = await user.save();
-
-    //                     otpSent(email, req.session.otp.code);
-    //                     res.render("otp");
-    //                 } else {
-    //                     res.render("registration", { message: "Password doesn't match" });
-    //                 }
-    //             } else {
-    //                 res.render("registration", { message: "Please enter all details" });
-    //             }
-    //         }
-    //     } catch (error) {
-    //         next(error);
-    //     }
-    // },
 
     loadHome: async (req, res, next) => {
         try {

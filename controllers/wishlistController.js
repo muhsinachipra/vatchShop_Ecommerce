@@ -11,7 +11,7 @@ const Wishlist = require('../models/wishlistModel');
 
 const { ObjectId } = require('mongoose').Types;
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { name } = require('ejs');
 const path = require("path")
 
@@ -94,24 +94,7 @@ module.exports = {
             next(error);
         }
     },
-    // wishlistCount: async (req, res, next) => {
-    //     try {
-    //         const userId = req.session.userId;
 
-    //         // Fetch the cart data from the database based on the user ID
-    //         const cart = await Cart.findOne({ userId });
-
-    //         // If the cart is found, send the total number of items to the client
-    //         if (cart) {
-    //             const totalItems = cart.items.reduce((acc, item) => acc + item.quantity, 0);
-    //             res.json({ totalItems });
-    //         } else {
-    //             res.json({ totalItems: 0 }); // If no cart is found, assume 0 items
-    //         }
-    //     } catch (error) {
-    //          next(error);
-    //     }
-    // },
     wishlistCount: async (req, res, next) => {
         try {
             const userId = req.session.userId;

@@ -3,7 +3,7 @@ const User = require('../models/userModel');
 const Category = require('../models/categoryModel');
 const Order = require('../models/orderModel');
 const Product = require('../models/productModel');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const fs = require("fs")
 const path = require('path');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
@@ -282,7 +282,6 @@ module.exports = {
             var search = '';
             if (req.query.search) {
                 search = req.query.search;
-                // Use a regular expression to make the search case-insensitive and match partial strings
                 const searchRegex = new RegExp('.*' + search + '.*', 'i');
 
                 categories = await Category.find({
@@ -339,24 +338,18 @@ module.exports = {
         try {
             const { id, categoryName, categoryDescription, categoryOfferPercentage } = req.body;
 
-            // Find the existing category by ID
             const existingCategory = await Category.findById(id);
             if (!existingCategory) {
                 return res.status(404).json({ error: 'Category not found' });
             }
 
-            // Check if the category name has been changed
             if (categoryName !== existingCategory.categoryName) {
-                // If changed, check for existence of a category with the new name
                 const alreadyExists = await Category.findOne({ categoryName: { $regex: `^${categoryName}$`, $options: 'i' } });
                 if (alreadyExists) {
                     return res.status(401).json({ error: 'Category Already Created' });
                 }
             }
 
-            // Update the category
-            // await Category.findByIdAndUpdate(id, { $set: { categoryName, categoryDescription, categoryOfferPercentage } }, { new: true });
-            // Update the category in the database and save it
             const updatedCategory = await Category.findByIdAndUpdate(
                 id,
                 {
@@ -366,10 +359,9 @@ module.exports = {
                         categoryOfferPercentage,
                     },
                 },
-                { new: true } // Ensure that hooks are triggered
+                { new: true } 
             );
 
-            // Save the updated category
             await updatedCategory.save();
 
             return res.status(200).json({ success: 'Category updated successfully' });
@@ -402,7 +394,7 @@ module.exports = {
             if (startDate && endDate) {
                 matchQuery.orderDate = {
                     $gte: new Date(startDate),
-                    $lte: new Date(endDate + 'T23:59:59.999Z'), // Set end date to end of the day
+                    $lte: new Date(endDate + 'T23:59:59.999Z'),
                 };
             }
 
@@ -497,7 +489,7 @@ module.exports = {
             if (startDate && endDate) {
                 matchQuery.orderDate = {
                     $gte: new Date(startDate),
-                    $lte: new Date(endDate + 'T23:59:59.999Z'), // Set end date to end of the day
+                    $lte: new Date(endDate + 'T23:59:59.999Z'),
                 };
             }
 

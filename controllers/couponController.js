@@ -9,9 +9,8 @@ const Coupon = require('../models/couponModel');
 
 
 const { ObjectId } = require('mongoose').Types;
-// const { ObjectId } = require('mongodb');
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { name } = require('ejs');
 const path = require("path")
 
@@ -22,8 +21,8 @@ const crypto = require("crypto")
 module.exports = {
     loadViewCoupon: async (req, res, next) => {
         try {
-            const page = req.query.page || 1; // Get the current page from query parameters
-            const pageSize = 4; // Set your desired page size
+            const page = req.query.page || 1; 
+            const pageSize = 4;
 
             const skip = (page - 1) * pageSize;
 
@@ -62,7 +61,6 @@ module.exports = {
             } else {
                 const { couponName, discountPercentage, startDate, expiryDate } = req.body;
 
-                // Create a new coupon instance
                 const newCoupon = new Coupon({
                     couponName,
                     code,
@@ -71,10 +69,8 @@ module.exports = {
                     expiryDate,
                 });
 
-                // Save the coupon to the database
                 await newCoupon.save();
 
-                // Redirect to the 'viewCoupon' page after successfully adding the coupon
                 res.redirect('/admin/viewCoupon');
             }
 
@@ -82,12 +78,10 @@ module.exports = {
             next(error);
         }
     },
-    // Controller function to delete a coupon
     deleteCoupon: async (req, res, next) => {
         const couponId = req.params.id;
 
         try {
-            // Find and remove the coupon by ID
             const deletedCoupon = await Coupon.findByIdAndDelete(couponId);
 
             if (!deletedCoupon) {
@@ -115,10 +109,8 @@ module.exports = {
     },
     editCoupon: async (req, res, next) => {
         try {
-            // Extract coupon data from the request body
             const { originalCode, code, discountPercentage, startDate, expiryDate } = req.body;
 
-            // Find the coupon by the original code in the database
             const coupon = await Coupon.findOne({ code: originalCode });
 
             if (!coupon) {
@@ -126,7 +118,6 @@ module.exports = {
             }
 
 
-            // Check if the new code already exists in the database
             const existingCoupon = await Coupon.findOne({ code });
 
             if (existingCoupon && existingCoupon._id.toString() !== coupon._id.toString()) {
@@ -134,13 +125,11 @@ module.exports = {
             }
 
 
-            // Update coupon properties with new values
             coupon.code = code;
             coupon.discountPercentage = discountPercentage;
             coupon.startDate = startDate;
             coupon.expiryDate = expiryDate;
 
-            // Save the updated coupon to the database
             await coupon.save();
 
             res.redirect('/admin/viewCoupon');
@@ -175,7 +164,6 @@ module.exports = {
 
             const newSubtotal = (cart.subTotal * (100 - coupon.discountPercentage)) / 100;
 
-            // Save user ID to coupon.user for future use (user can only use the coupon one time)
             coupon.user = coupon.user ? [...coupon.user, userId] : [userId];
             await coupon.save();
 

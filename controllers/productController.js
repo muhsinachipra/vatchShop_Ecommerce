@@ -28,26 +28,21 @@ module.exports = {
             images[1] = 'image2_' + Date.now() + '.jpg'
             images[2] = 'image3_' + Date.now() + '.jpg'
 
-            // Extract cropped image data from the request body
             const croppedImageData1 = req.body.croppedImageData1;
             const croppedImageData2 = req.body.croppedImageData2;
             const croppedImageData3 = req.body.croppedImageData3;
 
 
-            // Check if all required image data is present
             if (!croppedImageData1 || !croppedImageData2 || !croppedImageData3) {
                 return res.render('addProduct', { message: 'Please upload all required images.', category: category });
             }
 
-            // Function to convert base64 to JPEG
             const convertBase64ToJPEG = async (base64Data) => {
-                // Remove the base64 prefix if present
                 const base64Image = base64Data.replace(/^data:image\/jpeg;base64,/, '');
                 const buffer = Buffer.from(base64Image, 'base64');
                 return sharp(buffer).jpeg().toBuffer();
             };
 
-            // Create a new product instance
             const newProduct = new Product({
                 productName,
                 productBrand,
@@ -61,17 +56,14 @@ module.exports = {
 
 
 
-            // Convert and save the cropped image data
             croppedImage1Buffer = await convertBase64ToJPEG(croppedImageData1),
                 croppedImage2Buffer = await convertBase64ToJPEG(croppedImageData2),
                 croppedImage3Buffer = await convertBase64ToJPEG(croppedImageData3),
 
-                // Save the image files to the server (assuming 'public/productImages' is the destination)
                 fs.writeFileSync(path.join(__dirname, '../public/productImages', newProduct.productImage[0]), croppedImage1Buffer);
             fs.writeFileSync(path.join(__dirname, '../public/productImages', newProduct.productImage[1]), croppedImage2Buffer);
             fs.writeFileSync(path.join(__dirname, '../public/productImages', newProduct.productImage[2]), croppedImage3Buffer);
 
-            // Save the product to the database
             const productData = await newProduct.save();
 
             if (productData) {
@@ -86,8 +78,8 @@ module.exports = {
 
     loadViewProducts: async (req, res, next) => {
         try {
-            const page = req.query.page || 1; // Get the current page from query parameters
-            const pageSize = 4; // Set your desired page size
+            const page = req.query.page || 1; 
+            const pageSize = 4; 
 
             const skip = (page - 1) * pageSize;
             let products;
@@ -158,57 +150,6 @@ module.exports = {
         }
     },
 
-    // editProduct: async (req, res, next) => {
-    //     try {
-    //         const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand } = req.body;
-
-    //         // Retrieve the existing product data
-    //         // const existingProduct = await Product.findById(id);
-
-
-    //         // Extract cropped image data from the request body
-    //         const croppedImageData1 = req.body.croppedImageData1;
-    //         const croppedImageData2 = req.body.croppedImageData2;
-    //         const croppedImageData3 = req.body.croppedImageData3;
-
-    //         // Check if all required image data is present
-    //         if (!croppedImageData1 || !croppedImageData2 || !croppedImageData3) {
-    //             return res.render('addProduct', { message: 'Please upload all required images.' });
-    //         }
-
-    //         // Function to convert base64 to JPEG
-    //         const convertBase64ToJPEG = async (base64Data) => {
-    //             // Remove the base64 prefix if present
-    //             const base64Image = base64Data.replace(/^data:image\/jpeg;base64,/, '');
-    //             const buffer = Buffer.from(base64Image, 'base64');
-    //             return sharp(buffer).jpeg().toBuffer();
-    //         };
-
-    //         // Convert and save the cropped image data
-    //         updatedProductImages = [
-    //             await convertBase64ToJPEG(croppedImageData1),
-    //             await convertBase64ToJPEG(croppedImageData2),
-    //             await convertBase64ToJPEG(croppedImageData3),
-    //         ];
-
-
-    //         await Product.findByIdAndUpdate(id, {
-    //             $set: {
-    //                 productName,
-    //                 productDescription,
-    //                 productCategory,
-    //                 productImage: updatedProductImages,
-    //                 productStock,
-    //                 productPrice,
-    //                 productBrand,
-    //             }
-    //         });
-    //         res.redirect('/admin/viewProduct');
-    //     } catch (error) {
-    //         next(error);
-    //     }
-    // },
-
     editProduct: async (req, res, next) => {
         try {
             const { id, productName, productDescription, productCategory, productStock, productPrice, productBrand, productOfferPercentage } = req.body;
@@ -243,24 +184,6 @@ module.exports = {
             fs.writeFileSync(path.join(__dirname, '../public/productImages', `image2_${id}.jpg`), updatedProductImages[1]);
             fs.writeFileSync(path.join(__dirname, '../public/productImages', `image3_${id}.jpg`), updatedProductImages[2]);
 
-            // // Update the product in the database
-            // await Product.findByIdAndUpdate(id, {
-            //     $set: {
-            //         productName,
-            //         productDescription,
-            //         productCategory,
-            //         productImage: [
-            //             `image1_${id}.jpg`,
-            //             `image2_${id}.jpg`,
-            //             `image3_${id}.jpg`,
-            //         ],
-            //         productStock,
-            //         productPrice,
-            //         productBrand,
-            //         productOfferPercentage
-            //     }
-            // });
-            // Update the product in the database and save it
             const updatedProduct = await Product.findByIdAndUpdate(
                 id,
                 {

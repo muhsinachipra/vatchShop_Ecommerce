@@ -10,9 +10,8 @@ const Wallet = require('../models/walletModel');
 const randomstring = require('randomstring');
 
 const { ObjectId } = require('mongoose').Types;
-// const { ObjectId } = require('mongodb');
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { name } = require('ejs');
 const path = require("path")
 
@@ -42,7 +41,6 @@ module.exports = {
                 return res.redirect('/cart');
             }
 
-            // Check product quantities against available stock
             const insufficientStockProducts = cartData.items.filter((product) => {
                 return product.quantity > product.productId.productStock;
             });
@@ -113,17 +111,14 @@ module.exports = {
             const { addressOption, paymentOption } = req.body;
             const userId = req.session.userId;
 
-            // Check if addressOption and paymentOption are provided
             if (!addressOption || !paymentOption) {
                 console.log('Invalid address or payment type');
                 return res.status(400).json({ error: "Invalid address or payment type" });
             }
 
-            // Fetch cart items
             const cartItems = await Cart.findOne({ userId: userId }).populate('items.productId');
 
 
-            // Check if the cart is empty or cartItems is null
             if (!cartItems || !cartItems.items || !Array.isArray(cartItems.items) || cartItems.items.length === 0) {
                 console.log('Cart is empty. Unable to place an order.');
                 return res.status(400).json({
@@ -132,10 +127,8 @@ module.exports = {
                 });
             }
 
-            // Calculate the total order amount based on the cart contents
             let totalAmount = cartItems.subTotal;
 
-            // Parse totalAmount as a number
             const numericTotal = parseFloat(totalAmount);
 
             const userAddrs = await Address.findOne({ userId: userId });
@@ -155,26 +148,23 @@ module.exports = {
             }
 
 
-            // Calculate the expected delivery date (7 days from now)
             const today = new Date();
             const deliveryDate = new Date(today);
             deliveryDate.setDate(today.getDate() + 7);
 
-            // Extract the date, month, and year from the deliveryDate
             const deliveryDay = deliveryDate.getDate();
             const deliveryMonth = deliveryDate.getMonth()
             const deliveryYear = deliveryDate.getFullYear();
 
 
             const { fullName, mobile, state, district, city, pincode } = shipAddress;
-            // Create a new order with status 'Placed' and set product statuses
             const order = new Order({
                 user: userId,
                 products: cartItems.items.map(item => ({
                     productId: item.productId._id,
                     quantity: item.quantity,
                     price: item.productId.discountedPrice,
-                    orderStatus: 'Placed', // Set the initial status for each product as 'Placed'
+                    orderStatus: 'Placed',
                     returnOrder: {
                         reason: "none",
                     }
@@ -184,11 +174,11 @@ module.exports = {
                 "deliveryAddress.state": state,
                 "deliveryAddress.district": district,
                 "deliveryAddress.city": city,
-                "deliveryAddress.pincode": pincode, // Use the ObjectId of the selected address
+                "deliveryAddress.pincode": pincode,
                 paymentOption: paymentOption,
                 totalAmount: numericTotal,
                 orderDate: new Date(),
-                expectedDelivery: new Date(deliveryYear, deliveryMonth, deliveryDay) // Set the expected delivery date with only date, month, and year
+                expectedDelivery: new Date(deliveryYear, deliveryMonth, deliveryDay)
             });
 
             let placeOrder;
@@ -198,26 +188,22 @@ module.exports = {
 
                 console.log('Entered COD');
 
-                // Use bulkWrite to update stock atomically
                 const stockUpdateOperations = cartItems.items.map((item) => {
                     const productId = item.productId._id;
                     const quantity = parseInt(item.quantity, 10);
 
                     return {
                         updateOne: {
-                            filter: { _id: productId, productStock: { $gte: quantity } }, // Ensure enough stock
+                            filter: { _id: productId, productStock: { $gte: quantity } },
                             update: { $inc: { productStock: -quantity } },
                         },
                     };
                 });
 
-                // Execute the bulkWrite operation
                 const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
 
-                // Check if any stock update failed
                 if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
                     console.log('Failed to update stock for some products');
-                    // Handle the case where the stock update failed, e.g., redirect to an error page
                     return res.status(500).json({
                         success: false,
                         message: 'Failed to update stock for some products',
@@ -228,11 +214,9 @@ module.exports = {
 
                 order.status = true
 
-                // Save the order to the database
                 placeOrder = await order.save();
                 res.status(200).json({ placeOrder, message: "Order placed successfully" });
 
-                // Clear the user's cart
                 await Cart.deleteOne({ userId: req.session.userId });
 
             } else if (paymentOption === 'Razorpay') {
@@ -257,35 +241,28 @@ module.exports = {
 
                     console.log('Razorpay Order:', order);
 
-                    /////////////////////////update stock///////////////////////////////////////
-                    // Use bulkWrite to update stock atomically
                     const stockUpdateOperations = cartItems.items.map((item) => {
                         const productId = item.productId._id;
                         const quantity = parseInt(item.quantity, 10);
 
                         return {
                             updateOne: {
-                                filter: { _id: productId, productStock: { $gte: quantity } }, // Ensure enough stock
+                                filter: { _id: productId, productStock: { $gte: quantity } }, 
                                 update: { $inc: { productStock: -quantity } },
                             },
                         };
                     });
 
-                    // Execute the bulkWrite operation
                     const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
 
-                    // Check if any stock update failed
                     if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
                         console.log('Failed to update stock for some products');
-                        // Handle the case where the stock update failed, e.g., redirect to an error page
                         return res.status(500).json({
                             success: false,
                             message: 'Failed to update stock for some products',
                         });
                     }
-                    /////////////////////////update stock///////////////////////////////////////
 
-                    // Handle the Razorpay order response here
                     res.status(200).json({ order });
                 });
 
@@ -301,34 +278,28 @@ module.exports = {
                     return res.status(400).json({ error: "Insufficient wallet balance" });
                 } else {
                     console.log('Wallet balance is sufficient');
-                    // Use bulkWrite to update stock atomically
                     const stockUpdateOperations = cartItems.items.map((item) => {
                         const productId = item.productId._id;
                         const quantity = parseInt(item.quantity, 10);
 
                         return {
                             updateOne: {
-                                filter: { _id: productId, productStock: { $gte: quantity } }, // Ensure enough stock
+                                filter: { _id: productId, productStock: { $gte: quantity } },
                                 update: { $inc: { productStock: -quantity } },
                             },
                         };
                     });
 
-                    // Execute the bulkWrite operation
                     const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
 
-                    // Check if any stock update failed
                     if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
                         console.log('Failed to update stock for some products');
-                        // Handle the case where the stock update failed, e.g., redirect to an error page
                         return res.status(500).json({
                             success: false,
                             message: 'Failed to update stock for some products',
                         });
                     }
                     console.log('after stock update');
-                    // Update the user's wallet
-                    // await Wallet.findOneAndUpdate({ userId }, { $inc: { totalAmount: -numericTotal } });
                     let transactionId = randomstring.generate(10);
 
                     userWallet.totalAmount -= numericTotal;
@@ -344,11 +315,9 @@ module.exports = {
 
                     order.status = true
 
-                    // Save the order to the database
                     placeOrder = await order.save();
                     res.status(200).json({ placeOrder, message: "Order placed successfully" });
 
-                    // Clear the user's cart
                     await Cart.deleteOne({ userId: req.session.userId });
                 }
             }
@@ -365,19 +334,16 @@ module.exports = {
             const cartData = await Cart.findOne({ userId: req.session.userId });
             const details = req.body;
 
-            // Verify the Razorpay signature
             const hmac = crypto.createHmac("sha256", instance.key_secret);
             hmac.update(details.payment.razorpay_order_id + "|" + details.payment.razorpay_payment_id);
             const hmacValue = hmac.digest("hex");
 
             if (hmacValue !== details.payment.razorpay_signature) {
-                // Signature verification failed
                 console.log("Signature verification failed");
                 await Order.findByIdAndRemove({ _id: details.order.receipt });
                 return res.json({ success: false, message: "Signature verification failed" });
             }
 
-            // Update product quantities
             for (const product of cartData.items) {
                 await Product.findByIdAndUpdate(
                     { _id: product.productId },
@@ -385,17 +351,14 @@ module.exports = {
                 );
             }
 
-            // Update order payment status and payment ID
             const orderId = details.order.receipt;
             await Order.findByIdAndUpdate(
                 orderId,
                 { $set: { 'products.$[].paymentStatus': 'Success', paymentId: details.payment.razorpay_payment_id } }
             );
 
-            // Clear the user's cart
             await Cart.deleteOne({ userId: req.session.userId });
 
-            // Set the order status to true for successful payment
             await Order.findByIdAndUpdate(orderId, { $set: { status: true } });
 
             res.json({ codsuccess: true, orderid: orderId });

@@ -11,9 +11,8 @@ const axios = require('axios');
 
 const mongoose = require('mongoose');
 const { ObjectId } = require('mongoose').Types;
-// const { ObjectId } = require('mongodb');
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { name } = require('ejs');
 const path = require("path")
 
@@ -24,7 +23,6 @@ module.exports = {
         try {
             const userId = req.session.userId;
 
-            // Ensure user is authenticated
             if (!userId) {
                 return res.status(400).json({
                     success: false,
@@ -36,15 +34,8 @@ module.exports = {
             const orderId = req.params.orderId;
 
 
-            // Fetch order details
             const order = await Order.findById(orderId).populate('products.productId')
 
-            // Fetch order details with product and delivery address population
-            // const order = await Order.findOne({ _id: orderId }).populate({
-            //     "products.productId"
-            // });
-
-            // Check if the order exists
             if (!order) {
                 return res.status(400).json({
                     success: false,
@@ -52,7 +43,6 @@ module.exports = {
                 });
             }
 
-            // Render order details view with user and order data
             res.render('orderDetails', {
                 user: userData,
                 order: order
@@ -73,7 +63,6 @@ module.exports = {
                 model: 'Product',
             });
 
-            // Check if the order exists
             if (!order) {
                 return res.status(404).json({
                     success: false,
@@ -115,39 +104,14 @@ module.exports = {
                 }
             });
 
-            // Retrieve the product from the order
             const product = await Product.findById(productForStockIncrease);
 
-            // Increase the product stock
             product.productStock += canceledQuantity;
 
-            // Save the updated product
             await product.save();
 
-            // Save the updated order
             await order.save();
 
-
-
-            // for refund
-
-            // const refundUser = await User.findOne({ _id: order.user }).populate('wallet');
-
-            // if (refundUser) {
-            //     const transactionId = randomstring.generate(10);
-            //     // Credit the referring user with 100 (or any desired amount)
-            //     refundUser.wallet.totalAmount += 100; // Assuming 'totalAmount' is the field representing the wallet balance
-            //     refundUser.wallet.walletHistory.push({
-            //         transactionAmount: 100,
-            //         transactionType: 'credit',
-            //         transactionId,
-            //     });
-            //     await refundUser.wallet.save();
-
-            // for refund
-
-
-            // Respond with JSON indicating success
             res.json({ success: true, message: 'Order canceled successfully' });
         } catch (error) {
             next(error);
@@ -156,18 +120,17 @@ module.exports = {
     loadAdminOrder: async (req, res, next) => {
         try {
 
-            const page = req.query.page || 1; // Get the current page from query parameters
-            const pageSize = 4; // Set your desired page size
+            const page = req.query.page || 1; 
+            const pageSize = 4; 
 
             const skip = (page - 1) * pageSize;
 
-            // Fetch all orders with user information
             const orders = await Order.find({})
                 .sort({ orderDate: -1 })
                 .populate({
                     path: 'user',
                     model: 'User',
-                    select: 'firstName lastName' // Select the fields you want to populate
+                    select: 'firstName lastName'
                 }).skip(skip).limit(pageSize);
 
 
@@ -176,7 +139,6 @@ module.exports = {
             const totalPages = Math.ceil(totalOrders / pageSize);
 
 
-            // Check if orders data is not null or undefined
             if (orders) {
                 res.render('orders', { orders, currentPage: page, totalPages: totalPages });
             } else {
@@ -209,10 +171,8 @@ module.exports = {
             const productId = req.params.productId;
             const newStatus = req.body.status;
 
-            // Find the order containing the product
             const order = await Order.findOne({ 'products._id': new mongoose.Types.ObjectId(productId) });
 
-            // Check if the order exists
             if (!order) {
                 return res.status(404).json({
                     success: false,
@@ -220,7 +180,6 @@ module.exports = {
                 });
             }
 
-            // FOR INCREASING THE PRODUCT STOCK WHEN NEWSTATUS IS CANCELLED
             if (newStatus === 'Cancelled') {
                 console.log('newStatus', newStatus)
 
@@ -234,40 +193,16 @@ module.exports = {
                     }
                 });
 
-                // Retrieve the product from the order
                 const product = await Product.findById(productForStockIncrease);
 
-                // Increase the product stock
                 product.productStock += canceledQuantity;
 
-                // Save the updated product
                 await product.save();
             }
 
-            // Find the product within the order and update its status
             const product = order.products.find(product => product._id.toString() === productId);
             if (product) {
                 product.orderStatus = newStatus;
-                // productForStockIncrease = product.productId
-                // canceledQuantity = product.quantity
-                // Update statusLevel based on newStatus
-                // switch (newStatus) {
-                //     case 'Shipped':
-                //         product.statusLevel = 2;
-                //         break;
-                //     case 'Out for delivery':
-                //         product.statusLevel = 3;
-                //         break;
-                //     case 'Delivered':
-                //         product.statusLevel = 4;
-                //         break;
-                //     // Add more cases if needed
-
-                //     default:
-                //         // Handle other status cases
-                //         break;
-                // }
-
                 await order.save();
             } else {
                 return res.status(404).json({
@@ -276,7 +211,6 @@ module.exports = {
                 });
             }
 
-            // Redirect back to the order details page or orders page
             res.redirect('/admin/orders');
         } catch (error) {
             next(error);

@@ -21,10 +21,6 @@ user_route.use((req, res, next) => {
     next();
 });
 
-// user_route.use('/public',express.static(path.join(__dirname,'../public')))
-// user_route.use('/userlogin',express.static(path.join(__dirname,'../public/userlogin')))
-// user_route.use('/assets',express.static(path.join(__dirname,'../public/userlogin/assets')))
-
 const path = require("path")
 
 const userController = require("../controllers/userController");
@@ -36,10 +32,6 @@ const orderController = require("../controllers/orderController");
 const wishlistController = require("../controllers/wishlistController");
 const walletController = require("../controllers/walletController");
 const couponController = require("../controllers/couponController");
-
-
-// user_route.get('/logout',auth.isUserLogin,userController.userLogout)
-
 
 user_route.get('/', userController.loadHome)
 user_route.get('/login', userController.loginLoad)
@@ -101,8 +93,8 @@ user_route.use((err, req, res, next) => {
     res.status(500).render("500");
 });
 
-user_route.use((req, res, next) => {
-    res.status(404).render("404");
-})
+// user_route.use((req, res, next) => {
+//     res.status(404).render("404");
+// })
 
 module.exports = user_route
