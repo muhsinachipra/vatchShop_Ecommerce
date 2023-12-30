@@ -21,7 +21,7 @@ const crypto = require("crypto")
 module.exports = {
     loadViewCoupon: async (req, res, next) => {
         try {
-            const page = req.query.page || 1; 
+            const page = req.query.page || 1;
             const pageSize = 4;
 
             const skip = (page - 1) * pageSize;
@@ -35,7 +35,6 @@ module.exports = {
             if (couponData) {
                 res.render('viewCoupon', { couponData, currentPage: page, totalPages: totalPages })
             } else {
-                console.log('couponData is null or undefined');
                 res.render('viewCoupon', { couponData: [] });
             }
 

@@ -195,7 +195,6 @@
     <script>
 
         function confirmAndCancel(productId, productPrice) {
-            console.log('Confirm and Cancel function called');
 
             Swal.fire({
                 title: 'Are you sure?',
@@ -207,26 +206,11 @@
                 confirmButtonText: 'Yes, cancel it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    console.log('Confirmed to cancel order');
                     // Send AJAX request to cancel the order
                     axios.post(`/cancelorder/${productId}`, { productPrice: productPrice })
                         .then(response => {
-                            console.log('Cancel order AJAX response:', response);
 
                             if (response.data.success) {
-                                // // Update the DOM to remove the status bar row and cancel td
-                                // const statusRow = document.querySelector(`#status-row-${productId}`);
-                                // console.log(statusRow);
-                                // if (statusRow) {
-                                //     statusRow.remove();
-                                // }
-
-                                // // Update the order status dynamically
-                                // const orderStatusElement = document.querySelector(`#orderStatus-${productId}`);
-                                // console.log(orderStatusElement);
-                                // if (orderStatusElement) {
-                                //     orderStatusElement.textContent = 'Cancelled';
-                                // }
 
                                 Swal.fire('Success!', 'Order canceled successfully!', 'success');
                                 location.reload();

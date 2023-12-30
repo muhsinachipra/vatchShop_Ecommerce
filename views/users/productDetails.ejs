@@ -36,8 +36,8 @@
                         <% if(product.productPrice===product.discountedPrice) { %>
                             ₹<%= product.productPrice %>
                                 <% }else{ %>
-                                    <del style="color: red;">₹<%= product.productPrice %></del> <span
-                                        style="color: green;">
+                                    <del style="color: rgb(255, 106, 106);">₹<%= product.productPrice %></del> <span
+                                        style="color: #649BDC;">
                                         <%= product.highestOfferPercentage %>%off
                                     </span> &nbsp; &nbsp; &nbsp; ₹<%= product.discountedPrice %>
                                         <% } %>

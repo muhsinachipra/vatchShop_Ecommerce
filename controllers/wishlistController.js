@@ -22,7 +22,6 @@ module.exports = {
             const wishlist = await Wishlist.findOne({ userId }).populate('productId');
 
             if (!wishlist) {
-                console.log('Wishlist not found for user with ID:', userId);
                 return res.render('wishlist', { wishlistProducts: [] });
             }
 
@@ -35,7 +34,6 @@ module.exports = {
     },
     addToWishlist: async (req, res, next) => {
         try {
-            console.log('entered addToWishlist')
             if (req.session.userId) {
                 const productId = req.body.id;
                 const userId = req.session.userId;

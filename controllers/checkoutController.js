@@ -37,7 +37,6 @@ module.exports = {
             const couponData = await Coupon.find()
 
             if (!cartData || !cartData.items || cartData.items.length === 0) {
-                console.log('Cart is empty');
                 return res.redirect('/cart');
             }
 
@@ -46,12 +45,10 @@ module.exports = {
             });
 
             if (insufficientStockProducts.length > 0) {
-                console.log('Some products have insufficient stock');
                 return res.redirect('/cart?error=insufficient-stock');
             }
 
             let razoKey = process.env.RAZORPAY_KEY_ID
-            console.log('RAZORPAY_KEY_ID :', razoKey)
 
             res.render('checkout', { user: userData, address: userAddress, cart: cartData, coupons: couponData, razoKey });
         } catch (error) {
@@ -106,13 +103,11 @@ module.exports = {
 
     placeOrder: async (req, res, next) => {
         try {
-            console.log('Request Body from place Order:', req.body);
 
             const { addressOption, paymentOption } = req.body;
             const userId = req.session.userId;
 
             if (!addressOption || !paymentOption) {
-                console.log('Invalid address or payment type');
                 return res.status(400).json({ error: "Invalid address or payment type" });
             }
 
@@ -120,7 +115,6 @@ module.exports = {
 
 
             if (!cartItems || !cartItems.items || !Array.isArray(cartItems.items) || cartItems.items.length === 0) {
-                console.log('Cart is empty. Unable to place an order.');
                 return res.status(400).json({
                     success: false,
                     message: 'Cart is empty. Unable to place an order.',
@@ -134,7 +128,6 @@ module.exports = {
             const userAddrs = await Address.findOne({ userId: userId });
 
             if (!userAddrs || !userAddrs.address || userAddrs.address.length === 0) {
-                console.log('User addresses not found');
                 return res.status(400).json({ error: "Address not selected" });
             }
 
@@ -143,7 +136,6 @@ module.exports = {
             });
 
             if (!shipAddress) {
-                console.log('Address not found');
                 return res.status(400).json({ error: "Address not found" });
             }
 
@@ -186,8 +178,6 @@ module.exports = {
 
             if (paymentOption === 'COD') {
 
-                console.log('Entered COD');
-
                 const stockUpdateOperations = cartItems.items.map((item) => {
                     const productId = item.productId._id;
                     const quantity = parseInt(item.quantity, 10);
@@ -203,14 +193,11 @@ module.exports = {
                 const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
 
                 if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
-                    console.log('Failed to update stock for some products');
                     return res.status(500).json({
                         success: false,
                         message: 'Failed to update stock for some products',
                     });
                 }
-
-                console.log('Order placed successfully');
 
                 order.status = true
 
@@ -220,8 +207,6 @@ module.exports = {
                 await Cart.deleteOne({ userId: req.session.userId });
 
             } else if (paymentOption === 'Razorpay') {
-
-                console.log('Entered Razorpay block');
 
                 placeOrder = await order.save();
                 const orderId = placeOrder._id;
@@ -239,45 +224,6 @@ module.exports = {
                     }
 
 
-                    console.log('Razorpay Order:', order);
-
-                    const stockUpdateOperations = cartItems.items.map((item) => {
-                        const productId = item.productId._id;
-                        const quantity = parseInt(item.quantity, 10);
-
-                        return {
-                            updateOne: {
-                                filter: { _id: productId, productStock: { $gte: quantity } }, 
-                                update: { $inc: { productStock: -quantity } },
-                            },
-                        };
-                    });
-
-                    const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
-
-                    if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
-                        console.log('Failed to update stock for some products');
-                        return res.status(500).json({
-                            success: false,
-                            message: 'Failed to update stock for some products',
-                        });
-                    }
-
-                    res.status(200).json({ order });
-                });
-
-            } else if (paymentOption === 'Wallet') {
-                console.log('Entered Wallet block');
-                const userWallet = await Wallet.findOne({ userId });
-                if (!userWallet) {
-                    return res.status(400).json({ error: 'wallet not found' });
-                }
-
-                if (userWallet.totalAmount < numericTotal) {
-                    console.log('Insufficient wallet balance');
-                    return res.status(400).json({ error: "Insufficient wallet balance" });
-                } else {
-                    console.log('Wallet balance is sufficient');
                     const stockUpdateOperations = cartItems.items.map((item) => {
                         const productId = item.productId._id;
                         const quantity = parseInt(item.quantity, 10);
@@ -293,13 +239,44 @@ module.exports = {
                     const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
 
                     if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
-                        console.log('Failed to update stock for some products');
                         return res.status(500).json({
                             success: false,
                             message: 'Failed to update stock for some products',
                         });
                     }
-                    console.log('after stock update');
+
+                    res.status(200).json({ order });
+                });
+
+            } else if (paymentOption === 'Wallet') {
+                const userWallet = await Wallet.findOne({ userId });
+                if (!userWallet) {
+                    return res.status(400).json({ error: 'wallet not found' });
+                }
+
+                if (userWallet.totalAmount < numericTotal) {
+                    return res.status(400).json({ error: "Insufficient wallet balance" });
+                } else {
+                    const stockUpdateOperations = cartItems.items.map((item) => {
+                        const productId = item.productId._id;
+                        const quantity = parseInt(item.quantity, 10);
+
+                        return {
+                            updateOne: {
+                                filter: { _id: productId, productStock: { $gte: quantity } },
+                                update: { $inc: { productStock: -quantity } },
+                            },
+                        };
+                    });
+
+                    const stockUpdateResult = await Product.bulkWrite(stockUpdateOperations);
+
+                    if (stockUpdateResult.writeErrors && stockUpdateResult.writeErrors.length > 0) {
+                        return res.status(500).json({
+                            success: false,
+                            message: 'Failed to update stock for some products',
+                        });
+                    }
                     let transactionId = randomstring.generate(10);
 
                     userWallet.totalAmount -= numericTotal;
@@ -310,8 +287,6 @@ module.exports = {
                     });
 
                     await userWallet.save();
-
-                    console.log('Order placed successfully');
 
                     order.status = true
 
@@ -328,9 +303,6 @@ module.exports = {
     },
     verifyPayment: async (req, res, next) => {
         try {
-            console.log("Received payment verification request");
-            console.log("Request Body from verify payment:", req.body);
-
             const cartData = await Cart.findOne({ userId: req.session.userId });
             const details = req.body;
 
@@ -339,7 +311,6 @@ module.exports = {
             const hmacValue = hmac.digest("hex");
 
             if (hmacValue !== details.payment.razorpay_signature) {
-                console.log("Signature verification failed");
                 await Order.findByIdAndRemove({ _id: details.order.receipt });
                 return res.json({ success: false, message: "Signature verification failed" });
             }

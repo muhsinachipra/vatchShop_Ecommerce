@@ -276,24 +276,15 @@
         function placeOrder() {
 
             const placeOrderBtn = document.getElementById('placeOrderButton');
-            console.log('placeOrderBtn:', placeOrderBtn);
 
             placeOrderBtn.addEventListener('click', async function (event) {
                 event.preventDefault();
 
                 try {
-                    console.log('Place Order button clicked');
 
                     const selectedAddress = document.querySelector('input[name="addressOption"]:checked');
-                    console.log('selectedAddress:', selectedAddress);
-
-                    // if (!selectedAddress) {
-                    //     Swal.fire('Please add an address');
-                    // }
-
 
                     const paymentMethodRadio = document.querySelector('input[name="paymentOption"]:checked');
-                    console.log('paymentMethodRadio:', paymentMethodRadio);
 
                     if (!selectedAddress) {
                         Swal.fire('Address not selected');
@@ -306,15 +297,10 @@
                     const addressId = selectedAddress.value;
                     const paymentMethod = paymentMethodRadio.value;
 
-                    console.log('Selected Address:', addressId);
-                    console.log('Payment Method:', paymentMethod);
-
                     const data = {
                         addressOption: addressId,
                         paymentOption: paymentMethod
                     };
-
-                    console.log('Sending request to /placeOrder with data:', data);
 
                     const response = await fetch('/placeOrder', {
                         method: 'POST',
@@ -324,8 +310,6 @@
                         body: JSON.stringify(data)
                     });
 
-                    console.log('response', response);
-
                     let responseData; // Declare a variable to store response data
 
                     try {
@@ -333,12 +317,10 @@
                             const contentType = response.headers.get('content-type');
                             if (contentType && contentType.includes('application/json')) {
                                 responseData = await response.json();
-                                console.log('Response Data:', responseData);
 
                                 if (paymentMethod === 'Razorpay') {
                                     razorPayment(responseData.order);
                                 } else {
-                                    console.log("came here");
                                     window.location.href = "/thankyou";
                                 }
                             } else {
@@ -346,7 +328,6 @@
                             }
                         } else {
                             responseData = await response.json();
-                            console.log('Response Data (Error):', responseData);
 
                             if (responseData.error === 'Insufficient wallet balance') {
                                 throw new Error('Insufficient wallet balance');
@@ -383,7 +364,6 @@
 
         // Add razorPayment here within the same script tag
         function razorPayment(order) {
-            console.log('Razorpay Order:', order);
 
             var options = {
                 key: '<%= process.env.RAZORPAY_KEY_ID %>',
@@ -394,7 +374,6 @@
                 image: "https://cdn.shopify.com/app-store/listing_images/a53cf2ce9b5dabf5dd222b3615c29569/icon/CPXdk7L0lu8CEAE=.png",
                 order_id: order.id,
                 handler: function (response) {
-                    console.log('Razorpay Response:', response);
                     verifyPayment(response, order);
                 },
                 prefill: {
@@ -417,7 +396,6 @@
 
 
         function verifyPayment(payment, order) {
-            console.log('h');
             $.ajax({
                 url: "/verifyPayment",
                 method: "post",
@@ -426,7 +404,6 @@
                     order: order,
                 },
                 success: (response) => {
-                    console.log('Verification Response:', response);
                     if (response.codsuccess == true) {
                         window.location.href = "/thankyou";
 
@@ -510,7 +487,6 @@
                 // Check if the coupon code is not empty
                 if (!couponCode.trim()) {
                     // You can display an alert or handle it in your UI as needed
-                    console.log('Coupon code is empty');
                     return;
                 }
 
@@ -529,7 +505,6 @@
                 // Handle the response accordingly
                 if (response.ok) {
                     // Coupon applied successfully, you can update the UI or show a success message
-                    console.log('Coupon applied successfully!');
 
                     Swal.fire({
                         icon: 'success',

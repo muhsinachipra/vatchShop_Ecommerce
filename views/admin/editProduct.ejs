@@ -236,7 +236,6 @@
                                 const croppedCanvas = cropper.getCroppedCanvas();
                                 const croppedImageDataURL = croppedCanvas.toDataURL("image/jpeg");
 
-                                console.log('Cropped Image Data:', croppedImageDataURL);
                                 // Update the preview image
                                 currentPreview.src = croppedImageDataURL;
                                 // Set the cropped image data to the corresponding hidden input field

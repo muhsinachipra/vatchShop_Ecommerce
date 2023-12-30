@@ -120,8 +120,8 @@ module.exports = {
     loadAdminOrder: async (req, res, next) => {
         try {
 
-            const page = req.query.page || 1; 
-            const pageSize = 4; 
+            const page = req.query.page || 1;
+            const pageSize = 4;
 
             const skip = (page - 1) * pageSize;
 
@@ -142,7 +142,6 @@ module.exports = {
             if (orders) {
                 res.render('orders', { orders, currentPage: page, totalPages: totalPages });
             } else {
-                console.log('Orders Data is null or undefined');
                 res.render('orders', { orders: [] });
             }
         } catch (error) {
@@ -159,7 +158,6 @@ module.exports = {
             if (order) {
                 res.render('manageOrder', { order });
             } else {
-                console.log('Order Data is null or undefined');
                 res.render('manageOrder', { order: [] });
             }
         } catch (error) {
@@ -181,7 +179,6 @@ module.exports = {
             }
 
             if (newStatus === 'Cancelled') {
-                console.log('newStatus', newStatus)
 
                 let productForStockIncrease;
                 let canceledQuantity;

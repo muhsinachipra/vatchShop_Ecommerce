@@ -6,7 +6,7 @@ const isAdminLogin = async (req, res, next) => {
         res.redirect('/admin'); // User is not logged in, redirect to login page
       }
     } catch (error) {
-      console.log(error.message);
+      next(error);
     }
   }
   
@@ -18,7 +18,7 @@ const isAdminLogin = async (req, res, next) => {
         next(); // User is logged out, proceed to the next middleware or route
       }
     } catch (error) {
-      console.log(error.message);
+      next(error);
     }
   }
   

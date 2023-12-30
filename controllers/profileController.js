@@ -23,12 +23,10 @@ module.exports = {
             const userAddress = await Address.findOne({ userId: id })
             const orderData = await Order.find({ 'user': id }).sort({ orderDate: -1 });
             const walletData = await Wallet.findOne({ userId: id })
-            console.log('walletData : ', walletData)
             // Check if userData is not null or undefined
             if (userData) {
                 res.render('userProfile', { user: userData, address: userAddress, orders: orderData, error: null, wallet: walletData });
             } else {
-                console.log('User Data is null or undefined');
                 res.render('userProfile', { user: id, orders: [], error: 'User Data is null or undefined' });
             }
         } catch (error) {

@@ -176,10 +176,8 @@ module.exports = {
     forgotPassword: async (req, res, next) => {
         try {
             const id = req.body.id;
-            // console.log('User ID from form submission:', id);
 
             if (!id) {
-                console.log('User ID is missing in the form submission');
                 return res.status(400).send('User ID is missing in the form submission');
             }
 
@@ -198,7 +196,6 @@ module.exports = {
 
 
             if (!user) {
-                console.log('User not found in the database');
                 return res.status(404).send('User not found in the database');
             }
 
@@ -256,10 +253,8 @@ module.exports = {
                 if (firstName && email && lastName && mobileno) {
                     if (password === passwordConfirm) {
                         if (referalCode) {
-                            console.log('entered referalCode : ', referalCode)
                             const referringUser = await User.findOne({ referalCode }).populate('wallet');
                             // const referringUser = await User.findOne({ referalCode });
-                            console.log('referringUser : ', referringUser)
 
                             if (referringUser) {
                                 const transactionId = randomstring.generate(10);

@@ -17,7 +17,7 @@ module.exports = {
         res.redirect('/login'); // User is not logged in, redirect to login page
       }
     } catch (error) {
-      console.log(error.message);
+      next(error);
     }
   }
 }
