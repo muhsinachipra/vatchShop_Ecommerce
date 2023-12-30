@@ -272,7 +272,6 @@
     <!-- </form> -->
 
     <script>
-
         function placeOrder() {
 
             const placeOrderBtn = document.getElementById('placeOrderButton');
@@ -327,30 +326,12 @@
                                 throw new Error('Response was not in JSON format');
                             }
                         } else {
-                            responseData = await response.json();
-
-                            if (responseData.error === 'Insufficient wallet balance') {
-                                throw new Error('Insufficient wallet balance');
-                            } else {
-                                razorPayment(responseData.order);
-
-                                if (paymentMethod !== 'Razorpay') {
-                                    window.location.href = '/otherPaymentPage';
-                                }
-                            }
+                            const errorResponse = await response.json();
+                            Swal.fire(errorResponse.error, '', 'error');
                         }
 
                     } catch (error) {
-                        console.error('There was an error:', error);
-                        if (error.message === 'Address not selected') {
-                            Swal.fire('Error', 'Please add an address', 'error');
-                        } else if (error.message === 'Payment method not selected') {
-                            Swal.fire('Error', 'Please select a payment method', 'error');
-                        } else if (error.message === 'Insufficient wallet balance') {
-                            Swal.fire('Error', 'Insufficient wallet balance', 'error');
-                        } else {
-                            Swal.fire('Order Placement Error', error.message , 'error');
-                        }
+                        Swal.fire(error.message, '', 'error');
                     }
                 } catch (error) {
                     console.error('Unexpected error:', error);
@@ -358,11 +339,8 @@
             });
         }
 
-
         placeOrder();
 
-
-        // Add razorPayment here within the same script tag
         function razorPayment(order) {
 
             var options = {
@@ -421,6 +399,8 @@
         }
 
     </script>
+
+
     <script>
         document
             .getElementById("addAddressButton")

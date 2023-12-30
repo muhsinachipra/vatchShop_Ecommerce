@@ -177,7 +177,7 @@
 
 			// Validate password
 			if (!password || !passwordRegex.test(password)) {
-				document.getElementById('password-error').textContent = 'Password must be at least 6 characters and contain a special character.';
+				document.getElementById('password-error').textContent = 'Password must be at least 6 characters or numbers and should contain a special character.';
 				return false;
 			}
 
