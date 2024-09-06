@@ -567,7 +567,7 @@
 								</span>
 
 								<span class="block1-info stext-102 trans-04">
-									<% if(Analog.categoryOfferPercentage!==0){ %>
+									<% if(Analog && Analog.categoryOfferPercentage!==0){ %>
 										<%= Analog.categoryOfferPercentage %> % Offer
 											<% } %>
 								</span>
@@ -595,8 +595,8 @@
 								</span>
 
 								<span class="block1-info stext-102 trans-04">
-									<% if(Digital.categoryOfferPercentage!==0){ %>
-										<%= Digital.categoryOfferPercentage %> % Offer
+									<% if(Digital?.categoryOfferPercentage!==0){ %>
+										<%= Digital?.categoryOfferPercentage %> % Offer
 											<% } %>
 								</span>
 							</div>
@@ -623,8 +623,8 @@
 								</span>
 
 								<span class="block1-info stext-102 trans-04">
-									<% if(Smart.categoryOfferPercentage!==0){ %>
-										<%= Smart.categoryOfferPercentage %> % Offer
+									<% if(Smart?.categoryOfferPercentage!==0){ %>
+										<%= Smart?.categoryOfferPercentage %> % Offer
 											<% } %>
 								</span>
 							</div>
