@@ -2,6 +2,8 @@
 
 Welcome to **WatchShop**, an e-commerce platform for purchasing various types of watches. This project showcases a full-fledged web application with user and admin functionalities, built using the **MERN stack** (MongoDB, Express.js, Node.js) and **EJS** for the front end.
 
+🔗 https://vatchshopecommerce-production.up.railway.app/
+
 ## 🚀 Overview
 
 WatchShop is designed to provide a seamless shopping experience for users and an efficient management system for admins. The platform primarily sells watches categorized into three types:
