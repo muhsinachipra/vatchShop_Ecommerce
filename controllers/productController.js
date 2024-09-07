@@ -24,9 +24,9 @@ module.exports = {
 
             const images = [];
 
-            images[0] = 'image1_' + Date.now() + '.jpg'
-            images[1] = 'image2_' + Date.now() + '.jpg'
-            images[2] = 'image3_' + Date.now() + '.jpg'
+            images[0] = 'image1' + Date.now() + '.jpg'
+            images[1] = 'image2' + Date.now() + '.jpg'
+            images[2] = 'image3' + Date.now() + '.jpg'
 
             const croppedImageData1 = req.body.croppedImageData1;
             const croppedImageData2 = req.body.croppedImageData2;
@@ -180,9 +180,9 @@ module.exports = {
             ];
 
             // Save the image files to the server (assuming 'public/productImages' is the destination)
-            fs.writeFileSync(path.join(__dirname, '../public/productImages', `image1_${id}.jpg`), updatedProductImages[0]);
-            fs.writeFileSync(path.join(__dirname, '../public/productImages', `image2_${id}.jpg`), updatedProductImages[1]);
-            fs.writeFileSync(path.join(__dirname, '../public/productImages', `image3_${id}.jpg`), updatedProductImages[2]);
+            fs.writeFileSync(path.join(__dirname, '../public/productImages', `image1${id}.jpg`), updatedProductImages[0]);
+            fs.writeFileSync(path.join(__dirname, '../public/productImages', `image2${id}.jpg`), updatedProductImages[1]);
+            fs.writeFileSync(path.join(__dirname, '../public/productImages', `image3${id}.jpg`), updatedProductImages[2]);
 
             const updatedProduct = await Product.findByIdAndUpdate(
                 id,
@@ -192,9 +192,9 @@ module.exports = {
                         productDescription,
                         productCategory,
                         productImage: [
-                            `image1_${id}.jpg`,
-                            `image2_${id}.jpg`,
-                            `image3_${id}.jpg`,
+                            `image1${id}.jpg`,
+                            `image2${id}.jpg`,
+                            `image3${id}.jpg`,
                         ],
                         productStock,
                         productPrice,
